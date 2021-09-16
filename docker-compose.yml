@@ -1,0 +1,28 @@
+version: "3.7"
+
+services:
+    nginx:
+        build:
+            context: .
+            dockerfile: docker/nginx/Dockerfile
+        ports:
+            - 29080:80
+        links:
+            - fpm
+        volumes:
+            - ./:/var/www/laravel-docker
+    fpm:
+        build:
+            context: .
+            dockerfile: docker/fpm/Dockerfile
+        volumes:
+        -   ./:/var/www/laravel-docker
+        links:
+            -   postgres
+    postgres:
+        image: postgres:12.2
+        ports:
+            - 29032:5432
+        environment:
+            - POSTGRES_PASSWORD=0000
+            - POSTGRES_DATABASE=upakovali_online
