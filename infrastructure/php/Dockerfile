@@ -2,8 +2,8 @@ FROM php:8-fpm
 
 WORKDIR /var/www/html
 
-RUN apt-get update && apt-get install -y zlib1g-dev g++ git libicu-dev zip libzip-dev zip curl vim wget bash \
-    && docker-php-ext-install intl opcache pdo pdo_mysql pdo_pgsql \
+RUN apt-get update && apt-get install -y zlib1g-dev g++ git libpq-dev libicu-dev zip libzip-dev zip curl vim wget bash \
+    && docker-php-ext-install intl opcache pdo pdo_mysql pgsql pdo_pgsql \
     && docker-php-ext-configure zip \
     && docker-php-ext-install zip \
     && pecl install xdebug \

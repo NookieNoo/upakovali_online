@@ -2,7 +2,10 @@ version: "3.8"
 
 networks:
     laravel:
-        driver: bridge
+        ipam:
+            driver: default
+            config:
+                - subnet: 172.20.0.0/16
 
 volumes:
     dbdata:
@@ -11,7 +14,6 @@ volumes:
 services:
     nginx:
         image: nginx:1.18.0-alpine
-        container_name: nginx
         ports:
             - "29080:80"
         volumes:
@@ -27,78 +29,35 @@ services:
         build:
             context: ./infrastructure/php
             dockerfile: Dockerfile
-        container_name: php
         ports:
             - "9000:9000"
         volumes:
             - .:/var/www/html
         networks:
             - laravel
-
-    # mysql:
-    #     build:
-    #         context: ./infrastructure/db
-    #         dockerfile: Dockerfile
-    #     container_name: mysql
-    #     ports:
-    #         - "${DB_PORT}:3306"
-    #     volumes:
-    #         - dbdata:/var/lib/mysql
-    #         - ./infrastructure/db/sql:/docker-entrypoint-initdb.d
-    #     command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-    #     # restart: always
-    #     environment:
-    #         # MYSQL_DATABASE: ${DB_DATABASE}
-    #         # MYSQL_USER: ${DB_USERNAME}
-    #         # MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-    #         # MYSQL_PASSWORD: ${DB_PASSWORD}
-    #         MYSQL_DATABASE: test
-    #         MYSQL_USER: 'ilya'
-    #         MYSQL_ROOT_PASSWORD: '0000'
-    #         MYSQL_PASSWORD: '0000'
-    #         # MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
-    #     networks:
-    #         - laravel
+        depends_on:
+            - postgres
 
     postgres:
         image: postgres:13.4
         ports:
-            - '29432:5432'
+            - "${DB_OUTER_PORT}:5432"
         volumes:
-            - './infrastructure/db:/docker-entrypoint-initdb.d'
+            - "./infrastructure/db:/docker-entrypoint-initdb.d"
         # volumes:
         #     - dbdata:/var/lib/mysql
         environment:
-            POSTGRES_PASSWORD: upassword
-            POSTGRES_USER: uuser
+            POSTGRES_PASSWORD: ${DB_PASSWORD}
+            POSTGRES_USER: ${DB_USERNAME}
             # POSTGRES_DB: upakovali_online
-            POSTGRES_MULTIPLE_DATABASES: upakovali_online_db,upakovali_online_db_test
+            POSTGRES_MULTIPLE_DATABASES: "${DB_DATABASE},upakovali_online_db_test"
         networks:
             - laravel
 
-
-
     node:
         image: node:15-alpine3.10
-        container_name: node
         volumes:
             - .:/var/www/html
         working_dir: /var/www/html
         networks:
             - laravel
-
-    # phpmyadmin:
-    #     image: phpmyadmin/phpmyadmin
-    #     container_name: phpmyadmin
-    #     ports:
-    #         - "29050:80"
-    #     environment:
-    #         - PMA_ARBITRARY=1
-    #         - PMA_HOST=mysql
-    #     restart: always
-    #     links:
-    #         - mysql
-    #     depends_on:
-    #         - mysql
-    #     networks:
-    #         - laravel

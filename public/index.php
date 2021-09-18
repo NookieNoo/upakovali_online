@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 
 define('LARAVEL_START', microtime(true));
 
+// $myPDO = new PDO('pgsql:host=postgres;port=5432;dbname=upakovali_online_db', 'uuser', 'upassword');
 /*
 |--------------------------------------------------------------------------
 | Check If The Application Is Under Maintenance
