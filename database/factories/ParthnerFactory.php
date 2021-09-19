@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Parthner;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ParthnerFactory extends Factory
@@ -23,7 +24,9 @@ class ParthnerFactory extends Factory
     {
         return [
             'full_name' => $this->faker->company(),
-            'manager' => $this->faker->name(),
+            'manager_id' => function () {
+                return User::where(['role_id' => 2])->inRandomOrder()->first()->id;
+            },
             'phone' => $this->faker->phoneNumber(),
             'email' => $this->faker->email(),
             'comment' => $this->faker->sentence(),

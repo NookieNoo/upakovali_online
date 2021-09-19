@@ -39,7 +39,7 @@ class ParthnerController extends Controller
      */
     public function index()
     {
-        return Parthner::get();
+        return Parthner::with('manager', 'manager.role')->get();
     }
 
     /**

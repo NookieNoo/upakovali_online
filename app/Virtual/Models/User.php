@@ -1,18 +1,22 @@
 <?php
 
+
+namespace App\Virtual\Models;
+
+
 /**
  * @OA\Schema(
- *     description="Партнер",
+ *     description="Пользователь",
  *     type="object",
- *     title="Parthner",
+ *     title="User",
  * )
  */
-class Parthner
+class User
 {
     /**
      * @OA\Property(
      *     title="Id",
-     *     description="Id партнера",
+     *     description="Id пользователя",
      *     format="integer",
      *     example=1
      * )
@@ -37,10 +41,10 @@ class Parthner
      * @OA\Property(
      *     title="manager",
      *     description="Менеджер",
-     *     format="User",
+     *     format="string",
      * )
      *
-     * @var \App\Virtual\Models\User
+     * @var \App\Models\User
      */
     public $manager;
 
@@ -79,4 +83,16 @@ class Parthner
      * @var string
      */
     public $comment;
+
+    /**
+     * @OA\Property(
+     *     title="Role",
+     *     description="Роль пользователя",
+     *     format="Role",
+     * )
+     *
+     * @var Role
+     */
+    public $role;
 }
+

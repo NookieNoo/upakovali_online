@@ -123,12 +123,12 @@
                 "type": "object"
             },
             "Parthner": {
-                "title": "Client",
-                "description": "Клиент",
+                "title": "Parthner",
+                "description": "Партнер",
                 "properties": {
                     "id": {
                         "title": "Id",
-                        "description": "Id клиента",
+                        "description": "Id партнера",
                         "format": "integer",
                         "example": 1
                     },
@@ -140,11 +140,7 @@
                         "example": "Любимов Алексей Валерьевич"
                     },
                     "manager": {
-                        "title": "manager",
-                        "description": "Имя менеджера",
-                        "type": "string",
-                        "format": "string",
-                        "example": "Любимов Алексей Валерьевич"
+                        "$ref": "#/components/schemas/User"
                     },
                     "phone": {
                         "title": "Phone",
@@ -166,6 +162,75 @@
                         "type": "string",
                         "format": "string",
                         "example": "Лучше купи себе часы"
+                    }
+                },
+                "type": "object"
+            },
+            "Role": {
+                "title": "Role",
+                "description": "Роль пользователя",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "description": "Id роли",
+                        "format": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "title": "name",
+                        "description": "Название роли",
+                        "type": "string",
+                        "format": "string",
+                        "example": "Мастер"
+                    }
+                },
+                "type": "object"
+            },
+            "User": {
+                "title": "User",
+                "description": "Пользователь",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "description": "Id пользователя",
+                        "format": "integer",
+                        "example": 1
+                    },
+                    "full_name": {
+                        "title": "Full name",
+                        "description": "ФИО",
+                        "type": "string",
+                        "format": "string",
+                        "example": "Любимов Алексей Валерьевич"
+                    },
+                    "manager": {
+                        "title": "manager",
+                        "description": "Менеджер",
+                        "format": "string"
+                    },
+                    "phone": {
+                        "title": "Phone",
+                        "description": "Телефон",
+                        "type": "string",
+                        "format": "string",
+                        "example": "+79586526652"
+                    },
+                    "email": {
+                        "title": "Email",
+                        "description": "Email",
+                        "type": "string",
+                        "format": "email",
+                        "example": "sergeev2@example.com"
+                    },
+                    "comment": {
+                        "title": "Comment",
+                        "description": "Комментарий",
+                        "type": "string",
+                        "format": "string",
+                        "example": "Лучше купи себе часы"
+                    },
+                    "role": {
+                        "$ref": "#/components/schemas/Role"
                     }
                 },
                 "type": "object"

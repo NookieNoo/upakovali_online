@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use App\Models\Parthner;
 use App\Models\Client;
@@ -15,13 +16,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Client::factory(20)->create();
-        Parthner::factory(20)->create();
         $this->call([
+            RoleSeeder::class,
             SourceSeeder::class,
             WorkshopSeeder::class,
             AddresseeSeeder::class,
-            OrderStatusSeeder::class
+            OrderStatusSeeder::class,
+            UserSeeder::class,
         ]);
+        Client::factory(20)->create();
+        Parthner::factory(20)->create();
+//        User::factory(5)->create();
     }
 }
