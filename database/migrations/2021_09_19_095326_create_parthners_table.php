@@ -15,7 +15,7 @@ class CreateParthnersTable extends Migration
     {
         Schema::create('parthners', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('full_name');
             $table->string('manager');
             $table->string('phone');
             $table->text('email');

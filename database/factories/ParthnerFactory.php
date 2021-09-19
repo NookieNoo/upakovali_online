@@ -22,7 +22,7 @@ class ParthnerFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->company(),
+            'full_name' => $this->faker->company(),
             'manager' => $this->faker->name(),
             'phone' => $this->faker->phoneNumber(),
             'email' => $this->faker->email(),

@@ -48,7 +48,9 @@ migrate.fresh:
 	@echo  "Выполняем ${yellow}миграции${reset}..."
 	docker exec -it $(PHP_CONTAINER_NAME) bash -c "php artisan migrate:fresh --seed"
 
-
+docs:
+	@echo  "Обновленяем файл манифеста документации для ${yellow}swagger${reset}..."
+	docker exec -it $(PHP_CONTAINER_NAME) bash -c "php artisan l5-swagger:generate"
 
 app.show_local_urls:
 	@echo  "Локальное приложение ${cyan}upakovali online${reset}: http://localhost:29080"

@@ -1,0 +1,191 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Upakovali online API documentation",
+        "contact": {
+            "email": "ib@mitlabs.ru"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:29080/api/v1",
+            "description": "Локальный базовый url для методов API (префикс)"
+        }
+    ],
+    "paths": {
+        "/client": {
+            "get": {
+                "tags": [
+                    "Client"
+                ],
+                "summary": "Получить список клиентов",
+                "operationId": "clientsAll",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "The page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Everything is fine"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/parthner": {
+            "get": {
+                "tags": [
+                    "Parthner"
+                ],
+                "summary": "Получить список партнеров",
+                "operationId": "parthnersAll",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "The page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Everything is fine"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Client": {
+                "title": "Client",
+                "description": "Клиент",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "description": "Id клиента",
+                        "format": "integer",
+                        "example": 1
+                    },
+                    "full_name": {
+                        "title": "Full name",
+                        "description": "ФИО",
+                        "type": "string",
+                        "format": "string",
+                        "example": "Любимов Алексей Валерьевич"
+                    },
+                    "phone": {
+                        "title": "Phone",
+                        "description": "Телефон",
+                        "type": "string",
+                        "format": "string",
+                        "example": "+79586526652"
+                    },
+                    "email": {
+                        "title": "Email",
+                        "description": "Email",
+                        "type": "string",
+                        "format": "email",
+                        "example": "sergeev2@example.com"
+                    },
+                    "comment": {
+                        "title": "Comment",
+                        "description": "Комментарий",
+                        "type": "string",
+                        "format": "string",
+                        "example": "Лучше купи себе часы"
+                    }
+                },
+                "type": "object"
+            },
+            "Parthner": {
+                "title": "Client",
+                "description": "Клиент",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "description": "Id клиента",
+                        "format": "integer",
+                        "example": 1
+                    },
+                    "full_name": {
+                        "title": "Full name",
+                        "description": "ФИО",
+                        "type": "string",
+                        "format": "string",
+                        "example": "Любимов Алексей Валерьевич"
+                    },
+                    "manager": {
+                        "title": "manager",
+                        "description": "Имя менеджера",
+                        "type": "string",
+                        "format": "string",
+                        "example": "Любимов Алексей Валерьевич"
+                    },
+                    "phone": {
+                        "title": "Phone",
+                        "description": "Телефон",
+                        "type": "string",
+                        "format": "string",
+                        "example": "+79586526652"
+                    },
+                    "email": {
+                        "title": "Email",
+                        "description": "Email",
+                        "type": "string",
+                        "format": "email",
+                        "example": "sergeev2@example.com"
+                    },
+                    "comment": {
+                        "title": "Comment",
+                        "description": "Комментарий",
+                        "type": "string",
+                        "format": "string",
+                        "example": "Лучше купи себе часы"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "X-APP-ID": {
+                "type": "apiKey",
+                "name": "X-APP-ID",
+                "in": "header"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Examples",
+            "description": "Some example pages"
+        }
+    ],
+    "security": [
+        []
+    ]
+}

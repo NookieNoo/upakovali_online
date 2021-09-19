@@ -10,7 +10,30 @@ use Illuminate\Http\Response;
 class ParthnerController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/parthner",
+     *     operationId="parthnersAll",
+     *     tags={"Parthner"},
+     *     summary="Получить список партнеров",
+     *     security={
+     *       {"api_key": {}},
+     *     },
+     *     @OA\Parameter(
+     *         name="page",
+     *         in="query",
+     *         description="The page number",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="integer",
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response="200",
+     *         description="Everything is fine",
+     *     ),
+     * )
+     *
+     * Получить список партнеров
      *
      * @return Response
      */
