@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\ClientController;
-use App\Http\Controllers\ParthnerController;
+use App\Http\Controllers\Api\V1\ClientController;
+use App\Http\Controllers\Api\V1\ParthnerController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
