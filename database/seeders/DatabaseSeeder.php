@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use App\Models\Parthner;
+use App\Models\Client;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,6 +15,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\Client::factory(20)->create();
+        Client::factory(20)->create();
+        Parthner::factory(20)->create();
     }
 }
