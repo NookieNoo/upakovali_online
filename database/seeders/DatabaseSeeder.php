@@ -17,5 +17,11 @@ class DatabaseSeeder extends Seeder
     {
         Client::factory(20)->create();
         Parthner::factory(20)->create();
+        $this->call([
+            SourceSeeder::class,
+            WorkshopSeeder::class,
+            AddresseeSeeder::class,
+            OrderStatusSeeder::class
+        ]);
     }
 }
