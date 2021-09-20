@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Order;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use App\Models\Parthner;
@@ -23,9 +24,11 @@ class DatabaseSeeder extends Seeder
             AddresseeSeeder::class,
             OrderStatusSeeder::class,
             UserSeeder::class,
+            ProductSeeder::class
         ]);
         Client::factory(20)->create();
         Parthner::factory(20)->create();
 //        User::factory(5)->create();
+        Order::factory(20)->create();
     }
 }
