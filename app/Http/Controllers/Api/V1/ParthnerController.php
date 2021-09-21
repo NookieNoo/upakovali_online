@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Parthner\ParthnerStoreRequest;
 use App\Models\Parthner;
+use http\Exception\RuntimeException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -61,12 +62,21 @@ class ParthnerController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  ParthnerStoreRequest  $request
      * @return JsonResponse
      */
     public function store(ParthnerStoreRequest $request)
     {
-        $parthner = Parthner::create($request->validated());
+        try {
+            $parthner = Parthner::create($request->validated());
+        } catch (\Exception $e) {
+            return response()->json([
+                'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                'message' => 'Не удалось создать партнера',
+                'errorMessage' => $e->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
         return response()->json([
             'code' => Response::HTTP_CREATED,
             'message' => Response::$statusTexts[Response::HTTP_CREATED],

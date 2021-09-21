@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\Client;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\JsonRequest;
 
-class ClientStoreController extends FormRequest
+class ClientStoreRequest extends JsonRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,8 @@ class ClientStoreController extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        //@FIXME
+        return true;
     }
 
     /**
@@ -24,7 +25,10 @@ class ClientStoreController extends FormRequest
     public function rules()
     {
         return [
-            //
+            'full_name' => 'required|string|max:255',
+            'phone' => 'required|string|max:50',
+            'email' => 'required|string|email',
+            'comment' => 'string'
         ];
     }
 }

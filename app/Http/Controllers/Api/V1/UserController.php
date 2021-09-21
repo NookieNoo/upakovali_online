@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\User\UserStoreRequest;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -10,6 +11,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -36,12 +40,29 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param UserStoreRequest $request
+     * @return JsonResponse
      */
-    public function store(Request $request)
+    public function store(UserStoreRequest $request)
     {
-        //
+        try {
+            $validatedData = $request->validated();
+            $validatedData['remember_token'] = Str::random(10);
+            $validatedData['password'] = Hash::make($validatedData['password']);
+            $user = User::create($validatedData);
+        } catch (\Exception $e) {
+            return response()->json([
+                'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                'message' => 'Не удалось создать пользователя',
+                'errorMessage' => $e->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
+        return response()->json([
+            'code' => Response::HTTP_CREATED,
+            'message' => Response::$statusTexts[Response::HTTP_CREATED],
+            'client' => $user
+        ], Response::HTTP_CREATED);
     }
 
     /**
@@ -78,7 +99,7 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */

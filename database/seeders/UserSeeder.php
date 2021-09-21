@@ -20,8 +20,9 @@ class UserSeeder extends Seeder
             ->create();
         DB::table('users')->insert([
             [
-                'name' => 'Тестовый админ',
+                'full_name' => 'Тестовый админ',
                 'email' => 'admin@admin.admin',
+                'phone' => '(320) 962-3354',
                 'email_verified_at' => now(),
                 'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
                 'remember_token' => Str::random(10),
@@ -30,8 +31,9 @@ class UserSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'name' => 'Тестовый менеджер',
+                'full_name' => 'Тестовый менеджер',
                 'email' => 'manager@manager.manager',
+                'phone' => '(320) 962-3354',
                 'email_verified_at' => now(),
                 'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
                 'remember_token' => Str::random(10),
@@ -40,8 +42,9 @@ class UserSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'name' => 'Тестовый мастер',
+                'full_name' => 'Тестовый мастер',
                 'email' => 'master@master.master',
+                'phone' => '(320) 962-3354',
                 'email_verified_at' => now(),
                 'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
                 'remember_token' => Str::random(10),
@@ -50,8 +53,9 @@ class UserSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'name' => 'Тестовый курьер',
+                'full_name' => 'Тестовый курьер',
                 'email' => 'courier@courier.courier',
+                'phone' => '(320) 962-3354',
                 'email_verified_at' => now(),
                 'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
                 'remember_token' => Str::random(10),

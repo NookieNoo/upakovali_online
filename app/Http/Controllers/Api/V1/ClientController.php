@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Client\ClientStoreRequest;
 use App\Models\Client;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
@@ -57,12 +58,26 @@ class ClientController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return Response
+     * @param  ClientStoreRequest  $request
+     * @return JsonResponse
      */
-    public function store(Request $request)
+    public function store(ClientStoreRequest $request)
     {
-        //
+        try {
+            $client = Client::create($request->validated());
+        } catch (\Exception $e) {
+            return response()->json([
+                'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                'message' => 'Не удалось создать клиента',
+                'errorMessage' => $e->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
+        return response()->json([
+            'code' => Response::HTTP_CREATED,
+            'message' => Response::$statusTexts[Response::HTTP_CREATED],
+            'client' => $client
+        ], Response::HTTP_CREATED);
     }
 
     /**
@@ -77,9 +92,9 @@ class ClientController extends Controller
             $client = Client::findOrFail($id);
         } catch (ModelNotFoundException $e) {
             return response()->json([
-                'code' => 404,
+                'code' => Response::HTTP_NOT_FOUND,
                 'message' => 'Client Not Found.',
-            ], 404);
+            ], Response::HTTP_NOT_FOUND);
         }
 
         return $client;
