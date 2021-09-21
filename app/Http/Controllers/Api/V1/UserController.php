@@ -3,51 +3,30 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Models\Client;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
-class ClientController extends Controller
+class UserController extends Controller
 {
     /**
-     * @OA\Get(
-     *     path="/client",
-     *     operationId="clientsAll",
-     *     tags={"Client"},
-     *     summary="Получить список клиентов",
-     *     security={
-     *       {"api_key": {}},
-     *     },
-     *     @OA\Parameter(
-     *         name="page",
-     *         in="query",
-     *         description="The page number",
-     *         required=false,
-     *         @OA\Schema(
-     *             type="integer",
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response="200",
-     *         description="Everything is fine",
-     *     ),
-     * )
+     * Display a listing of the resource.
      *
-     * Получить список клиентов
-     *
-     * @return Response
+     * @return Builder[]|Collection
      */
     public function index()
     {
-        return Client::get();
+        return User::with('role')->get();
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return Response
+     * @return \Illuminate\Http\Response
      */
     public function create()
     {
@@ -58,7 +37,7 @@ class ClientController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return Response
+     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
@@ -69,27 +48,27 @@ class ClientController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return JsonResponse
+     * @return Builder|Builder[]|Collection|Model|JsonResponse
      */
     public function show($id)
     {
         try {
-            $client = Client::findOrFail($id);
+            $user = User::with('role')->findOrFail($id);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'code' => 404,
-                'message' => 'Client Not Found.',
+                'message' => 'User Not Found.',
             ], 404);
         }
 
-        return $client;
+        return $user;
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return Response
+     * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
@@ -101,7 +80,7 @@ class ClientController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return Response
+     * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
@@ -112,7 +91,7 @@ class ClientController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return Response
+     * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {

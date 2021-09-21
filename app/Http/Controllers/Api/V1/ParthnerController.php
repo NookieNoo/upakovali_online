@@ -4,6 +4,11 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Models\Parthner;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -35,7 +40,7 @@ class ParthnerController extends Controller
      *
      * Получить список партнеров
      *
-     * @return Response
+     * @return Builder[]|Collection
      */
     public function index()
     {
@@ -67,11 +72,20 @@ class ParthnerController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return Response
+     * @return Builder|Builder[]|Collection|Model|JsonResponse
      */
     public function show($id)
     {
-        //
+        try {
+            $parthner = Parthner::with('manager', 'manager.role')->findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'code' => 404,
+                'message' => 'Parthner Not Found.',
+            ], 404);
+        }
+
+        return $parthner;
     }
 
     /**

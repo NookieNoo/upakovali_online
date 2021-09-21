@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\Api\V1\ClientController;
+use App\Http\Controllers\Api\V1\OrderController;
 use App\Http\Controllers\Api\V1\ParthnerController;
+use App\Http\Controllers\Api\V1\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,5 +21,22 @@ use Illuminate\Support\Facades\Route;
 //Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //    return $request->user();
 //});
-Route::get('/client', [ClientController::class, 'index']);
-Route::get('/parthner', [ParthnerController::class, 'index']);
+Route::prefix('client')->group(function (){
+    Route::get('/', [ClientController::class, 'index']);
+    Route::get('/{id}', [ClientController::class, 'show'])->where('id', '[0-9]+');
+});
+
+Route::prefix('parthner')->group(function (){
+    Route::get('/', [ParthnerController::class, 'index']);
+    Route::get('/{id}', [ParthnerController::class, 'show'])->where('id', '[0-9]+');
+});
+
+Route::prefix('order')->group(function (){
+    Route::get('/', [OrderController::class, 'index']);
+    Route::get('/{id}', [OrderController::class, 'show'])->where('id', '[0-9]+');
+});
+
+Route::prefix('user')->group(function (){
+    Route::get('/', [UserController::class, 'index']);
+    Route::get('/{id}', [UserController::class, 'show'])->where('id', '[0-9]+');
+});
