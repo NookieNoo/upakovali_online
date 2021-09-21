@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Parthner\ParthnerStoreRequest;
+use App\Models\Order;
 use App\Models\Parthner;
 use http\Exception\RuntimeException;
 use Illuminate\Database\Eloquent\Builder;
@@ -131,10 +132,30 @@ class ParthnerController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return Response
+     * @return JsonResponse
      */
     public function destroy($id)
     {
-        //
+        try {
+            $parthner = Parthner::findOrFail($id);
+
+            if ($parthner->orders()->exists()) {
+                return response()->json([
+                    'code' => Response::HTTP_BAD_REQUEST,
+                    'message' => 'Нельзя удалить этого партнера, т.к. у него есть заказы',
+                ], Response::HTTP_BAD_REQUEST);
+            }
+
+            $parthner->delete();
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'code' => Response::HTTP_NOT_FOUND,
+                'message' => 'Parthner Not Found.',
+            ], Response::HTTP_NOT_FOUND);
+        }
+        return response()->json([
+            'code' => Response::HTTP_OK,
+            'message' => 'Партнер успешно удален',
+        ], Response::HTTP_OK);
     }
 }

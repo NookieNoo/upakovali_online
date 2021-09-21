@@ -127,10 +127,37 @@ class ClientController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return Response
+     * @return JsonResponse
      */
     public function destroy($id)
     {
-        //
+        try {
+            $client = Client::findOrFail($id);
+
+            if ($client->orders()->exists()) {
+                return response()->json([
+                    'code' => Response::HTTP_BAD_REQUEST,
+                    'message' => 'Нельзя удалить этого клиента, т.к. у него есть заказы',
+                ], Response::HTTP_BAD_REQUEST);
+            }
+
+            if ($client->ordersLikeReceiver()->exists()) {
+                return response()->json([
+                    'code' => Response::HTTP_BAD_REQUEST,
+                    'message' => 'Нельзя удалить этого клиента, т.к. он является получателем',
+                ], Response::HTTP_BAD_REQUEST);
+            }
+
+            $client->delete();
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'code' => Response::HTTP_NOT_FOUND,
+                'message' => 'Client Not Found.',
+            ], Response::HTTP_NOT_FOUND);
+        }
+        return response()->json([
+            'code' => Response::HTTP_OK,
+            'message' => 'Клиент успешно удален',
+        ], Response::HTTP_OK);
     }
 }

@@ -24,12 +24,14 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('client')->group(function (){
     Route::post('', [ClientController::class, 'store']);
     Route::get('/', [ClientController::class, 'index']);
+    Route::delete('/{id}', [ClientController::class, 'destroy'])->where('id', '[0-9]+');
     Route::get('/{id}', [ClientController::class, 'show'])->where('id', '[0-9]+');
 });
 
 Route::prefix('parthner')->group(function (){
     Route::post('', [ParthnerController::class, 'store']);
     Route::get('/', [ParthnerController::class, 'index']);
+    Route::delete('/{id}', [ParthnerController::class, 'destroy'])->where('id', '[0-9]+');
     Route::get('/{id}', [ParthnerController::class, 'show'])->where('id', '[0-9]+');
 });
 
@@ -42,6 +44,7 @@ Route::prefix('order')->group(function (){
 Route::prefix('user')->group(function (){
     Route::post('', [UserController::class, 'store']);
     Route::get('/', [UserController::class, 'index']);
+    Route::delete('/{id}', [UserController::class, 'destroy'])->where('id', '[0-9]+');
     Route::get('/{id}', [UserController::class, 'show'])->where('id', '[0-9]+');
 });
 

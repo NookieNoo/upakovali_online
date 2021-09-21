@@ -77,9 +77,9 @@ class UserController extends Controller
             $user = User::with('role')->findOrFail($id);
         } catch (ModelNotFoundException $e) {
             return response()->json([
-                'code' => 404,
+                'code' => Response::HTTP_NOT_FOUND,
                 'message' => 'User Not Found.',
-            ], 404);
+            ], Response::HTTP_NOT_FOUND);
         }
 
         return $user;
@@ -112,10 +112,45 @@ class UserController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
     public function destroy($id)
     {
-        //
+        try {
+            $user = User::findOrFail($id);
+
+            if ($user->parthners()->exists()) {
+                return response()->json([
+                    'code' => Response::HTTP_BAD_REQUEST,
+                    'message' => 'Нельзя удалить этого пользователя, т.к. это менеджер, и у него есть партнер',
+                ], Response::HTTP_BAD_REQUEST);
+            }
+
+            if ($user->ordersLikeMaster()->exists()) {
+                return response()->json([
+                    'code' => Response::HTTP_BAD_REQUEST,
+                    'message' => 'Нельзя удалить этого пользователя, т.к. это мастер, и у него есть заказы',
+                ], Response::HTTP_BAD_REQUEST);
+            }
+
+            if ($user->ordersLikeCourierReceiver()->exists() || $user->ordersLikeCourierIssuer()->exists()) {
+                return response()->json([
+                    'code' => Response::HTTP_BAD_REQUEST,
+                    'message' => 'Нельзя удалить этого пользователя, т.к. это курьер, и у него есть заказы',
+                ], Response::HTTP_BAD_REQUEST);
+            }
+
+            $user->delete();
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'code' => Response::HTTP_NOT_FOUND,
+                'message' => 'User Not Found.',
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        return response()->json([
+            'code' => Response::HTTP_OK,
+            'message' => 'Пользователь успешно удален',
+        ], Response::HTTP_OK);
     }
 }
