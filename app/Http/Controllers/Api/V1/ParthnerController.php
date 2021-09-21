@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Parthner\ParthnerStoreRequest;
 use App\Models\Parthner;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -61,11 +62,16 @@ class ParthnerController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return Response
+     * @return JsonResponse
      */
-    public function store(Request $request)
+    public function store(ParthnerStoreRequest $request)
     {
-        //
+        $parthner = Parthner::create($request->validated());
+        return response()->json([
+            'code' => Response::HTTP_CREATED,
+            'message' => Response::$statusTexts[Response::HTTP_CREATED],
+            'parthner' => $parthner
+        ], Response::HTTP_CREATED);
     }
 
     /**
@@ -80,9 +86,9 @@ class ParthnerController extends Controller
             $parthner = Parthner::with('manager', 'manager.role')->findOrFail($id);
         } catch (ModelNotFoundException $e) {
             return response()->json([
-                'code' => 404,
+                'code' => Response::HTTP_NOT_FOUND,
                 'message' => 'Parthner Not Found.',
-            ], 404);
+            ], Response::HTTP_NOT_FOUND);
         }
 
         return $parthner;

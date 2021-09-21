@@ -19,7 +19,7 @@ class CreateParthnersTable extends Migration
             $table->unsignedInteger('manager_id');
             $table->string('phone');
             $table->text('email');
-            $table->text('comment');
+            $table->text('comment')->nullable();
             $table->timestamps();
         });
 

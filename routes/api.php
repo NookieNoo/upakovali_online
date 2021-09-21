@@ -27,6 +27,13 @@ Route::prefix('client')->group(function (){
 });
 
 Route::prefix('parthner')->group(function (){
+//    Route::post('', function () {
+//        return response()->json([
+//            'code' => 200,
+//            'message' => '24324.',
+//        ], 200);
+//    });
+    Route::post('', [ParthnerController::class, 'store']);
     Route::get('/', [ParthnerController::class, 'index']);
     Route::get('/{id}', [ParthnerController::class, 'show'])->where('id', '[0-9]+');
 });
@@ -39,4 +46,11 @@ Route::prefix('order')->group(function (){
 Route::prefix('user')->group(function (){
     Route::get('/', [UserController::class, 'index']);
     Route::get('/{id}', [UserController::class, 'show'])->where('id', '[0-9]+');
+});
+
+Route::fallback(function () {
+    return response()->json([
+        'code' => 404,
+        'message' => 'Page Not Found.',
+    ], 404);
 });

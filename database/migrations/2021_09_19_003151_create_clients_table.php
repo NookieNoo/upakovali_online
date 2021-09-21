@@ -18,7 +18,7 @@ class CreateClientsTable extends Migration
             $table->string('full_name');
             $table->string('phone');
             $table->string('email');
-            $table->text('comment');
+            $table->text('comment')->nullable();
             $table->timestamps();
         });
     }
