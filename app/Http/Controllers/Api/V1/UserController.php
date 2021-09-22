@@ -61,7 +61,7 @@ class UserController extends Controller
         return response()->json([
             'code' => Response::HTTP_CREATED,
             'message' => Response::$statusTexts[Response::HTTP_CREATED],
-            'client' => $user
+            'user' => $user
         ], Response::HTTP_CREATED);
     }
 

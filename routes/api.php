@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\ClientController;
 use App\Http\Controllers\Api\V1\OrderController;
 use App\Http\Controllers\Api\V1\ParthnerController;
@@ -21,32 +22,41 @@ use Illuminate\Support\Facades\Route;
 //Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //    return $request->user();
 //});
-Route::prefix('client')->group(function (){
-    Route::post('', [ClientController::class, 'store']);
-    Route::get('/', [ClientController::class, 'index']);
-    Route::delete('/{id}', [ClientController::class, 'destroy'])->where('id', '[0-9]+');
-    Route::get('/{id}', [ClientController::class, 'show'])->where('id', '[0-9]+');
+
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
+
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::prefix('client')->group(function () {
+        Route::post('', [ClientController::class, 'store']);
+        Route::get('/', [ClientController::class, 'index']);
+        Route::delete('/{id}', [ClientController::class, 'destroy'])->where('id', '[0-9]+');
+        Route::get('/{id}', [ClientController::class, 'show'])->where('id', '[0-9]+');
+    });
+
+    Route::prefix('parthner')->group(function () {
+        Route::post('', [ParthnerController::class, 'store']);
+        Route::get('/', [ParthnerController::class, 'index']);
+        Route::delete('/{id}', [ParthnerController::class, 'destroy'])->where('id', '[0-9]+');
+        Route::get('/{id}', [ParthnerController::class, 'show'])->where('id', '[0-9]+');
+    });
+
+    Route::prefix('order')->group(function () {
+        Route::post('', [OrderController::class, 'store']);
+        Route::get('/', [OrderController::class, 'index']);
+        Route::get('/{id}', [OrderController::class, 'show'])->where('id', '[0-9]+');
+    });
+
+    Route::prefix('user')->group(function () {
+        Route::post('', [UserController::class, 'store']);
+        Route::get('/', [UserController::class, 'index']);
+        Route::delete('/{id}', [UserController::class, 'destroy'])->where('id', '[0-9]+');
+        Route::get('/{id}', [UserController::class, 'show'])->where('id', '[0-9]+');
+    });
+
+    Route::post('/logout', [AuthController::class, 'logout']);
 });
 
-Route::prefix('parthner')->group(function (){
-    Route::post('', [ParthnerController::class, 'store']);
-    Route::get('/', [ParthnerController::class, 'index']);
-    Route::delete('/{id}', [ParthnerController::class, 'destroy'])->where('id', '[0-9]+');
-    Route::get('/{id}', [ParthnerController::class, 'show'])->where('id', '[0-9]+');
-});
-
-Route::prefix('order')->group(function (){
-    Route::post('', [OrderController::class, 'store']);
-    Route::get('/', [OrderController::class, 'index']);
-    Route::get('/{id}', [OrderController::class, 'show'])->where('id', '[0-9]+');
-});
-
-Route::prefix('user')->group(function (){
-    Route::post('', [UserController::class, 'store']);
-    Route::get('/', [UserController::class, 'index']);
-    Route::delete('/{id}', [UserController::class, 'destroy'])->where('id', '[0-9]+');
-    Route::get('/{id}', [UserController::class, 'show'])->where('id', '[0-9]+');
-});
 
 Route::fallback(function () {
     return response()->json([

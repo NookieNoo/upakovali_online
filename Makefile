@@ -64,3 +64,6 @@ db.shell:
 
 db.query:
 	docker exec -it $(DB_CONTAINER_NAME) bash -c "psql --user upakovali_online_user --password upakovali_online_db"
+
+php.shell:
+	docker exec -it $(PHP_CONTAINER_NAME) bash
