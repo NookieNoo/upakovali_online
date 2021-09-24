@@ -4,9 +4,9 @@
         "module": "commonjs",
         "baseUrl": "./src",
         "paths": {
-            "@app-universal/*": ["./components/universal/*"],
-            "@app-helpers/*": ["./helpers/*"],
-            "@app-pages/*": ["./components/pages/*"],
+            "@app-universal": ["./components/universal"],
+            "@app-helpers": ["./helpers"],
+            "@app-pages": ["./components/pages"],
             "@app": ["./"]
         }
     },
