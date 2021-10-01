@@ -56,7 +56,7 @@ class OrderController extends Controller
     {
         try {
             $order = Order::with('source', 'parthner', 'client', 'workshop', 'adressee', 'pickUpPoint',
-                'deliveryPoint', 'courierReceiver', 'courierIssuer', 'master')->findOrFail($id);
+                'deliveryPoint', 'courierReceiver', 'courierIssuer', 'master', 'history', 'history.status')->findOrFail($id);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'code' => 404,

@@ -66,4 +66,9 @@ class Order extends BaseModel
     {
         return $this->belongsTo(Client::class);
     }
+
+    public function history()
+    {
+        return $this->hasMany(OrderHistory::class);
+    }
 }
