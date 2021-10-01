@@ -4,8 +4,11 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -71,5 +74,15 @@ class User extends Authenticatable
     public function ordersLikeCourierIssuer()
     {
         return $this->hasMany(Order::class, 'courier_issuer_id');
+    }
+
+    public function scopeWithFilters($query, Request $request)
+    {
+        return $query->when($request->query('query'), function (Builder $query, $queryParam) {
+            $query->where(DB::raw("LOWER(" . $this->getTable() . ".full_name)"), 'LIKE', "%" . mb_strtolower($queryParam) . "%");
+        })
+            ->when($request->query('role_id'), function (Builder $query, $roleId) {
+                $query->where($this->getTable() . ".role_id", $roleId);
+            });
     }
 }

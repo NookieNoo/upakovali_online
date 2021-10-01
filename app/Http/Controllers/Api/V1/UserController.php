@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\User\UserGetRequest;
 use App\Http\Requests\User\UserStoreRequest;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
@@ -22,9 +23,9 @@ class UserController extends Controller
      *
      * @return Builder[]|Collection
      */
-    public function index()
+    public function index(UserGetRequest $request)
     {
-        return User::with('role')->get();
+        return User::with('role')->withFilters($request)->get();
     }
 
     /**

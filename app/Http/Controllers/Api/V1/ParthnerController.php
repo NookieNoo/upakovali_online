@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Parthner\ParthnerGetRequest;
 use App\Http\Requests\Parthner\ParthnerStoreRequest;
 use App\Models\Order;
 use App\Models\Parthner;
@@ -45,9 +46,9 @@ class ParthnerController extends Controller
      *
      * @return Builder[]|Collection
      */
-    public function index()
+    public function index(ParthnerGetRequest $request)
     {
-        return Parthner::with('manager', 'manager.role')->get();
+        return Parthner::with('manager', 'manager.role')->withFilters($request)->get();
     }
 
     /**
