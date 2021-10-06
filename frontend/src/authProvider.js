@@ -23,7 +23,7 @@ const authProvider = {
             })
             .then(auth => {
                 console.log('auth', auth);
-                localStorage.setItem('token', JSON.stringify(auth.token));
+                localStorage.setItem('token', auth.token);
                 localStorage.setItem('user', JSON.stringify(auth.user));
                 return Promise.resolve();
             })
