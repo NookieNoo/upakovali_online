@@ -33,8 +33,7 @@ down:
 stop:
 	docker-compose stop
 
-restart:
-	stop up
+restart: stop up
 
 rebuild:
 	docker-compose up -d --build

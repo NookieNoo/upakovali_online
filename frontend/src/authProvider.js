@@ -1,13 +1,40 @@
 const authProvider = {
     // called when the user attempts to log in
-    login: ({ username }) => {
-        localStorage.setItem("username", username);
-        // accept all username/password combinations
-        return Promise.resolve();
+    // login: ({ username }) => {
+    //     localStorage.setItem("username", username);
+    //     // accept all username/password combinations
+    //     return Promise.resolve();
+    // },
+    login: ({ username, password }) => {
+        const request = new Request('http://localhost:29080/api/v1/login', {
+            method: 'POST',
+            body: JSON.stringify({ email: username, password }),
+            headers: new Headers({ 'Content-Type': 'application/json' }),
+        });
+
+        return fetch(request)
+            .then(response => {
+                if (!response.ok) {
+                    //FIXME Протестировать
+                    console.log(response);
+                    throw new Error(response.statusText);
+                }
+                return response.json();
+            })
+            .then(auth => {
+                console.log('auth', auth);
+                localStorage.setItem('token', JSON.stringify(auth.token));
+                localStorage.setItem('user', JSON.stringify(auth.user));
+                return Promise.resolve();
+            })
+            .catch((e) => {
+                throw new Error('Network error');
+            });
     },
     // called when the user clicks on the logout button
     logout: () => {
-        localStorage.removeItem("username");
+        localStorage.removeItem("user");
+        localStorage.removeItem("token");
         return Promise.resolve();
     },
     // called when the API returns an error
@@ -20,7 +47,7 @@ const authProvider = {
     },
     // called when the user navigates to a new location, to check for authentication
     checkAuth: () => {
-        return localStorage.getItem("username")
+        return localStorage.getItem("user")
             ? Promise.resolve()
             : Promise.reject();
     },
