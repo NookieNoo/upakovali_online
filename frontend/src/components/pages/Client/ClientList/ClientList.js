@@ -1,8 +1,11 @@
 import * as React from "react";
-import { List, Datagrid, TextField, EmailField } from 'react-admin';
+import { List, Datagrid, TextField, EmailField, useListContext } from 'react-admin';
 
-export const ClientList = props => (
-    <List {...props}>
+export const ClientList = props => {
+    const {data} = useListContext();
+    console.log('data', data);
+    console.log('props', props);
+    return <List {...props} title="Клиенты">
         <Datagrid rowClick="edit">
             <TextField source="id" />
             <TextField source="full_name" />
@@ -11,4 +14,4 @@ export const ClientList = props => (
             <TextField source="comment" />
         </Datagrid>
     </List>
-);
+};

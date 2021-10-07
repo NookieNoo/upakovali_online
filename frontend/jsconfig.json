@@ -7,6 +7,8 @@
             "@app-universal": ["./components/universal"],
             "@app-helpers": ["./helpers"],
             "@app-pages": ["./components/pages"],
+            "@app-providers": ["./providers"],
+            "@app-http": ["./http"],
             "@app": ["./"]
         }
     },
