@@ -4,7 +4,7 @@ import { List, Datagrid, TextField, EmailField } from 'react-admin';
 export default function OrderList(props) {
     return (
         <List {...props}>
-            <Datagrid rowClick="edit">
+            <Datagrid rowClick="show">
                 <TextField source="id" title="fsd" />
                 <TextField source="client.full_name" />
                 <TextField source="parthner.full_name" />

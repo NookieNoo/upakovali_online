@@ -4,7 +4,7 @@ import { List, Datagrid, TextField, EmailField } from 'react-admin';
 export default function UserList(props) {
     return (
         <List {...props}>
-            <Datagrid rowClick="edit">
+            <Datagrid rowClick="show">
                 <TextField source="id" />
                 <TextField source="full_name" />
                 <TextField source="phone" />

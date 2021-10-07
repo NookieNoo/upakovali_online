@@ -6,7 +6,7 @@ export default function ClientList(props) {
     console.log('data', data);
     console.log('props', props);
     return <List {...props} title="Клиенты">
-        <Datagrid rowClick="edit">
+        <Datagrid rowClick="show">
             <TextField source="id" />
             <TextField source="full_name" />
             <TextField source="phone" />
