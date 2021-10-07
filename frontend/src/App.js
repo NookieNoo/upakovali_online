@@ -1,19 +1,32 @@
-import * as React from "react";
-import { Admin, Resource, ListGuesser } from "react-admin";
-import { Dashboard, ClientList, ParthnerList, OrderList, UserList } from "@app-pages";
-import authProvider from "./authProvider";
-import { dataProvider } from "@app-providers";
+import * as React from 'react';
+import { Admin, Resource } from 'react-admin';
+import {
+    Dashboard,
+    ClientList,
+    ParthnerList,
+    OrderList,
+    UserList,
+    ClientEdit,
+    ClientIcon,
+    ClientShow,
+    OrderEdit,
+    OrderIcon,
+    OrderShow,
+    ParthnerIcon,
+    ParthnerEdit,
+    ParthnerShow,
+    UserIcon,
+    UserEdit,
+} from '@app-pages';
+import authProvider from './authProvider';
+import { dataProvider } from '@app-providers';
 
 const App = () => (
-    <Admin
-        dataProvider={dataProvider}
-        dashboard={Dashboard}
-        authProvider={authProvider}
-    >
-        <Resource name="client" list={ClientList} />
-        <Resource name="parthners" list={ParthnerList} />
-        <Resource name="orders" list={OrderList} />
-        <Resource name="users" list={ListGuesser} />
+    <Admin disableTelemetry dataProvider={dataProvider} dashboard={Dashboard} authProvider={authProvider}>
+        <Resource name="client" list={ClientList} edit={ClientEdit} icon={ClientIcon} show={ClientShow} />
+        <Resource name="parthner" list={ParthnerList} icon={ParthnerIcon} edit={ParthnerEdit} show={ParthnerShow} />
+        <Resource name="order" list={OrderList} edit={OrderEdit} icon={OrderIcon} show={OrderShow} />
+        <Resource name="user" list={UserList} icon={UserIcon} edit={UserEdit} show={UserEdit} />
     </Admin>
 );
 

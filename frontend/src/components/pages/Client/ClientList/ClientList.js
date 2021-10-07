@@ -1,7 +1,7 @@
 import * as React from "react";
 import { List, Datagrid, TextField, EmailField, useListContext } from 'react-admin';
 
-export const ClientList = props => {
+export default function ClientList(props) {
     const {data} = useListContext();
     console.log('data', data);
     console.log('props', props);

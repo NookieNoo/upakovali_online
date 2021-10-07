@@ -18,7 +18,8 @@ export const dataProvider = {
 
         return httpClient(url).then(({ headers, json }) => ({
             data: json.data,
-            total: json.total,
+            meta: json.meta,
+            total: json.meta.total,
         }));
     },
     getOne: (resource, params) => Promise,

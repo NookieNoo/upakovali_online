@@ -21,7 +21,7 @@ class OrderController extends Controller
     public function index()
     {
         return Order::with('source', 'parthner', 'client', 'workshop', 'adressee', 'pickUpPoint',
-            'deliveryPoint', 'courierReceiver', 'courierIssuer', 'master')->get();
+            'deliveryPoint', 'courierReceiver', 'courierIssuer', 'master')->paginate();
     }
 
 

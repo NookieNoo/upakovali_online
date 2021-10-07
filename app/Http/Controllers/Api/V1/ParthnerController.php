@@ -48,7 +48,7 @@ class ParthnerController extends Controller
      */
     public function index(ParthnerGetRequest $request)
     {
-        return Parthner::with('manager', 'manager.role')->withFilters($request)->get();
+        return Parthner::with('manager', 'manager.role')->withFilters($request)->paginate();
     }
 
     /**
