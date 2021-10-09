@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\ClientController;
 use App\Http\Controllers\Api\V1\OrderController;
 use App\Http\Controllers\Api\V1\ParthnerController;
+use App\Http\Controllers\Api\V1\RoleController;
 use App\Http\Controllers\Api\V1\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -52,6 +53,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('/', [UserController::class, 'index']);
         Route::delete('/{id}', [UserController::class, 'destroy'])->where('id', '[0-9]+');
         Route::get('/{id}', [UserController::class, 'show'])->where('id', '[0-9]+');
+        Route::put('/{id}', [UserController::class, 'update'])->where('id', '[0-9]+');
+    });
+
+    Route::prefix('role')->group(function () {
+        Route::get('/', [RoleController::class, 'index']);
     });
 
     Route::post('/logout', [AuthController::class, 'logout']);

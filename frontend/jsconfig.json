@@ -5,6 +5,7 @@
         "baseUrl": "./src",
         "paths": {
             "@app-universal": ["./components/universal"],
+            "@app-constants": ["./constants"],
             "@app-helpers": ["./helpers"],
             "@app-pages": ["./components/pages"],
             "@app-providers": ["./providers"],

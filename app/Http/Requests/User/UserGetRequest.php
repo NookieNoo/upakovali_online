@@ -5,6 +5,7 @@ namespace App\Http\Requests\User;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\Response;
 
 class UserGetRequest extends FormRequest
 {
@@ -33,8 +34,8 @@ class UserGetRequest extends FormRequest
 
     protected function failedValidation(Validator $validator) {
         throw new HttpResponseException(response()->json([
-            'code' => 400,
+            'code' => Response::HTTP_BAD_REQUEST,
             'message' => $validator->errors(),
-        ], 400));
+        ], Response::HTTP_BAD_REQUEST));
     }
 }

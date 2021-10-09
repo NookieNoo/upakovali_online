@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\UserGetRequest;
 use App\Http\Requests\User\UserStoreRequest;
+use App\Http\Requests\User\UserUpdateRequest;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -102,11 +103,50 @@ class UserController extends Controller
      *
      * @param Request $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(UserUpdateRequest $request, $id)
     {
-        //
+        try {
+            $user = User::findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'code' => Response::HTTP_NOT_FOUND,
+                'message' => 'Пользователь не найден.',
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        $validatedData = $request->validated();
+        if ($validatedData['role_id'] !== $user->role_id) {
+            if ($user->parthners()->exists()) {
+                return response()->json([
+                    'code' => Response::HTTP_BAD_REQUEST,
+                    'message' => 'Нельзя изменить роль этого пользователя, т.к. это менеджер, и у него есть партнер',
+                ], Response::HTTP_BAD_REQUEST);
+            }
+
+            if ($user->ordersLikeMaster()->exists()) {
+                return response()->json([
+                    'code' => Response::HTTP_BAD_REQUEST,
+                    'message' => 'Нельзя изменить роль этого пользователя, т.к. это мастер, и у него есть заказы',
+                ], Response::HTTP_BAD_REQUEST);
+            }
+
+            if ($user->ordersLikeCourierReceiver()->exists() || $user->ordersLikeCourierIssuer()->exists()) {
+                return response()->json([
+                    'code' => Response::HTTP_BAD_REQUEST,
+                    'message' => 'Нельзя изменить роль этого пользователя, т.к. это курьер, и у него есть заказы',
+                ], Response::HTTP_BAD_REQUEST);
+            }
+        }
+
+        $user->update($validatedData);
+
+        return response()->json([
+            'code' => Response::HTTP_OK,
+            'message' => 'Данные сохранены.',
+            'data' => $user->load('role'),
+        ], Response::HTTP_OK);
     }
 
     /**
