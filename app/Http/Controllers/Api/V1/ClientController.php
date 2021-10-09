@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Client\ClientStoreRequest;
+use App\Http\Requests\Client\ClientUpdateRequest;
 use App\Http\Requests\User\UserGetRequest;
 use App\Models\Client;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -46,15 +47,6 @@ class ClientController extends Controller
         return Client::withFilters($request)->paginate();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -77,7 +69,7 @@ class ClientController extends Controller
         return response()->json([
             'code' => Response::HTTP_CREATED,
             'message' => Response::$statusTexts[Response::HTTP_CREATED],
-            'client' => $client
+            'data' => $client
         ], Response::HTTP_CREATED);
     }
 
@@ -98,30 +90,37 @@ class ClientController extends Controller
             ], Response::HTTP_NOT_FOUND);
         }
 
-        return $client;
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        //
+        return response()->json([
+            'code' => Response::HTTP_OK,
+            'data' => $client,
+        ], Response::HTTP_OK);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  ClientUpdateRequest  $request
      * @param  int  $id
-     * @return Response
+     * @return JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(ClientUpdateRequest $request, $id)
     {
-        //
+        try {
+            $client = Client::findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'code' => Response::HTTP_NOT_FOUND,
+                'message' => 'Клиент не найден.',
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        $client->update($request->validated());
+
+        return response()->json([
+            'code' => Response::HTTP_OK,
+            'message' => 'Данные сохранены.',
+            'data' => $client,
+        ], Response::HTTP_OK);
     }
 
     /**

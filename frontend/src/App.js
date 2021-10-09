@@ -9,6 +9,7 @@ import {
     ClientEdit,
     ClientIcon,
     ClientShow,
+    ClientCreate,
     OrderEdit,
     OrderIcon,
     OrderShow,
@@ -25,7 +26,7 @@ import { dataProvider } from '@app-providers';
 
 const App = () => (
     <Admin disableTelemetry dataProvider={dataProvider} dashboard={Dashboard} authProvider={authProvider}>
-        <Resource name="client" list={ClientList} edit={ClientEdit} icon={ClientIcon} show={ClientShow} />
+        <Resource name="client" list={ClientList} edit={ClientEdit} icon={ClientIcon} show={ClientShow} create={ClientCreate} />
         <Resource name="parthner" list={ParthnerList} icon={ParthnerIcon} edit={ParthnerEdit} show={ParthnerShow} />
         <Resource name="order" list={OrderList} edit={OrderEdit} icon={OrderIcon} show={OrderShow} />
         <Resource name="user" list={UserList} icon={UserIcon} edit={UserEdit} show={UserShow} create={UserCreate} />

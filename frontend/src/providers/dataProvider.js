@@ -23,7 +23,7 @@ export const dataProvider = {
     },
     getOne: (resource, params) =>
         httpClient(`${baseApiUrl}/${resource}/${params.id}`).then(({ json }) => ({
-            data: json,
+            data: json.data,
         })),
     getMany: (resource, params) => Promise,
     getManyReference: (resource, params) => Promise,
@@ -32,7 +32,7 @@ export const dataProvider = {
             method: 'POST',
             body: JSON.stringify(params.data),
         }).then(({ json }) => ({
-            data: { ...params.data, id: json.id },
+            data: json.data,
         })),
     update: (resource, params) => {
         console.log('update', params);

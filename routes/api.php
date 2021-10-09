@@ -33,6 +33,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('/', [ClientController::class, 'index']);
         Route::delete('/{id}', [ClientController::class, 'destroy'])->where('id', '[0-9]+');
         Route::get('/{id}', [ClientController::class, 'show'])->where('id', '[0-9]+');
+        Route::put('/{id}', [ClientController::class, 'update'])->where('id', '[0-9]+');
     });
 
     Route::prefix('parthner')->group(function () {

@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class UserSeeder extends Seeder
@@ -24,7 +25,7 @@ class UserSeeder extends Seeder
                 'email' => 'admin@admin.admin',
                 'phone' => '(320) 962-3354',
                 'email_verified_at' => now(),
-                'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+                'password' => Hash::make('0000'),
                 'remember_token' => Str::random(10),
                 'role_id' => 1,
                 'created_at' => now(),
@@ -35,7 +36,7 @@ class UserSeeder extends Seeder
                 'email' => 'manager@manager.manager',
                 'phone' => '(320) 962-3354',
                 'email_verified_at' => now(),
-                'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+                'password' => Hash::make('0000'),
                 'remember_token' => Str::random(10),
                 'role_id' => 2,
                 'created_at' => now(),
@@ -46,7 +47,7 @@ class UserSeeder extends Seeder
                 'email' => 'master@master.master',
                 'phone' => '(320) 962-3354',
                 'email_verified_at' => now(),
-                'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+                'password' => Hash::make('0000'),
                 'remember_token' => Str::random(10),
                 'role_id' => 3,
                 'created_at' => now(),
@@ -57,7 +58,7 @@ class UserSeeder extends Seeder
                 'email' => 'courier@courier.courier',
                 'phone' => '(320) 962-3354',
                 'email_verified_at' => now(),
-                'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+                'password' => Hash::make('0000'),
                 'remember_token' => Str::random(10),
                 'role_id' => 4,
                 'created_at' => now(),
