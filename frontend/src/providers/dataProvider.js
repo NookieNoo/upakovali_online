@@ -34,14 +34,18 @@ export const dataProvider = {
         }).then(({ json }) => ({
             data: { ...params.data, id: json.id },
         })),
-    update: (resource, params) =>{
+    update: (resource, params) => {
         console.log('update', params);
         return httpClient(`${baseApiUrl}/${resource}/${params.id}`, {
             method: 'PUT',
             body: JSON.stringify(params.data),
-        }).then(({ json }) => ({ data: json.data }))},
+        }).then(({ json }) => ({ data: json.data }));
+    },
 
     updateMany: (resource, params) => Promise,
-    delete: (resource, params) => Promise,
+    delete: (resource, params) =>
+        httpClient(`${baseApiUrl}/${resource}/${params.id}`, {
+            method: 'DELETE',
+        }).then(({ json }) => ({ data: json })),
     deleteMany: (resource, params) => Promise,
 };
