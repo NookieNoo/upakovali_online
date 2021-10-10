@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Order\OrderGetRequest;
 use App\Http\Requests\Order\OrderStoreRequest;
 use App\Http\Requests\Order\OrderUpdateRequest;
 use App\Models\Order;
@@ -21,9 +22,11 @@ class OrderController extends Controller
      *
      * @return Builder[]|Collection
      */
-    public function index()
+    public function index(OrderGetRequest $request)
     {
-        return Order::with('source', 'parthner', 'client', 'workshop', 'addressee', 'pickUpPoint',
+//        return Order::with('source', 'parthner', 'client', 'workshop', 'addressee', 'pickUpPoint',
+//            'deliveryPoint', 'courierReceiver', 'courierIssuer', 'master')->paginate();
+        return Order::withFilters($request)->with('source', 'parthner', 'client', 'workshop', 'addressee', 'pickUpPoint',
             'deliveryPoint', 'courierReceiver', 'courierIssuer', 'master')->paginate();
     }
 

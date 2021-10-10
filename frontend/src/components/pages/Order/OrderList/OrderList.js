@@ -6,7 +6,6 @@ import {
     TextInput,
     ReferenceInput,
     SelectInput,
-    DateTimeInput,
     BooleanInput,
 } from 'react-admin';
 import { userRoles } from '@app-constants';
@@ -15,7 +14,6 @@ const courierFilter = { role_id: userRoles.courier.id };
 const masterFilter = { role_id: userRoles.master.id };
 
 const orderFilters = [
-    <TextInput label="Контекстный поиск" source="query" alwaysOn />,
     <ReferenceInput label="Источник" source="source_id" reference="source" alwaysOn>
         <SelectInput optionText="name" optionValue="id" />
     </ReferenceInput>,
@@ -32,8 +30,6 @@ const orderFilters = [
     <ReferenceInput label="Кому" source="addressee_id" reference="addressee" alwaysOn>
         <SelectInput optionText="name" optionValue="id" />
     </ReferenceInput>,
-    <DateTimeInput source="receiving_date" label="Время приема" />,
-    <DateTimeInput source="issue_date" label="Время выдачи" />,
     <ReferenceInput label="Курьер принимающий" source="courier_receiver_id" reference="user" filter={courierFilter}>
         <SelectInput optionText="full_name" optionValue="id" />
     </ReferenceInput>,
