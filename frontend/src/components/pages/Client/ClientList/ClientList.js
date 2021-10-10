@@ -1,17 +1,16 @@
-import * as React from "react";
-import { List, Datagrid, TextField, EmailField, useListContext } from 'react-admin';
+import * as React from 'react';
+import { List, Datagrid, TextField, EmailField } from 'react-admin';
 
 export default function ClientList(props) {
-    const {data} = useListContext();
-    console.log('data', data);
-    console.log('props', props);
-    return <List {...props} title="Клиенты">
-        <Datagrid rowClick="show">
-            <TextField source="id" />
-            <TextField source="full_name" />
-            <TextField source="phone" />
-            <EmailField source="email" />
-            <TextField source="comment" />
-        </Datagrid>
-    </List>
-};
+    return (
+        <List {...props} title="Клиенты">
+            <Datagrid rowClick="show">
+                <TextField label="id" source="id" />
+                <TextField label="ФИО" source="full_name" />
+                <TextField label="Телефон" source="phone" />
+                <EmailField label="Email" source="email" />
+                <TextField label="Комментарий" source="comment" />
+            </Datagrid>
+        </List>
+    );
+}

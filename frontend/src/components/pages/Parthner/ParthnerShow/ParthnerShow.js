@@ -5,11 +5,11 @@ export default function ParhtnerShow(props) {
     return (
         <Show {...props}>
             <SimpleShowLayout>
-                <TextField source="full_name" />
-                <EmailField source="email" />
-                <TextField source="phone" />
+                <TextField label="ФИО" source="full_name" />
+                <EmailField label="Email" source="email" />
+                <TextField label="Телефон" source="phone" />
                 <TextField label="Менеджер" source="manager.full_name" />
-                <RichTextField source="comment" />
+                <RichTextField label="Комментарий" source="comment" />
             </SimpleShowLayout>
         </Show>
     );

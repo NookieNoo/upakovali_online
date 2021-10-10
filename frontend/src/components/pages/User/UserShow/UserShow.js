@@ -5,10 +5,10 @@ export default function UserShow(props) {
     return (
         <Show {...props}>
             <SimpleShowLayout>
-                <TextField source="full_name" />
-                <EmailField source="email" />
-                <TextField source="phone" />
-                <TextField source="role.name" />
+                <TextField label="ФИО" source="full_name" />
+                <EmailField label="Email" source="email" />
+                <TextField label="Телефон" source="phone" />
+                <TextField label="Роль" source="role.name" />
             </SimpleShowLayout>
         </Show>
     );

@@ -19,12 +19,13 @@ export default function UserEdit(props) {
     return (
         <Edit {...props} transform={transform}>
             <SimpleForm validate={editUserFormValidators.submit}>
-                <TextInput source="full_name" validate={editUserFormValidators.full_name} />
-                <EmailField source="email" />
-                <TextInput source="phone" validate={editUserFormValidators.phone} />
-                <PasswordInput source="password" />
-                <PasswordInput source="password_confirmation" />
+                <TextInput label="ФИО" source="full_name" validate={editUserFormValidators.full_name} />
+                <EmailField label="Email" source="email" />
+                <TextInput label="Телефон" source="phone" validate={editUserFormValidators.phone} />
+                <PasswordInput label="Пароль" source="password" />
+                <PasswordInput label="Подтверждение пароля" source="password_confirmation" />
                 <SelectInput
+                    label="Роль"
                     source="role.id"
                     choices={Object.values(userRoles)}
                     validate={editUserFormValidators.role_id}

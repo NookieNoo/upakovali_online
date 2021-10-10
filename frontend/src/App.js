@@ -28,6 +28,20 @@ import authProvider from './authProvider';
 import { dataProvider } from '@app-providers';
 
 const history = createHistory();
+const options = {
+    client: {
+        label: 'Клиенты',
+    },
+    parthner: {
+        label: 'Партнеры',
+    },
+    order: {
+        label: 'Клиенты',
+    },
+    user: {
+        label: 'Пользователи',
+    },
+};
 
 const App = () => (
     <Admin
@@ -44,6 +58,7 @@ const App = () => (
             icon={ClientIcon}
             show={ClientShow}
             create={ClientCreate}
+            options={options.client}
         />
         <Resource
             name="parthner"
@@ -52,6 +67,7 @@ const App = () => (
             edit={ParthnerEdit}
             show={ParthnerShow}
             create={ParthnerCreate}
+            options={options.parthner}
         />
         <Resource
             name="order"
@@ -60,8 +76,17 @@ const App = () => (
             icon={OrderIcon}
             show={OrderShow}
             create={OrderCreate}
+            options={options.order}
         />
-        <Resource name="user" list={UserList} icon={UserIcon} edit={UserEdit} show={UserShow} create={UserCreate} />
+        <Resource
+            name="user"
+            list={UserList}
+            icon={UserIcon}
+            edit={UserEdit}
+            show={UserShow}
+            create={UserCreate}
+            options={options.user}
+        />
         <Resource name="source" />
         <Resource name="workshop" />
         <Resource name="addressee" />

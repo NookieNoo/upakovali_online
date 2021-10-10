@@ -7,7 +7,7 @@ const masterFilter = { role_id: userRoles.master.id };
 
 export default function OrderCreate(props) {
     return (
-        <Create {...props}>
+        <Create {...props} title="Создание заказа">
             <SimpleForm>
                 <ReferenceInput label="Источник" source="source_id" reference="source">
                     <SelectInput optionText="name" optionValue="id" />
