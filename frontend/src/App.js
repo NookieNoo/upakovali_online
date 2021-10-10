@@ -90,6 +90,7 @@ const App = () => (
         <Resource name="source" />
         <Resource name="workshop" />
         <Resource name="addressee" />
+        <Resource name="role" />
     </Admin>
 );
 

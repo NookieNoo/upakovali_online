@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Client\ClientGetRequest;
 use App\Http\Requests\Client\ClientStoreRequest;
 use App\Http\Requests\Client\ClientUpdateRequest;
-use App\Http\Requests\User\UserGetRequest;
 use App\Models\Client;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
@@ -42,7 +42,7 @@ class ClientController extends Controller
      *
      * @return Response
      */
-    public function index(UserGetRequest $request)
+    public function index(ClientGetRequest $request)
     {
         return Client::withFilters($request)->paginate();
     }

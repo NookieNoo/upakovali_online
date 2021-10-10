@@ -1,9 +1,19 @@
 import * as React from 'react';
-import { List, Datagrid, TextField, EmailField } from 'react-admin';
+import { List, Datagrid, TextField, EmailField, TextInput, SelectInput, ReferenceInput } from 'react-admin';
+import { userRoles } from '@app-constants';
+
+const managerFilter = { role_id: userRoles.manager.id };
+
+const parthnerFilters = [
+    <TextInput label="ФИО" source="query" alwaysOn />,
+    <ReferenceInput label="Менеджер" source="manager_id" reference="user" filter={managerFilter} alwaysOn>
+        <SelectInput optionText="full_name" optionValue="id" />
+    </ReferenceInput>,
+];
 
 export default function ParthnerList(props) {
     return (
-        <List {...props} title="Партнеры">
+        <List {...props} title="Партнеры" filters={parthnerFilters}>
             <Datagrid rowClick="show">
                 <TextField label="id" source="id" />
                 <TextField label="ФИО" source="full_name" />
