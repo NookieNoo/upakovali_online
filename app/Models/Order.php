@@ -4,6 +4,9 @@ namespace App\Models;
 
 class Order extends BaseModel
 {
+    public static $supportedRelations = ['source', 'parthner', 'client', 'workshop', 'addressee', 'pickUpPoint',
+        'deliveryPoint', 'courierReceiver', 'courierIssuer', 'master', 'receiver', 'history', 'history.status'];
+
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
@@ -74,7 +77,6 @@ class Order extends BaseModel
 
     public function scopeWithAllRelations($query)
     {
-        $query->with('source', 'parthner', 'client', 'workshop', 'addressee', 'pickUpPoint',
-            'deliveryPoint', 'courierReceiver', 'courierIssuer', 'master', 'receiver', 'history', 'history.status');
+        $query->with(self::$supportedRelations);
     }
 }

@@ -27,6 +27,18 @@ export const dataProvider = {
             //@FIXME Подумать, куда это вынести
             if (resource === 'parthner') {
                 json.data.manager_id = json.data.manager.id;
+            } else if (resource === 'order') {
+                json.data.addressee_id = json.data.addressee?.id;
+                json.data.client_id = json.data.client?.id;
+                json.data.courier_issuer_id = json.data.courier_issuer?.id;
+                json.data.courier_receiver_id = json.data.courier_receiver?.id;
+                json.data.delivery_point_id = json.data.delivery_point?.id;
+                json.data.master_id = json.data.master?.id;
+                json.data.parthner_id = json.data.parthner?.id;
+                json.data.pick_up_point_id = json.data.pick_up_point?.id;
+                json.data.receiver_id = json.data.receiver?.id;
+                json.data.source_id = json.data.source?.id;
+                json.data.workshop_id = json.data.workshop?.id;
             }
             return { data: json.data };
         }),

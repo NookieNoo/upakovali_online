@@ -51,6 +51,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('', [OrderController::class, 'store']);
         Route::get('/', [OrderController::class, 'index']);
         Route::get('/{id}', [OrderController::class, 'show'])->where('id', '[0-9]+');
+        Route::delete('/{id}', [OrderController::class, 'destroy'])->where('id', '[0-9]+');
+        Route::put('/{id}', [OrderController::class, 'update'])->where('id', '[0-9]+');
     });
 
     Route::prefix('user')->group(function () {

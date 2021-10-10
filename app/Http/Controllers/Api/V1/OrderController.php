@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Order\OrderStoreRequest;
+use App\Http\Requests\Order\OrderUpdateRequest;
 use App\Models\Order;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -47,7 +48,7 @@ class OrderController extends Controller
         return response()->json([
             'code' => Response::HTTP_CREATED,
             'message' => Response::$statusTexts[Response::HTTP_CREATED],
-            'data' => $order::withAllRelations()
+            'data' => $order->load(Order::$supportedRelations)
         ], Response::HTTP_CREATED);
     }
 
@@ -79,21 +80,50 @@ class OrderController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(OrderUpdateRequest $request, $id)
     {
-        //
+        try {
+            $order = Order::findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'code' => Response::HTTP_NOT_FOUND,
+                'message' => 'Заказ не найден.',
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        $validatedData = $request->validated();
+
+        $order->update($validatedData);
+
+        return response()->json([
+            'code' => Response::HTTP_OK,
+            'message' => 'Данные сохранены.',
+            'data' => $order->load(Order::$supportedRelations),
+        ], Response::HTTP_OK);
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
     public function destroy($id)
     {
-        //
+        try {
+            $order = Order::findOrFail($id);
+            $order->delete();
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'code' => Response::HTTP_NOT_FOUND,
+                'message' => 'Заказ не найден.',
+            ], Response::HTTP_NOT_FOUND);
+        }
+        return response()->json([
+            'code' => Response::HTTP_OK,
+            'message' => 'Заказ успешно удален',
+        ], Response::HTTP_OK);
     }
 }
