@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Order\OrderStoreRequest;
 use App\Models\Order;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -28,12 +29,26 @@ class OrderController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  OrderStoreRequest  $request
+     * @return JsonResponse
      */
-    public function store(Request $request)
+    public function store(OrderStoreRequest $request)
     {
-        //
+        try {
+            $order = Order::create($request->validated());
+        } catch (\Exception $e) {
+            return response()->json([
+                'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                'message' => 'Не удалось создать заказ',
+                'errorMessage' => $e->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
+        return response()->json([
+            'code' => Response::HTTP_CREATED,
+            'message' => Response::$statusTexts[Response::HTTP_CREATED],
+            'data' => $order::withAllRelations()
+        ], Response::HTTP_CREATED);
     }
 
     /**
@@ -45,8 +60,7 @@ class OrderController extends Controller
     public function show($id)
     {
         try {
-            $order = Order::with('source', 'parthner', 'client', 'workshop', 'addressee', 'pickUpPoint',
-                'deliveryPoint', 'courierReceiver', 'courierIssuer', 'master', 'receiver', 'history', 'history.status')->findOrFail($id);
+            $order = Order::withAllRelations()->findOrFail($id);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'code' => 404,

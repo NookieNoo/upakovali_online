@@ -71,4 +71,10 @@ class Order extends BaseModel
     {
         return $this->hasMany(OrderHistory::class);
     }
+
+    public function scopeWithAllRelations($query)
+    {
+        $query->with('source', 'parthner', 'client', 'workshop', 'addressee', 'pickUpPoint',
+            'deliveryPoint', 'courierReceiver', 'courierIssuer', 'master', 'receiver', 'history', 'history.status');
+    }
 }

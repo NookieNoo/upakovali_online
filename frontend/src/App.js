@@ -36,7 +36,7 @@ const options = {
         label: 'Партнеры',
     },
     order: {
-        label: 'Клиенты',
+        label: 'Заказы',
     },
     user: {
         label: 'Пользователи',
