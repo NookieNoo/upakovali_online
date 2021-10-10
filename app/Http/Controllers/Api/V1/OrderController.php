@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class OrderController extends Controller
 {
@@ -20,19 +21,8 @@ class OrderController extends Controller
      */
     public function index()
     {
-        return Order::with('source', 'parthner', 'client', 'workshop', 'adressee', 'pickUpPoint',
+        return Order::with('source', 'parthner', 'client', 'workshop', 'addressee', 'pickUpPoint',
             'deliveryPoint', 'courierReceiver', 'courierIssuer', 'master')->paginate();
-    }
-
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -50,13 +40,13 @@ class OrderController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return Builder|Builder[]|Collection|Model|JsonResponse
+     * @return JsonResponse
      */
     public function show($id)
     {
         try {
-            $order = Order::with('source', 'parthner', 'client', 'workshop', 'adressee', 'pickUpPoint',
-                'deliveryPoint', 'courierReceiver', 'courierIssuer', 'master', 'history', 'history.status')->findOrFail($id);
+            $order = Order::with('source', 'parthner', 'client', 'workshop', 'addressee', 'pickUpPoint',
+                'deliveryPoint', 'courierReceiver', 'courierIssuer', 'master', 'receiver', 'history', 'history.status')->findOrFail($id);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'code' => 404,
@@ -64,18 +54,10 @@ class OrderController extends Controller
             ], 404);
         }
 
-        return $order;
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        return response()->json([
+            'code' => Response::HTTP_OK,
+            'data' => $order,
+        ], Response::HTTP_OK);
     }
 
     /**

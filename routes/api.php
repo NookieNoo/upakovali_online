@@ -1,11 +1,14 @@
 <?php
 
+use App\Http\Controllers\Api\V1\AddresseeController;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\ClientController;
 use App\Http\Controllers\Api\V1\OrderController;
 use App\Http\Controllers\Api\V1\ParthnerController;
 use App\Http\Controllers\Api\V1\RoleController;
+use App\Http\Controllers\Api\V1\SourceController;
 use App\Http\Controllers\Api\V1\UserController;
+use App\Http\Controllers\Api\V1\WorkshopController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -60,6 +63,18 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::prefix('role')->group(function () {
         Route::get('/', [RoleController::class, 'index']);
+    });
+
+    Route::prefix('source')->group(function () {
+        Route::get('/', [SourceController::class, 'index']);
+    });
+
+    Route::prefix('workshop')->group(function () {
+        Route::get('/', [WorkshopController::class, 'index']);
+    });
+
+    Route::prefix('addressee')->group(function () {
+        Route::get('/', [AddresseeController::class, 'index']);
     });
 
     Route::post('/logout', [AuthController::class, 'logout']);

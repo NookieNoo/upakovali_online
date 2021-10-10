@@ -33,7 +33,7 @@ class OrderFactory extends Factory
             'external_number' => $this->faker->uuid(),
             'client_id' => fn() => Client::inRandomOrder()->first()->id,
             'workshop_id' => fn() => Workshop::inRandomOrder()->first()->id,
-            'adressee_id' => fn() => Addressee::inRandomOrder()->first()->id,
+            'addressee_id' => fn() => Addressee::inRandomOrder()->first()->id,
             'pick_up_point_id' => fn() => Workshop::inRandomOrder()->first()->id,
             'pick_up_address' => $this->faker->address(),
             'delivery_point_id' => fn() => Workshop::inRandomOrder()->first()->id,

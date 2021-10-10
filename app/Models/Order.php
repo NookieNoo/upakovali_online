@@ -7,7 +7,7 @@ class Order extends BaseModel
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $additionalHidden = ['source_id', 'parthner_id', 'client_id', 'workshop_id', "adressee_id", 'pick_up_point_id',
+        $additionalHidden = ['source_id', 'parthner_id', 'client_id', 'workshop_id', "addressee_id", 'pick_up_point_id',
             'delivery_point_id', 'courier_receiver_id', 'courier_issuer_id', 'master_id', 'receiver_id'];
         $this->hidden = array_merge($this->hidden, $additionalHidden);
     }
@@ -32,7 +32,7 @@ class Order extends BaseModel
         return $this->belongsTo(Workshop::class);
     }
 
-    public function adressee()
+    public function addressee()
     {
         return $this->belongsTo(Addressee::class);
     }
@@ -62,7 +62,7 @@ class Order extends BaseModel
         return $this->belongsTo(User::class);
     }
 
-    public function reveiver()
+    public function receiver()
     {
         return $this->belongsTo(Client::class);
     }

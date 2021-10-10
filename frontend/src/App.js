@@ -14,6 +14,7 @@ import {
     OrderEdit,
     OrderIcon,
     OrderShow,
+    OrderCreate,
     ParthnerIcon,
     ParthnerEdit,
     ParthnerShow,
@@ -52,8 +53,18 @@ const App = () => (
             show={ParthnerShow}
             create={ParthnerCreate}
         />
-        <Resource name="order" list={OrderList} edit={OrderEdit} icon={OrderIcon} show={OrderShow} />
+        <Resource
+            name="order"
+            list={OrderList}
+            edit={OrderEdit}
+            icon={OrderIcon}
+            show={OrderShow}
+            create={OrderCreate}
+        />
         <Resource name="user" list={UserList} icon={UserIcon} edit={UserEdit} show={UserShow} create={UserCreate} />
+        <Resource name="source" />
+        <Resource name="workshop" />
+        <Resource name="addressee" />
     </Admin>
 );
 
