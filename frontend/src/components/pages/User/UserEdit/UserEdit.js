@@ -24,7 +24,11 @@ export default function UserEdit(props) {
                 <TextInput source="phone" validate={editUserFormValidators.phone} />
                 <PasswordInput source="password" />
                 <PasswordInput source="password_confirmation" />
-                <SelectInput source="role.id" choices={userRoles} validate={editUserFormValidators.role_id} />
+                <SelectInput
+                    source="role.id"
+                    choices={Object.values(userRoles)}
+                    validate={editUserFormValidators.role_id}
+                />
             </SimpleForm>
         </Edit>
     );

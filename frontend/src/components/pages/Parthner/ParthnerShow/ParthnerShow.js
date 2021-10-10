@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Show, SimpleShowLayout, TextField, EmailField, RichTextField, UrlField } from 'react-admin';
+import { Show, SimpleShowLayout, TextField, EmailField, RichTextField } from 'react-admin';
 
 export default function ParhtnerShow(props) {
     return (
@@ -8,8 +8,8 @@ export default function ParhtnerShow(props) {
                 <TextField source="full_name" />
                 <EmailField source="email" />
                 <TextField source="phone" />
+                <TextField label="Менеджер" source="manager.full_name" />
                 <RichTextField source="comment" />
-                <UrlField source="manager.id" />
             </SimpleShowLayout>
         </Show>
     );

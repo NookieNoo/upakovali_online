@@ -11,7 +11,8 @@ export const dataProvider = {
         const query = {
             sort: JSON.stringify([field, order]),
             range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
-            filter: JSON.stringify(params.filter),
+            // filter: JSON.stringify(params.filter),
+            ...params.filter,
         };
         const url = `${baseApiUrl}/${resource}?${stringify(query)}`;
 
@@ -22,10 +23,21 @@ export const dataProvider = {
         }));
     },
     getOne: (resource, params) =>
-        httpClient(`${baseApiUrl}/${resource}/${params.id}`).then(({ json }) => ({
-            data: json.data,
-        })),
-    getMany: (resource, params) => Promise,
+        httpClient(`${baseApiUrl}/${resource}/${params.id}`).then(({ json }) => {
+            //@FIXME Подумать, куда это вынести
+            if (resource === 'parthner') {
+                json.data.manager_id = json.data.manager.id;
+            }
+            return { data: json.data };
+        }),
+    // getMany: (resource, params) => Promise,
+    getMany: (resource, params) => {
+        const query = {
+            filter: JSON.stringify({ ids: params.ids }),
+        };
+        const url = `${baseApiUrl}/${resource}?${stringify(query)}`;
+        return httpClient(url).then(({ json }) => ({ data: json.data }));
+    },
     getManyReference: (resource, params) => Promise,
     create: (resource, params) =>
         httpClient(`${baseApiUrl}/${resource}`, {

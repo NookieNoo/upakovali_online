@@ -41,6 +41,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('/', [ParthnerController::class, 'index']);
         Route::delete('/{id}', [ParthnerController::class, 'destroy'])->where('id', '[0-9]+');
         Route::get('/{id}', [ParthnerController::class, 'show'])->where('id', '[0-9]+');
+        Route::put('/{id}', [ParthnerController::class, 'update'])->where('id', '[0-9]+');
     });
 
     Route::prefix('order')->group(function () {

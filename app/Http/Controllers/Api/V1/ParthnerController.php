@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Parthner\ParthnerGetRequest;
 use App\Http\Requests\Parthner\ParthnerStoreRequest;
+use App\Http\Requests\Parthner\ParthnerUpdateRequest;
 use App\Models\Order;
 use App\Models\Parthner;
 use http\Exception\RuntimeException;
@@ -52,16 +53,6 @@ class ParthnerController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  ParthnerStoreRequest  $request
@@ -82,7 +73,7 @@ class ParthnerController extends Controller
         return response()->json([
             'code' => Response::HTTP_CREATED,
             'message' => Response::$statusTexts[Response::HTTP_CREATED],
-            'parthner' => $parthner
+            'data' => $parthner
         ], Response::HTTP_CREATED);
     }
 
@@ -103,30 +94,48 @@ class ParthnerController extends Controller
             ], Response::HTTP_NOT_FOUND);
         }
 
-        return $parthner;
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        //
+        return response()->json([
+            'code' => Response::HTTP_OK,
+            'data' => $parthner,
+        ], Response::HTTP_OK);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  ParthnerUpdateRequest  $request
      * @param  int  $id
-     * @return Response
+     * @return JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(ParthnerUpdateRequest $request, $id)
     {
-        //
+        try {
+            $parthner = Parthner::findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'code' => Response::HTTP_NOT_FOUND,
+                'message' => 'Партнер не найден.',
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        $validatedData = $request->validated();
+
+        if ($validatedData['manager_id'] !== $parthner->manager_id) {
+            if ($parthner->orders()->exists()) {
+                return response()->json([
+                    'code' => Response::HTTP_BAD_REQUEST,
+                    'message' => 'Нельзя изменить менеджера этого партнера, т.к. у него есть заказы',
+                ], Response::HTTP_BAD_REQUEST);
+            }
+        }
+
+        $parthner->update($validatedData);
+
+        return response()->json([
+            'code' => Response::HTTP_OK,
+            'message' => 'Данные сохранены.',
+            'data' => $parthner->load('manager'),
+        ], Response::HTTP_OK);
     }
 
     /**

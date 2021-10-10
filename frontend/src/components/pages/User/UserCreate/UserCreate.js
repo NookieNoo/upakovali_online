@@ -12,7 +12,11 @@ export default function UserCreate(props) {
                 <TextInput source="phone" validate={createUserFormValidators.phone} />
                 <PasswordInput source="password" validate={createUserFormValidators.password} />
                 <PasswordInput source="password_confirmation" validate={createUserFormValidators.password} />
-                <SelectInput source="role_id" choices={userRoles} validate={createUserFormValidators.role_id} />
+                <SelectInput
+                    source="role_id"
+                    choices={Object.values(userRoles)}
+                    validate={createUserFormValidators.role_id}
+                />
             </SimpleForm>
         </Create>
     );
