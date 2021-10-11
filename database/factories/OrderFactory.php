@@ -28,6 +28,8 @@ class OrderFactory extends Factory
      */
     public function definition()
     {
+        $isDeliverable = $this->faker->boolean();
+        $isPickupable = $this->faker->boolean();
         return [
             'order_status_id' => fn() => OrderStatus::inRandomOrder()->first()->id,
             'source_id' => fn() => Source::inRandomOrder()->first()->id,
@@ -36,10 +38,12 @@ class OrderFactory extends Factory
             'client_id' => fn() => Client::inRandomOrder()->first()->id,
             'workshop_id' => fn() => Workshop::inRandomOrder()->first()->id,
             'addressee_id' => fn() => Addressee::inRandomOrder()->first()->id,
-            'pick_up_point_id' => fn() => Workshop::inRandomOrder()->first()->id,
-            'pick_up_address' => $this->faker->address(),
-            'delivery_point_id' => fn() => Workshop::inRandomOrder()->first()->id,
-            'delivery_address' => $this->faker->address(),
+            'is_pickupable' => $isPickupable,
+            'pick_up_point_id' => $isPickupable ? null : fn() => Workshop::inRandomOrder()->first()->id,
+            'pick_up_address' => $isPickupable ? $this->faker->address() : null,
+            'is_deliverable' => $isDeliverable,
+            'delivery_point_id' => $isDeliverable ? null : fn() => Workshop::inRandomOrder()->first()->id,
+            'delivery_address' => $isDeliverable ? $this->faker->address() : null,
             'receiving_date' => $this->faker->dateTime(),
             'issue_date' => $this->faker->dateTime(),
             'comment' => $this->faker->sentence(),

@@ -22,8 +22,10 @@ class CreateOrdersTable extends Migration
             $table->unsignedInteger('client_id');
             $table->unsignedInteger('workshop_id');
             $table->unsignedInteger('addressee_id');
+            $table->boolean('is_pickupable');
             $table->unsignedInteger('pick_up_point_id')->comment('Точка забора товара')->nullable();
             $table->string('pick_up_address')->comment('Точка забора товара')->nullable();
+            $table->boolean('is_deliverable');
             $table->unsignedInteger('delivery_point_id')->nullable()->comment('Точка выдачи товара');
             $table->string('delivery_address')->nullable();
             $table->timestamp('receiving_date');

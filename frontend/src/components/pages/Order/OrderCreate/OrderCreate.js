@@ -1,5 +1,14 @@
 import * as React from 'react';
-import { Create, SimpleForm, TextInput, ReferenceInput, SelectInput, BooleanInput, DateTimeInput } from 'react-admin';
+import {
+    Create,
+    SimpleForm,
+    TextInput,
+    ReferenceInput,
+    SelectInput,
+    BooleanInput,
+    DateTimeInput,
+    FormDataConsumer,
+} from 'react-admin';
 import { userRoles } from '@app-constants';
 import { createOrderFormValidators } from '@app-helpers';
 
@@ -9,7 +18,7 @@ const masterFilter = { role_id: userRoles.master.id };
 export default function OrderCreate(props) {
     return (
         <Create {...props} title="Создание заказа">
-            <SimpleForm>
+            <SimpleForm validate={createOrderFormValidators.submit}>
                 <ReferenceInput label="Источник" source="source_id" reference="source">
                     <SelectInput optionText="name" optionValue="id" validate={createOrderFormValidators.source_id} />
                 </ReferenceInput>
@@ -46,37 +55,61 @@ export default function OrderCreate(props) {
                     <SelectInput optionText="name" optionValue="id" validate={createOrderFormValidators.addressee_id} />
                 </ReferenceInput>
 
-                <BooleanInput label="Забор" source="is_pickupable" validate={createOrderFormValidators.is_pickupable} />
-                <ReferenceInput label="Точка забора товара" source="pick_up_point_id" reference="workshop">
-                    <SelectInput
-                        optionText="address"
-                        optionValue="id"
-                        validate={createOrderFormValidators.pick_up_point_id}
-                    />
-                </ReferenceInput>
-                <TextInput
-                    source="pick_up_address"
-                    label="Точка забора товара"
-                    validate={createOrderFormValidators.pick_up_address}
+                <BooleanInput
+                    label="Забор"
+                    source="is_pickupable"
+                    validate={createOrderFormValidators.is_pickupable}
+                    initialValue={false}
                 />
+
+                {/* @FIXME На каждое переключение идут запросы */}
+                <FormDataConsumer>
+                    {({ formData, ...rest }) =>
+                        formData.is_pickupable ? (
+                            <TextInput
+                                source="pick_up_address"
+                                label="Точка забора товара"
+                                validate={createOrderFormValidators.pick_up_address}
+                            />
+                        ) : (
+                            <ReferenceInput label="Точка забора товара" source="pick_up_point_id" reference="workshop">
+                                <SelectInput
+                                    optionText="address"
+                                    optionValue="id"
+                                    validate={createOrderFormValidators.is_pickupable}
+                                />
+                            </ReferenceInput>
+                        )
+                    }
+                </FormDataConsumer>
 
                 <BooleanInput
                     label="Доставка"
                     source="is_deliverable"
                     validate={createOrderFormValidators.is_deliverable}
+                    initialValue={false}
                 />
-                <ReferenceInput label="Точка выдачи товара" source="delivery_point_id" reference="workshop">
-                    <SelectInput
-                        optionText="address"
-                        optionValue="id"
-                        validate={createOrderFormValidators.delivery_point_id}
-                    />
-                </ReferenceInput>
-                <TextInput
-                    source="delivery_address"
-                    label="Точка выдачи товара"
-                    validate={createOrderFormValidators.delivery_address}
-                />
+
+                <FormDataConsumer>
+                    {({ formData, ...rest }) =>
+                        formData.is_deliverable ? (
+                            <TextInput
+                                source="delivery_address"
+                                label="Точка выдачи товара"
+                                validate={createOrderFormValidators.delivery_address}
+                            />
+                        ) : (
+                            <ReferenceInput label="Точка выдачи товара" source="delivery_point_id" reference="workshop">
+                                <SelectInput
+                                    optionText="address"
+                                    optionValue="id"
+                                    validate={createOrderFormValidators.delivery_point_id}
+                                    // fullWidth
+                                />
+                            </ReferenceInput>
+                        )
+                    }
+                </FormDataConsumer>
 
                 <DateTimeInput
                     source="receiving_date"
@@ -119,7 +152,12 @@ export default function OrderCreate(props) {
 
                 {/* Цена */}
 
-                <BooleanInput label="Оплачено" source="isPaid" validate={createOrderFormValidators.isPaid} />
+                <BooleanInput
+                    label="Оплачено"
+                    source="isPaid"
+                    validate={createOrderFormValidators.isPaid}
+                    initialValue={false}
+                />
                 <ReferenceInput label="Мастер" source="master_id" reference="user" filter={masterFilter}>
                     <SelectInput
                         optionText="full_name"

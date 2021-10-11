@@ -1,5 +1,14 @@
 import * as React from 'react';
-import { Edit, SimpleForm, TextInput, ReferenceInput, SelectInput, BooleanInput, DateTimeInput } from 'react-admin';
+import {
+    Edit,
+    SimpleForm,
+    TextInput,
+    ReferenceInput,
+    SelectInput,
+    BooleanInput,
+    DateTimeInput,
+    FormDataConsumer,
+} from 'react-admin';
 import { editOrderFormValidators } from '@app-helpers';
 import { userRoles } from '@app-constants';
 
@@ -9,7 +18,7 @@ const masterFilter = { role_id: userRoles.master.id };
 export default function OrderEdit(props) {
     return (
         <Edit {...props} mutationMode="pessimistic">
-            <SimpleForm>
+            <SimpleForm validate={editOrderFormValidators.submit}>
                 <ReferenceInput label="Источник" source="source_id" reference="source">
                     <SelectInput optionText="name" optionValue="id" validate={editOrderFormValidators.source_id} />
                 </ReferenceInput>
@@ -46,36 +55,52 @@ export default function OrderEdit(props) {
                 </ReferenceInput>
 
                 <BooleanInput label="Забор" source="is_pickupable" />
-                <ReferenceInput label="Точка забора товара" source="pick_up_point_id" reference="workshop">
-                    <SelectInput
-                        optionText="address"
-                        optionValue="id"
-                        validate={editOrderFormValidators.is_pickupable}
-                    />
-                </ReferenceInput>
-                <TextInput
-                    source="pick_up_address"
-                    label="Точка забора товара"
-                    validate={editOrderFormValidators.pick_up_address}
-                />
+                {/* @FIXME На каждое переключение идут запросы */}
+                <FormDataConsumer>
+                    {({ formData, ...rest }) =>
+                        formData.is_pickupable ? (
+                            <TextInput
+                                source="pick_up_address"
+                                label="Точка забора товара"
+                                validate={editOrderFormValidators.pick_up_address}
+                            />
+                        ) : (
+                            <ReferenceInput label="Точка забора товара" source="pick_up_point_id" reference="workshop">
+                                <SelectInput
+                                    optionText="address"
+                                    optionValue="id"
+                                    validate={editOrderFormValidators.is_pickupable}
+                                />
+                            </ReferenceInput>
+                        )
+                    }
+                </FormDataConsumer>
 
                 <BooleanInput
                     label="Доставка"
                     source="is_deliverable"
                     validate={editOrderFormValidators.is_deliverable}
                 />
-                <ReferenceInput label="Точка выдачи товара" source="delivery_point_id" reference="workshop">
-                    <SelectInput
-                        optionText="address"
-                        optionValue="id"
-                        validate={editOrderFormValidators.delivery_point_id}
-                    />
-                </ReferenceInput>
-                <TextInput
-                    source="delivery_address"
-                    label="Точка выдачи товара"
-                    validate={editOrderFormValidators.delivery_address}
-                />
+
+                <FormDataConsumer>
+                    {({ formData, ...rest }) =>
+                        formData.is_deliverable ? (
+                            <TextInput
+                                source="delivery_address"
+                                label="Точка выдачи товара"
+                                validate={editOrderFormValidators.delivery_address}
+                            />
+                        ) : (
+                            <ReferenceInput label="Точка выдачи товара" source="delivery_point_id" reference="workshop">
+                                <SelectInput
+                                    optionText="address"
+                                    optionValue="id"
+                                    validate={editOrderFormValidators.delivery_point_id}
+                                />
+                            </ReferenceInput>
+                        )
+                    }
+                </FormDataConsumer>
 
                 <DateTimeInput
                     source="receiving_date"
