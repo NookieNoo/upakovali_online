@@ -8,13 +8,15 @@ import {
     DateField,
     TabbedShowLayout,
     Tab,
-    ArrayField,
+    useShowController,
 } from 'react-admin';
 import Aside from './Aside';
 
 export default function OrderShow(props) {
+    const { record } = useShowController(props);
+
     return (
-        <Show {...props} aside={<Aside />}>
+        <Show {...props} aside={<Aside history={record?.history} />}>
             <TabbedShowLayout>
                 <Tab label="Общее">
                     <TextField label="Источник" source="source.name" />
@@ -47,7 +49,7 @@ export default function OrderShow(props) {
                     <TextField label="Получатель" source="receiver.full_name" />
                 </Tab>
                 <Tab label="Фото">
-                    <ImageField label='Фото к заказу' source="order_photos" src="abs_path" title="Фото" />
+                    <ImageField label="Фото к заказу" source="order_photos" src="abs_path" title="Фото" />
                 </Tab>
             </TabbedShowLayout>
         </Show>

@@ -17,6 +17,7 @@ class CreateOrderHistory extends Migration
             $table->id();
             $table->unsignedInteger('order_id');
             $table->unsignedInteger('status_id');
+            $table->unsignedInteger('user_id');
             $table->timestamp('date');
             $table->timestamps();
         });
@@ -24,6 +25,7 @@ class CreateOrderHistory extends Migration
         Schema::table('order_history', function (Blueprint $table) {
             $table->foreign('order_id')->references('id')->on('orders');
             $table->foreign('status_id')->references('id')->on('order_statuses');
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
@@ -37,6 +39,7 @@ class CreateOrderHistory extends Migration
         Schema::table('order_history', function (Blueprint $table) {
             $table->dropForeign(['order_id']);
             $table->dropForeign(['status_id']);
+            $table->dropForeign(['user_id']);
         });
         Schema::dropIfExists('order_history');
     }

@@ -8,12 +8,17 @@ class OrderHistory extends BaseModel
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $additionalHidden = ['status_id', 'order_id'];
+        $additionalHidden = ['status_id', 'order_id', 'user_id'];
         $this->hidden = array_merge($this->hidden, $additionalHidden);
     }
 
     public function status()
     {
         return $this->belongsTo(OrderStatus::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

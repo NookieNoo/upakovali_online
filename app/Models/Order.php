@@ -10,8 +10,8 @@ use Illuminate\Support\Str;
 class Order extends BaseModel
 {
     public static $supportedRelations = ['source', 'parthner', 'client', 'workshop', 'addressee', 'pickUpPoint',
-        'deliveryPoint', 'courierReceiver', 'courierIssuer', 'master', 'receiver', 'history', 'history.status', 'orderStatus',
-        'orderPhotos'];
+        'deliveryPoint', 'courierReceiver', 'courierIssuer', 'master', 'receiver', 'history', 'history.status',
+        'history.user', 'history.user.role', 'orderStatus', 'orderPhotos'];
 
     public function __construct(array $attributes = [])
     {
