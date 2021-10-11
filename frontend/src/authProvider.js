@@ -1,3 +1,5 @@
+import { baseApiUrl } from "@app-helpers";
+
 const authProvider = {
     // called when the user attempts to log in
     // login: ({ username }) => {
@@ -6,7 +8,7 @@ const authProvider = {
     //     return Promise.resolve();
     // },
     login: ({ username, password }) => {
-        const request = new Request('http://localhost:29080/api/v1/login', {
+        const request = new Request(`${baseApiUrl}/login`, {
             method: 'POST',
             body: JSON.stringify({ email: username, password }),
             headers: new Headers({ 'Content-Type': 'application/json' }),
