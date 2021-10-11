@@ -29,6 +29,8 @@ class DatabaseSeeder extends Seeder
         Client::factory(20)->create();
         Parthner::factory(20)->create();
 //        User::factory(5)->create();
-        Order::factory(20)->create();
+        $this->call([
+            OrderSeeder::class
+        ]);
     }
 }

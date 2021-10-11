@@ -10,7 +10,8 @@ use Illuminate\Support\Str;
 class Order extends BaseModel
 {
     public static $supportedRelations = ['source', 'parthner', 'client', 'workshop', 'addressee', 'pickUpPoint',
-        'deliveryPoint', 'courierReceiver', 'courierIssuer', 'master', 'receiver', 'history', 'history.status', 'orderStatus'];
+        'deliveryPoint', 'courierReceiver', 'courierIssuer', 'master', 'receiver', 'history', 'history.status', 'orderStatus',
+        'orderPhotos'];
 
     public function __construct(array $attributes = [])
     {
@@ -83,6 +84,11 @@ class Order extends BaseModel
     public function history()
     {
         return $this->hasMany(OrderHistory::class);
+    }
+
+    public function orderPhotos()
+    {
+        return $this->hasMany(OrderPhoto::class);
     }
 
     public function scopeWithAllRelations($query)

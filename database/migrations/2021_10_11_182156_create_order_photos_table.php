@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateOrderHistory extends Migration
+class CreateOrderPhotosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,15 @@ class CreateOrderHistory extends Migration
      */
     public function up()
     {
-        Schema::create('order_history', function (Blueprint $table) {
+        Schema::create('order_photos', function (Blueprint $table) {
             $table->id();
+            $table->text('path');
             $table->unsignedInteger('order_id');
-            $table->unsignedInteger('status_id');
-            $table->timestamp('date');
             $table->timestamps();
         });
 
-        Schema::table('order_history', function (Blueprint $table) {
+        Schema::table('order_photos', function (Blueprint $table) {
             $table->foreign('order_id')->references('id')->on('orders');
-            $table->foreign('status_id')->references('id')->on('order_statuses');
         });
     }
 
@@ -34,10 +32,9 @@ class CreateOrderHistory extends Migration
      */
     public function down()
     {
-        Schema::table('order_history', function (Blueprint $table) {
+        Schema::table('order_photos', function (Blueprint $table) {
             $table->dropForeign(['order_id']);
-            $table->dropForeign(['status_id']);
         });
-        Schema::dropIfExists('order_history');
+        Schema::dropIfExists('order_photos');
     }
 }

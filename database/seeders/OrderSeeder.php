@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\Client;
+use App\Models\Order;
+use App\Models\OrderPhoto;
 use Illuminate\Database\Seeder;
 
 class OrderSeeder extends Seeder
@@ -14,7 +16,10 @@ class OrderSeeder extends Seeder
      */
     public function run()
     {
-        Client::factory()
-            ->create();
+        Order::factory(20)
+            ->create()
+            ->each(
+                fn($order) => OrderPhoto::factory(rand(0, 5))->create(['order_id' => $order->id])
+            );
     }
 }
