@@ -10,14 +10,19 @@ use Illuminate\Support\Str;
 class Order extends BaseModel
 {
     public static $supportedRelations = ['source', 'parthner', 'client', 'workshop', 'addressee', 'pickUpPoint',
-        'deliveryPoint', 'courierReceiver', 'courierIssuer', 'master', 'receiver', 'history', 'history.status'];
+        'deliveryPoint', 'courierReceiver', 'courierIssuer', 'master', 'receiver', 'history', 'history.status', 'orderStatus'];
 
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $additionalHidden = ['source_id', 'parthner_id', 'client_id', 'workshop_id', "addressee_id", 'pick_up_point_id',
+        $additionalHidden = ['order_status_id', 'source_id', 'parthner_id', 'client_id', 'workshop_id', "addressee_id", 'pick_up_point_id',
             'delivery_point_id', 'courier_receiver_id', 'courier_issuer_id', 'master_id', 'receiver_id'];
         $this->hidden = array_merge($this->hidden, $additionalHidden);
+    }
+
+    public function orderStatus()
+    {
+        return $this->belongsTo(OrderStatus::class);
     }
 
     public function source()
@@ -90,6 +95,9 @@ class Order extends BaseModel
         return $query->when($request->query('source_id'), function (Builder $query, $sourceId) {
             $query->where($this->getTable() . ".source_id", $sourceId);
         })
+            ->when($request->query('order_status_id'), function (Builder $query, $orderStatusId) {
+                $query->where($this->getTable() . ".order_status_id", $orderStatusId);
+            })
             ->when($request->query('parthner_id'), function (Builder $query, $parthnerId) {
                 $query->where($this->getTable() . ".parthner_id", $parthnerId);
             })

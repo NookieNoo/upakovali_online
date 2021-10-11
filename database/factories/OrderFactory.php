@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\Addressee;
 use App\Models\Client;
 use App\Models\Order;
+use App\Models\OrderStatus;
 use App\Models\Parthner;
 use App\Models\Source;
 use App\Models\User;
@@ -28,6 +29,7 @@ class OrderFactory extends Factory
     public function definition()
     {
         return [
+            'order_status_id' => fn() => OrderStatus::inRandomOrder()->first()->id,
             'source_id' => fn() => Source::inRandomOrder()->first()->id,
             'parthner_id' => fn() => Parthner::inRandomOrder()->first()->id,
             'external_number' => $this->faker->uuid(),

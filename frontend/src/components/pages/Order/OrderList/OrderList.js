@@ -8,6 +8,7 @@ import {
     SelectInput,
     BooleanInput,
     BooleanField,
+    ChipField
 } from 'react-admin';
 import { userRoles } from '@app-constants';
 
@@ -18,7 +19,10 @@ const orderFilters = [
     <ReferenceInput label="Источник" source="source_id" reference="source" alwaysOn>
         <SelectInput optionText="name" optionValue="id" />
     </ReferenceInput>,
-    <ReferenceInput label="Партнер" source="parthner_id" reference="parthner" alwaysOn>
+    <ReferenceInput label="Статус" source="order_status_id" reference="order_status" alwaysOn>
+        <SelectInput optionText="name" optionValue="id" />
+    </ReferenceInput>,
+    <ReferenceInput label="Партнер" source="parthner_id" reference="parthner">
         <SelectInput optionText="full_name" optionValue="id" />
     </ReferenceInput>,
     <TextInput source="external_number" label="Внешний номер" />,
@@ -51,6 +55,7 @@ export default function OrderList(props) {
         <List {...props} title="Заказы" filters={orderFilters}>
             <Datagrid rowClick="show" isRowSelectable={() => false}>
                 <TextField label="id" source="id" />
+                <ChipField label="Статус" source="order_status.name" />
                 <TextField label="Клиент" source="client.full_name" />
                 <TextField label="Партнер" source="parthner.full_name" />
                 <TextField label="Источник" source="source.name" />

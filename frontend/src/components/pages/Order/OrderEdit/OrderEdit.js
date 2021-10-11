@@ -13,6 +13,13 @@ export default function OrderEdit(props) {
                 <ReferenceInput label="Источник" source="source_id" reference="source">
                     <SelectInput optionText="name" optionValue="id" validate={editOrderFormValidators.source_id} />
                 </ReferenceInput>
+                <ReferenceInput label="Статус" source="order_status_id" reference="order_status">
+                    <SelectInput
+                        optionText="name"
+                        optionValue="id"
+                        validate={editOrderFormValidators.order_status_id}
+                    />
+                </ReferenceInput>
                 <ReferenceInput label="Партнер" source="parthner_id" reference="parthner">
                     <SelectInput
                         optionText="full_name"

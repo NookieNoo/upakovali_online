@@ -7,6 +7,7 @@ use App\Http\Requests\Order\OrderGetRequest;
 use App\Http\Requests\Order\OrderStoreRequest;
 use App\Http\Requests\Order\OrderUpdateRequest;
 use App\Models\Order;
+use App\Models\OrderStatus;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -24,7 +25,7 @@ class OrderController extends Controller
      */
     public function index(OrderGetRequest $request)
     {
-        return Order::withFilters($request)->with('source', 'parthner', 'client', 'workshop', 'addressee', 'pickUpPoint',
+        return Order::withFilters($request)->with('orderStatus', 'source', 'parthner', 'client', 'workshop', 'addressee', 'pickUpPoint',
             'deliveryPoint', 'courierReceiver', 'courierIssuer', 'master')->withOrder($request)->paginate();
     }
 
@@ -37,7 +38,9 @@ class OrderController extends Controller
     public function store(OrderStoreRequest $request)
     {
         try {
-            $order = Order::create($request->validated());
+            $validatedData = $request->validated();
+            $validatedData['order_status_id'] = OrderStatus::first()->id;
+            $order = Order::create($validatedData);
         } catch (\Exception $e) {
             return response()->json([
                 'code' => Response::HTTP_INTERNAL_SERVER_ERROR,

@@ -24,6 +24,7 @@ class OrderUpdateRequest extends JsonRequest
     public function rules()
     {
         return [
+            'order_status_id' => 'required|integer|min:1|exists:order_statuses,id',
             'source_id' => 'required|integer|min:1|exists:sources,id',
             'parthner_id' => 'integer|min:1|exists:parthners,id',
             'external_number' => 'nullable|string|max:255',

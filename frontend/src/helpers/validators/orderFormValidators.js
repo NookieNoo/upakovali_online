@@ -22,6 +22,7 @@ const createOrderFormValidators = {
 
 const editOrderFormValidators = {
     source_id: [required()],
+    order_status_id: [required()],
     parthner_id: [],
     external_number: [maxLength(255)],
     client_id: [required()],

@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { Show, SimpleShowLayout, TextField, RichTextField, BooleanField, DateField } from 'react-admin';
+import { Show, SimpleShowLayout, TextField, RichTextField, BooleanField, DateField, ChipField } from 'react-admin';
 
 export default function OrderShow(props) {
     return (
         <Show {...props}>
             <SimpleShowLayout>
                 <TextField label="Источник" source="source.name" />
+                <TextField label="Статус" source="order_status.name" />
                 <TextField label="Партнер" source="parthner.full_name" />
                 <TextField label="Внешний номер" source="external_number" />
                 <TextField label="Клиент" source="client.full_name" />

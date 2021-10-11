@@ -91,6 +91,7 @@ const App = () => (
         <Resource name="workshop" />
         <Resource name="addressee" />
         <Resource name="role" />
+        <Resource name="order_status" />
     </Admin>
 );
 

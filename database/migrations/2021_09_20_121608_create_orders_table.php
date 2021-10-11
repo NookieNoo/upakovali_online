@@ -15,6 +15,7 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->unsignedInteger('order_status_id');
             $table->unsignedInteger('source_id');
             $table->unsignedInteger('parthner_id')->nullable();
             $table->string('external_number')->nullable();
@@ -39,6 +40,7 @@ class CreateOrdersTable extends Migration
         });
 
         Schema::table('orders', function (Blueprint $table) {
+            $table->foreign('order_status_id')->references('id')->on('order_statuses');
             $table->foreign('source_id')->references('id')->on('sources');
             $table->foreign('parthner_id')->references('id')->on('parthners');
             $table->foreign('client_id')->references('id')->on('clients');
@@ -61,6 +63,7 @@ class CreateOrdersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
+            $table->dropForeign(['order_status_id']);
             $table->dropForeign(['source_id']);
             $table->dropForeign(['parthner_id']);
             $table->dropForeign(['client_id']);

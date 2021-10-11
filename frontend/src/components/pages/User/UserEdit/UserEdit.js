@@ -17,7 +17,7 @@ export default function UserEdit(props) {
     });
 
     return (
-        <Edit {...props} transform={transform}>
+        <Edit {...props} transform={transform} mutationMode="pessimistic">
             <SimpleForm validate={editUserFormValidators.submit}>
                 <TextInput label="ФИО" source="full_name" validate={editUserFormValidators.full_name} />
                 <EmailField label="Email" source="email" />
