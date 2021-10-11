@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -84,5 +85,23 @@ class User extends Authenticatable
             ->when($request->query('role_id'), function (Builder $query, $roleId) {
                 $query->where($this->getTable() . ".role_id", $roleId);
             });
+    }
+
+    public function scopeWithOrder($query, Request $request) {
+        $sorts = explode(',', $request->query('sort', $this->getTable() . '.id'));
+        $columnNames = $this->getColumnNames();
+        foreach ($sorts as $sortColumn) {
+            $sortDirection = Str::startsWith($sortColumn, '-') ? 'desc' : 'asc';
+            $sortColumn = ltrim($sortColumn, '-');
+            if (in_array($sortColumn, $columnNames)) {
+                $query->orderBy($this->getTable() . '.' . $sortColumn, $sortDirection);
+            }
+        }
+
+        return $query;
+    }
+
+    protected function getColumnNames() {
+        return DB::getSchemaBuilder()->getColumnListing($this->getTable());
     }
 }

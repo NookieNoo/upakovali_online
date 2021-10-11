@@ -44,7 +44,7 @@ class ClientController extends Controller
      */
     public function index(ClientGetRequest $request)
     {
-        return Client::withFilters($request)->paginate();
+        return Client::withFilters($request)->withOrder($request)->paginate();
     }
 
 

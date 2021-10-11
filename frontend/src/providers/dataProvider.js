@@ -4,12 +4,15 @@ import { baseApiUrl } from '@app-helpers';
 
 export const dataProvider = {
     getList: (resource, params) => {
-        console.log('resource', resource);
-        console.log('params', params);
         const { page, perPage } = params.pagination;
         const { field, order } = params.sort;
+
+        // Временно преобразуем поля типа manager.name в manager_id @FIXME
+        const splittedField = field.split('.');
+        const transformedField = splittedField.length > 1 ? splittedField[0] + '_id' : field;
+
         const query = {
-            sort: JSON.stringify([field, order]),
+            sort: order === 'ASC' ? transformedField : `-${transformedField}`,
             range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
             // filter: JSON.stringify(params.filter),
             ...params.filter,
@@ -71,5 +74,14 @@ export const dataProvider = {
         httpClient(`${baseApiUrl}/${resource}/${params.id}`, {
             method: 'DELETE',
         }).then(({ json }) => ({ data: json })),
-    deleteMany: (resource, params) => Promise,
+    // deleteMany: (resource, params) => Promise,
+    deleteMany: (resource, params) => {
+        const query = {
+            filter: JSON.stringify({ id: params.ids }),
+        };
+        return httpClient(`${baseApiUrl}/${resource}?${stringify(query)}`, {
+            method: 'DELETE',
+            body: JSON.stringify(params.data),
+        }).then(({ json }) => ({ data: json }));
+    },
 };

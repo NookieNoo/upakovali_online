@@ -26,7 +26,7 @@ class UserController extends Controller
      */
     public function index(UserGetRequest $request)
     {
-        return User::with('role')->withFilters($request)->paginate();
+        return User::with('role')->withFilters($request)->withOrder($request)->paginate();
     }
 
     /**

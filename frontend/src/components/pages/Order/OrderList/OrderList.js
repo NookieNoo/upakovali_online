@@ -7,6 +7,7 @@ import {
     ReferenceInput,
     SelectInput,
     BooleanInput,
+    BooleanField,
 } from 'react-admin';
 import { userRoles } from '@app-constants';
 
@@ -48,11 +49,12 @@ const orderFilters = [
 export default function OrderList(props) {
     return (
         <List {...props} title="Заказы" filters={orderFilters}>
-            <Datagrid rowClick="show">
+            <Datagrid rowClick="show" isRowSelectable={() => false}>
                 <TextField label="id" source="id" />
                 <TextField label="Клиент" source="client.full_name" />
                 <TextField label="Партнер" source="parthner.full_name" />
                 <TextField label="Источник" source="source.name" />
+                <BooleanField label="Оплачено" source="isPaid" />
                 <TextField label="Комментарий" source="comment" />
             </Datagrid>
         </List>

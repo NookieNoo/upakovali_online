@@ -14,7 +14,7 @@ const parthnerFilters = [
 export default function ParthnerList(props) {
     return (
         <List {...props} title="Партнеры" filters={parthnerFilters}>
-            <Datagrid rowClick="show">
+            <Datagrid rowClick="show" isRowSelectable={() => false}>
                 <TextField label="id" source="id" />
                 <TextField label="ФИО" source="full_name" />
                 <TextField label="Телефон" source="phone" />

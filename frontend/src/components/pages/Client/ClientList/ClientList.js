@@ -6,7 +6,7 @@ const clientFilters = [<TextInput label="ФИО" source="query" alwaysOn />];
 export default function ClientList(props) {
     return (
         <List {...props} title="Клиенты" filters={clientFilters}>
-            <Datagrid rowClick="show">
+            <Datagrid rowClick="show" isRowSelectable={() => false}>
                 <TextField label="id" source="id" />
                 <TextField label="ФИО" source="full_name" />
                 <TextField label="Телефон" source="phone" />
