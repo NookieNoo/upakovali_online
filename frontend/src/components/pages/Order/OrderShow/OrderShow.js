@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { Show, SimpleShowLayout, TextField, RichTextField, BooleanField, DateField, ChipField } from 'react-admin';
+import Aside from './Aside';
 
 export default function OrderShow(props) {
     return (
-        <Show {...props}>
+        <Show {...props} aside={<Aside />}>
             <SimpleShowLayout>
                 <TextField label="Источник" source="source.name" />
                 <TextField label="Статус" source="order_status.name" />
