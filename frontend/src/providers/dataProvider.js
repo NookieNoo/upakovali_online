@@ -14,6 +14,8 @@ export const dataProvider = {
         const query = {
             sort: order === 'ASC' ? transformedField : `-${transformedField}`,
             range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
+            'page[number]': page,
+            'page[size]': perPage,
             // filter: JSON.stringify(params.filter),
             ...params.filter,
         };

@@ -101,6 +101,19 @@ class User extends Authenticatable
         return $query;
     }
 
+    public function scopeWithPaginate($query, Request $request) {
+        $pageParam = $request->query('page');
+        $perPage = 15;
+        $number = 1;
+        if (!empty($pageParam)) {
+            $number = $pageParam['number'] ?? $number;
+            $perPage = $pageParam['size'] ?? $perPage;
+        }
+        $filterParams = $request->query->all();
+
+        return $query->paginate($perPage, ['*'], 'page[number]', $number)->appends($filterParams);
+    }
+
     protected function getColumnNames() {
         return DB::getSchemaBuilder()->getColumnListing($this->getTable());
     }

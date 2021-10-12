@@ -24,6 +24,7 @@ class CustomPaginator extends LengthAwarePaginator
                 'prev_page_url' => $this->previousPageUrl(),
                 'to' => $this->lastItem(),
                 'total' => $this->total(),
+                'page' => $this->currentPage(),
             ]
         ];
     }
