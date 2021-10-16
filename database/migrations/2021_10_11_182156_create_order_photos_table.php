@@ -21,7 +21,7 @@ class CreateOrderPhotosTable extends Migration
         });
 
         Schema::table('order_photos', function (Blueprint $table) {
-            $table->foreign('order_id')->references('id')->on('orders');
+            $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
         });
     }
 

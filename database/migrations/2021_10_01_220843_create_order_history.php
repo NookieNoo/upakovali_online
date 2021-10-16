@@ -23,7 +23,7 @@ class CreateOrderHistory extends Migration
         });
 
         Schema::table('order_history', function (Blueprint $table) {
-            $table->foreign('order_id')->references('id')->on('orders');
+            $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');;
             $table->foreign('status_id')->references('id')->on('order_statuses');
             $table->foreign('user_id')->references('id')->on('users');
         });

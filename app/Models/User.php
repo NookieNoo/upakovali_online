@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\UserType;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Builder;
@@ -51,6 +52,22 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function isAdmin() {
+        return $this->role->id === UserType::ADMIN;
+    }
+
+    public function isManager() {
+        return $this->role->id === UserType::MANAGER;
+    }
+
+    public function isMaster() {
+        return $this->role->id === UserType::MASTER;
+    }
+
+    public function isCourier() {
+        return $this->role->id === UserType::COURIER;
+    }
 
     public function role()
     {

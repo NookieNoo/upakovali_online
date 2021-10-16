@@ -8,9 +8,6 @@ use App\Http\Requests\Order\OrderStoreRequest;
 use App\Http\Requests\Order\OrderUpdateRequest;
 use App\Models\Order;
 use App\Models\OrderStatus;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -21,10 +18,13 @@ class OrderController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return Builder[]|Collection
+     * @return JsonResponse
      */
     public function index(OrderGetRequest $request)
     {
+        if ($request->user()->cannot('viewAny', Order::class)) {
+            return $this->sendError('Доступ закрыт', Response::HTTP_FORBIDDEN);
+        }
         return Order::withFilters($request)->with('orderStatus', 'source', 'parthner', 'client', 'workshop', 'addressee', 'pickUpPoint',
             'deliveryPoint', 'courierReceiver', 'courierIssuer', 'master')->withOrder($request)->withPaginate($request);
     }
@@ -37,23 +37,22 @@ class OrderController extends Controller
      */
     public function store(OrderStoreRequest $request)
     {
+        if ($request->user()->cannot('create', Order::class)) {
+            return $this->sendError('Доступ закрыт', Response::HTTP_FORBIDDEN);
+        }
         try {
             $validatedData = $request->validated();
             $validatedData['order_status_id'] = OrderStatus::first()->id;
             $order = Order::create($validatedData);
         } catch (\Exception $e) {
-            return response()->json([
-                'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
-                'message' => 'Не удалось создать заказ',
-                'errorMessage' => $e->getMessage(),
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->sendError('Не удалось создать заказ', Response::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
         }
 
-        return response()->json([
-            'code' => Response::HTTP_CREATED,
-            'message' => Response::$statusTexts[Response::HTTP_CREATED],
-            'data' => $order->load(Order::$supportedRelations)
-        ], Response::HTTP_CREATED);
+        return $this->send(
+            Response::HTTP_CREATED,
+            Response::$statusTexts[Response::HTTP_CREATED],
+            $order->load(Order::$supportedRelations)
+        );
     }
 
     /**
@@ -62,21 +61,18 @@ class OrderController extends Controller
      * @param  int  $id
      * @return JsonResponse
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
         try {
             $order = Order::withAllRelations()->findOrFail($id);
+            if ($request->user()->cannot('view', $order, Order::class)) {
+                return $this->sendError('Доступ закрыт', Response::HTTP_FORBIDDEN);
+            }
         } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'code' => 404,
-                'message' => 'Order Not Found.',
-            ], 404);
+            return $this->sendError('Заказ не найден', Response::HTTP_NOT_FOUND);
         }
 
-        return response()->json([
-            'code' => Response::HTTP_OK,
-            'data' => $order,
-        ], Response::HTTP_OK);
+        return $this->send(Response::HTTP_OK, null, $order);
     }
 
     /**
@@ -90,22 +86,18 @@ class OrderController extends Controller
     {
         try {
             $order = Order::findOrFail($id);
+            if ($request->user()->cannot('update', $order, Order::class)) {
+                return $this->sendError('Доступ закрыт', Response::HTTP_FORBIDDEN);
+            }
         } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'code' => Response::HTTP_NOT_FOUND,
-                'message' => 'Заказ не найден.',
-            ], Response::HTTP_NOT_FOUND);
+            return $this->sendError('Заказ не найден.', Response::HTTP_NOT_FOUND);
         }
 
         $validatedData = $request->validated();
 
         $order->update($validatedData);
 
-        return response()->json([
-            'code' => Response::HTTP_OK,
-            'message' => 'Данные сохранены.',
-            'data' => $order->load(Order::$supportedRelations),
-        ], Response::HTTP_OK);
+        return $this->send(Response::HTTP_OK, 'Данные сохранены.', $order->load(Order::$supportedRelations));
     }
 
     /**
@@ -114,20 +106,17 @@ class OrderController extends Controller
      * @param  int  $id
      * @return JsonResponse
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         try {
             $order = Order::findOrFail($id);
+            if ($request->user()->cannot('delete', $order, Order::class)) {
+                return $this->sendError('Доступ закрыт', Response::HTTP_FORBIDDEN);
+            }
             $order->delete();
         } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'code' => Response::HTTP_NOT_FOUND,
-                'message' => 'Заказ не найден.',
-            ], Response::HTTP_NOT_FOUND);
+            return $this->sendError('Заказ не найден.', Response::HTTP_NOT_FOUND);
         }
-        return response()->json([
-            'code' => Response::HTTP_OK,
-            'message' => 'Заказ успешно удален',
-        ], Response::HTTP_OK);
+        return $this->send(Response::HTTP_OK, 'Заказ успешно удален');
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
 
 /**
@@ -37,4 +38,24 @@ use Illuminate\Routing\Controller as BaseController;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+    public function send($code, $msg, $data = null)
+    {
+        $respData = [
+            'code' => $code,
+        ];
+        if ($msg) $respData['message'] = $msg;
+        if ($data) $respData['data'] = $data;
+        return response()->json($respData, $code);
+    }
+
+    public function sendError($msg, $code, $errorMsg = null)
+    {
+        $respData = [
+            'code' => $code,
+            'message' => $msg,
+        ];
+        if ($errorMsg) $respData['errorMessage'] = $errorMsg;
+        return response()->json($respData, $code);
+    }
 }
