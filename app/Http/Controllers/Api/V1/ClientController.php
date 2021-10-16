@@ -40,10 +40,13 @@ class ClientController extends Controller
      *
      * Получить список клиентов
      *
-     * @return Response
+     * @return JsonResponse
      */
     public function index(ClientGetRequest $request)
     {
+        if ($request->user()->cannot('viewAny', Client::class)) {
+            return $this->sendError('Доступ закрыт', Response::HTTP_FORBIDDEN);
+        }
         return Client::withFilters($request)->withOrder($request)->withPaginate($request);
     }
 
@@ -56,21 +59,20 @@ class ClientController extends Controller
      */
     public function store(ClientStoreRequest $request)
     {
+        if ($request->user()->cannot('create', Client::class)) {
+            return $this->sendError('Доступ закрыт', Response::HTTP_FORBIDDEN);
+        }
         try {
             $client = Client::create($request->validated());
         } catch (\Exception $e) {
-            return response()->json([
-                'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
-                'message' => 'Не удалось создать клиента',
-                'errorMessage' => $e->getMessage(),
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->sendError('Не удалось создать клиента', Response::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
         }
 
-        return response()->json([
-            'code' => Response::HTTP_CREATED,
-            'message' => Response::$statusTexts[Response::HTTP_CREATED],
-            'data' => $client
-        ], Response::HTTP_CREATED);
+        return $this->send(
+            Response::HTTP_CREATED,
+            Response::$statusTexts[Response::HTTP_CREATED],
+            $client
+        );
     }
 
     /**
@@ -79,21 +81,18 @@ class ClientController extends Controller
      * @param  int  $id
      * @return JsonResponse
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
         try {
             $client = Client::findOrFail($id);
+            if ($request->user()->cannot('view', $client, Client::class)) {
+                return $this->sendError('Доступ закрыт', Response::HTTP_FORBIDDEN);
+            }
         } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'code' => Response::HTTP_NOT_FOUND,
-                'message' => 'Client Not Found.',
-            ], Response::HTTP_NOT_FOUND);
+            return $this->sendError('Клиент не найден', Response::HTTP_NOT_FOUND);
         }
 
-        return response()->json([
-            'code' => Response::HTTP_OK,
-            'data' => $client,
-        ], Response::HTTP_OK);
+        return $this->send(Response::HTTP_OK, null, $client);
     }
 
     /**
@@ -107,20 +106,16 @@ class ClientController extends Controller
     {
         try {
             $client = Client::findOrFail($id);
+            if ($request->user()->cannot('update', $client, Client::class)) {
+                return $this->sendError('Доступ закрыт', Response::HTTP_FORBIDDEN);
+            }
         } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'code' => Response::HTTP_NOT_FOUND,
-                'message' => 'Клиент не найден.',
-            ], Response::HTTP_NOT_FOUND);
+            return $this->sendError('Клиент не найден.', Response::HTTP_NOT_FOUND);
         }
 
         $client->update($request->validated());
 
-        return response()->json([
-            'code' => Response::HTTP_OK,
-            'message' => 'Данные сохранены.',
-            'data' => $client,
-        ], Response::HTTP_OK);
+        return $this->send(Response::HTTP_OK, 'Данные сохранены.', $client);
     }
 
     /**
@@ -129,35 +124,26 @@ class ClientController extends Controller
      * @param  int  $id
      * @return JsonResponse
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         try {
             $client = Client::findOrFail($id);
+            if ($request->user()->cannot('delete', $client, Client::class)) {
+                return $this->sendError('Доступ закрыт', Response::HTTP_FORBIDDEN);
+            }
 
             if ($client->orders()->exists()) {
-                return response()->json([
-                    'code' => Response::HTTP_BAD_REQUEST,
-                    'message' => 'Нельзя удалить этого клиента, т.к. у него есть заказы',
-                ], Response::HTTP_BAD_REQUEST);
+                return $this->sendError('Нельзя удалить этого клиента, т.к. у него есть заказы', Response::HTTP_BAD_REQUEST);
             }
 
             if ($client->ordersLikeReceiver()->exists()) {
-                return response()->json([
-                    'code' => Response::HTTP_BAD_REQUEST,
-                    'message' => 'Нельзя удалить этого клиента, т.к. он является получателем',
-                ], Response::HTTP_BAD_REQUEST);
+                return $this->sendError('Нельзя удалить этого клиента, т.к. он является получателем', Response::HTTP_BAD_REQUEST);
             }
 
             $client->delete();
         } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'code' => Response::HTTP_NOT_FOUND,
-                'message' => 'Client Not Found.',
-            ], Response::HTTP_NOT_FOUND);
+            return $this->sendError('Клиент не найден.', Response::HTTP_NOT_FOUND);
         }
-        return response()->json([
-            'code' => Response::HTTP_OK,
-            'message' => 'Клиент успешно удален',
-        ], Response::HTTP_OK);
+        return $this->send(Response::HTTP_OK, 'Клиент успешно удален');
     }
 }

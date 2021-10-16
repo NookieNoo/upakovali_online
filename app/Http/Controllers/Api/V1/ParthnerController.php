@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Parthner\ParthnerGetRequest;
 use App\Http\Requests\Parthner\ParthnerStoreRequest;
 use App\Http\Requests\Parthner\ParthnerUpdateRequest;
-use App\Models\Order;
 use App\Models\Parthner;
 use http\Exception\RuntimeException;
 use Illuminate\Database\Eloquent\Builder;
@@ -45,10 +44,13 @@ class ParthnerController extends Controller
      *
      * Получить список партнеров
      *
-     * @return Builder[]|Collection
+     * @return JsonResponse
      */
     public function index(ParthnerGetRequest $request)
     {
+        if ($request->user()->cannot('viewAny', Parthner::class)) {
+            return $this->sendError('Доступ закрыт', Response::HTTP_FORBIDDEN);
+        }
         return Parthner::with('manager', 'manager.role')->withFilters($request)->withOrder($request)->withPaginate($request);
     }
 
@@ -60,21 +62,20 @@ class ParthnerController extends Controller
      */
     public function store(ParthnerStoreRequest $request)
     {
+        if ($request->user()->cannot('create', Parthner::class)) {
+            return $this->sendError('Доступ закрыт', Response::HTTP_FORBIDDEN);
+        }
         try {
             $parthner = Parthner::create($request->validated());
         } catch (\Exception $e) {
-            return response()->json([
-                'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
-                'message' => 'Не удалось создать партнера',
-                'errorMessage' => $e->getMessage(),
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->sendError('Не удалось создать партнера', Response::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
         }
 
-        return response()->json([
-            'code' => Response::HTTP_CREATED,
-            'message' => Response::$statusTexts[Response::HTTP_CREATED],
-            'data' => $parthner
-        ], Response::HTTP_CREATED);
+        return $this->send(
+            Response::HTTP_CREATED,
+            Response::$statusTexts[Response::HTTP_CREATED],
+            $parthner
+        );
     }
 
     /**
@@ -83,21 +84,18 @@ class ParthnerController extends Controller
      * @param  int  $id
      * @return Builder|Builder[]|Collection|Model|JsonResponse
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
         try {
             $parthner = Parthner::with('manager', 'manager.role')->findOrFail($id);
+            if ($request->user()->cannot('view', $parthner, Parthner::class)) {
+                return $this->sendError('Доступ закрыт', Response::HTTP_FORBIDDEN);
+            }
         } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'code' => Response::HTTP_NOT_FOUND,
-                'message' => 'Parthner Not Found.',
-            ], Response::HTTP_NOT_FOUND);
+            return $this->sendError('Партнер не найден', Response::HTTP_NOT_FOUND);
         }
 
-        return response()->json([
-            'code' => Response::HTTP_OK,
-            'data' => $parthner,
-        ], Response::HTTP_OK);
+        return $this->send(Response::HTTP_OK, null, $parthner);
     }
 
     /**
@@ -111,31 +109,24 @@ class ParthnerController extends Controller
     {
         try {
             $parthner = Parthner::findOrFail($id);
+            if ($request->user()->cannot('update', $parthner, Parthner::class)) {
+                return $this->sendError('Доступ закрыт', Response::HTTP_FORBIDDEN);
+            }
         } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'code' => Response::HTTP_NOT_FOUND,
-                'message' => 'Партнер не найден.',
-            ], Response::HTTP_NOT_FOUND);
+            return $this->sendError('Партнер не найден.', Response::HTTP_NOT_FOUND);
         }
 
         $validatedData = $request->validated();
 
         if ($validatedData['manager_id'] !== $parthner->manager_id) {
             if ($parthner->orders()->exists()) {
-                return response()->json([
-                    'code' => Response::HTTP_BAD_REQUEST,
-                    'message' => 'Нельзя изменить менеджера этого партнера, т.к. у него есть заказы',
-                ], Response::HTTP_BAD_REQUEST);
+                return $this->sendError('Нельзя изменить менеджера этого партнера, т.к. у него есть заказы', Response::HTTP_BAD_REQUEST);
             }
         }
 
         $parthner->update($validatedData);
 
-        return response()->json([
-            'code' => Response::HTTP_OK,
-            'message' => 'Данные сохранены.',
-            'data' => $parthner->load('manager'),
-        ], Response::HTTP_OK);
+        return $this->send(Response::HTTP_OK, 'Данные сохранены.', $parthner->load('manager'));
     }
 
     /**
@@ -144,28 +135,22 @@ class ParthnerController extends Controller
      * @param  int  $id
      * @return JsonResponse
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         try {
             $parthner = Parthner::findOrFail($id);
+            if ($request->user()->cannot('delete', $parthner, Parthner::class)) {
+                return $this->sendError('Доступ закрыт', Response::HTTP_FORBIDDEN);
+            }
 
             if ($parthner->orders()->exists()) {
-                return response()->json([
-                    'code' => Response::HTTP_BAD_REQUEST,
-                    'message' => 'Нельзя удалить этого партнера, т.к. у него есть заказы',
-                ], Response::HTTP_BAD_REQUEST);
+                return $this->sendError('Нельзя удалить этого партнера, т.к. у него есть заказы', Response::HTTP_BAD_REQUEST);
             }
 
             $parthner->delete();
         } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'code' => Response::HTTP_NOT_FOUND,
-                'message' => 'Parthner Not Found.',
-            ], Response::HTTP_NOT_FOUND);
+            return $this->sendError('Партнер не найден.', Response::HTTP_NOT_FOUND);
         }
-        return response()->json([
-            'code' => Response::HTTP_OK,
-            'message' => 'Партнер успешно удален',
-        ], Response::HTTP_OK);
+        return $this->send(Response::HTTP_OK, 'Партнер успешно удален');
     }
 }

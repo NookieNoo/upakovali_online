@@ -22,10 +22,13 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return Builder[]|Collection
+     * @return JsonResponse
      */
     public function index(UserGetRequest $request)
     {
+        if ($request->user()->cannot('viewAny', User::class)) {
+            return $this->sendError('Доступ закрыт', Response::HTTP_FORBIDDEN);
+        }
         return User::with('role')->withFilters($request)->withOrder($request)->withPaginate($request);
     }
 
@@ -37,24 +40,23 @@ class UserController extends Controller
      */
     public function store(UserStoreRequest $request)
     {
+        if ($request->user()->cannot('create', User::class)) {
+            return $this->sendError('Доступ закрыт', Response::HTTP_FORBIDDEN);
+        }
         try {
             $validatedData = $request->validated();
             $validatedData['remember_token'] = Str::random(10);
             $validatedData['password'] = Hash::make($validatedData['password']);
             $user = User::create($validatedData);
         } catch (\Exception $e) {
-            return response()->json([
-                'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
-                'message' => 'Не удалось создать пользователя',
-                'errorMessage' => $e->getMessage(),
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->sendError('Не удалось создать пользователя', Response::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
         }
 
-        return response()->json([
-            'code' => Response::HTTP_CREATED,
-            'message' => Response::$statusTexts[Response::HTTP_CREATED],
-            'data' => $user->load('role'),
-        ], Response::HTTP_CREATED);
+        return $this->send(
+            Response::HTTP_CREATED,
+            Response::$statusTexts[Response::HTTP_CREATED],
+            $user->load('role'),
+        );
     }
 
     /**
@@ -63,21 +65,18 @@ class UserController extends Controller
      * @param  int  $id
      * @return Builder|Builder[]|Collection|Model|JsonResponse
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
         try {
             $user = User::with('role')->findOrFail($id);
+            if ($request->user()->cannot('view', $user, User::class)) {
+                return $this->sendError('Доступ закрыт', Response::HTTP_FORBIDDEN);
+            }
         } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'code' => Response::HTTP_NOT_FOUND,
-                'message' => 'User Not Found.',
-            ], Response::HTTP_NOT_FOUND);
+            return $this->sendError('Пользователь не найден', Response::HTTP_NOT_FOUND);
         }
 
-        return response()->json([
-            'code' => Response::HTTP_OK,
-            'data' => $user,
-        ], Response::HTTP_OK);
+        return $this->send(Response::HTTP_OK, null, $user);
     }
 
 
@@ -92,11 +91,11 @@ class UserController extends Controller
     {
         try {
             $user = User::findOrFail($id);
+            if ($request->user()->cannot('update', $user, User::class)) {
+                return $this->sendError('Доступ закрыт', Response::HTTP_FORBIDDEN);
+            }
         } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'code' => Response::HTTP_NOT_FOUND,
-                'message' => 'Пользователь не найден.',
-            ], Response::HTTP_NOT_FOUND);
+            return $this->sendError('Пользователь не найден.', Response::HTTP_NOT_FOUND);
         }
 
         $validatedData = $request->validated();
@@ -106,34 +105,21 @@ class UserController extends Controller
 
         if ($validatedData['role_id'] !== $user->role_id) {
             if ($user->parthners()->exists()) {
-                return response()->json([
-                    'code' => Response::HTTP_BAD_REQUEST,
-                    'message' => 'Нельзя изменить роль этого пользователя, т.к. это менеджер, и у него есть партнер',
-                ], Response::HTTP_BAD_REQUEST);
+                return $this->sendError('Нельзя изменить роль этого пользователя, т.к. это менеджер, и у него есть партнер', Response::HTTP_BAD_REQUEST);
             }
 
             if ($user->ordersLikeMaster()->exists()) {
-                return response()->json([
-                    'code' => Response::HTTP_BAD_REQUEST,
-                    'message' => 'Нельзя изменить роль этого пользователя, т.к. это мастер, и у него есть заказы',
-                ], Response::HTTP_BAD_REQUEST);
+                return $this->sendError('Нельзя изменить роль этого пользователя, т.к. это мастер, и у него есть заказы', Response::HTTP_BAD_REQUEST);
             }
 
             if ($user->ordersLikeCourierReceiver()->exists() || $user->ordersLikeCourierIssuer()->exists()) {
-                return response()->json([
-                    'code' => Response::HTTP_BAD_REQUEST,
-                    'message' => 'Нельзя изменить роль этого пользователя, т.к. это курьер, и у него есть заказы',
-                ], Response::HTTP_BAD_REQUEST);
+                return $this->sendError('Нельзя изменить роль этого пользователя, т.к. это курьер, и у него есть заказы', Response::HTTP_BAD_REQUEST);
             }
         }
 
         $user->update($validatedData);
 
-        return response()->json([
-            'code' => Response::HTTP_OK,
-            'message' => 'Данные сохранены.',
-            'data' => $user->load('role'),
-        ], Response::HTTP_OK);
+        return $this->send(Response::HTTP_OK, 'Данные сохранены.', $user->load('role'));
     }
 
     /**
@@ -142,43 +128,31 @@ class UserController extends Controller
      * @param  int  $id
      * @return JsonResponse
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         try {
             $user = User::findOrFail($id);
+            if ($request->user()->cannot('delete', $user, User::class)) {
+                return $this->sendError('Доступ закрыт', Response::HTTP_FORBIDDEN);
+            }
 
             if ($user->parthners()->exists()) {
-                return response()->json([
-                    'code' => Response::HTTP_BAD_REQUEST,
-                    'message' => 'Нельзя удалить этого пользователя, т.к. это менеджер, и у него есть партнер',
-                ], Response::HTTP_BAD_REQUEST);
+                return $this->sendError('Нельзя изменить роль этого пользователя, т.к. это менеджер, и у него есть партнер', Response::HTTP_BAD_REQUEST);
             }
 
             if ($user->ordersLikeMaster()->exists()) {
-                return response()->json([
-                    'code' => Response::HTTP_BAD_REQUEST,
-                    'message' => 'Нельзя удалить этого пользователя, т.к. это мастер, и у него есть заказы',
-                ], Response::HTTP_BAD_REQUEST);
+                return $this->sendError('Нельзя изменить роль этого пользователя, т.к. это мастер, и у него есть заказы', Response::HTTP_BAD_REQUEST);
             }
 
             if ($user->ordersLikeCourierReceiver()->exists() || $user->ordersLikeCourierIssuer()->exists()) {
-                return response()->json([
-                    'code' => Response::HTTP_BAD_REQUEST,
-                    'message' => 'Нельзя удалить этого пользователя, т.к. это курьер, и у него есть заказы',
-                ], Response::HTTP_BAD_REQUEST);
+                return $this->sendError('Нельзя изменить роль этого пользователя, т.к. это курьер, и у него есть заказы', Response::HTTP_BAD_REQUEST);
             }
 
             $user->delete();
         } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'code' => Response::HTTP_NOT_FOUND,
-                'message' => 'User Not Found.',
-            ], Response::HTTP_NOT_FOUND);
+            return $this->sendError('Пользователь не найден.', Response::HTTP_NOT_FOUND);
         }
 
-        return response()->json([
-            'code' => Response::HTTP_OK,
-            'message' => 'Пользователь успешно удален',
-        ], Response::HTTP_OK);
+        return $this->send(Response::HTTP_OK, 'Пользователь успешно удален');
     }
 }
