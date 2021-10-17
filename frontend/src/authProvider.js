@@ -18,19 +18,17 @@ const authProvider = {
             .then(response => {
                 if (!response.ok) {
                     //FIXME Протестировать
-                    console.log(response);
                     throw new Error(response.statusText);
                 }
                 return response.json();
             })
             .then(auth => {
-                console.log('auth', auth);
                 localStorage.setItem('token', auth.token);
                 localStorage.setItem('user', JSON.stringify(auth.user));
                 return Promise.resolve();
             })
             .catch((e) => {
-                throw new Error('Network error');
+                throw new Error('Не удалось аутентифицироваться');
             });
     },
     // called when the user clicks on the logout button
