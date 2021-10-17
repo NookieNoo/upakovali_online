@@ -40,30 +40,36 @@ export default function Aside(props) {
                         </Box>
                     </CardContent>
                 </Card>
-                <Stepper orientation="vertical">
-                    {history &&
-                        history.map((it, index) => (
-                            <Step key={it.id} expanded active completed>
-                                <StepLabel
-                                    StepIconComponent={() => {
-                                        return (
-                                            <MessageIcon fontSize="small" color="disabled" style={{ paddingLeft: 3 }} />
-                                        );
-                                    }}
-                                >
-                                    {it.date}
-                                </StepLabel>
-                                <StepContent>
-                                    <Typography variant="body2" gutterBottom>
-                                        <Link to={`/commands/`}>{it.status.name}</Link>
-                                    </Typography>
-                                    <Typography variant="body2" color="textSecondary">
-                                        {it.user.full_name} ({it.user.role.name})
-                                    </Typography>
-                                </StepContent>
-                            </Step>
-                        ))}
-                </Stepper>
+                <Card>
+                    <Stepper orientation="vertical">
+                        {history &&
+                            history.map((it, index) => (
+                                <Step key={it.id} expanded active completed>
+                                    <StepLabel
+                                        StepIconComponent={() => {
+                                            return (
+                                                <MessageIcon
+                                                    fontSize="small"
+                                                    color="disabled"
+                                                    style={{ paddingLeft: 3 }}
+                                                />
+                                            );
+                                        }}
+                                    >
+                                        {it.date}
+                                    </StepLabel>
+                                    <StepContent>
+                                        <Typography variant="body2" gutterBottom>
+                                            <Link to={`/commands/`}>{it.status.name}</Link>
+                                        </Typography>
+                                        <Typography variant="body2" color="textSecondary">
+                                            {it.user.full_name} ({it.user.role.name})
+                                        </Typography>
+                                    </StepContent>
+                                </Step>
+                            ))}
+                    </Stepper>
+                </Card>
             </Box>
         </>
     );
