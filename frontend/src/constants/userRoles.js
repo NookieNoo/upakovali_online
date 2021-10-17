@@ -1,19 +1,23 @@
 let userRoles = {
     admin: {
         id: 1,
-        name: 'Администратор',
+        name: 'admin',
+        visible_name: 'Администратор',
     },
     manager: {
         id: 2,
-        name: 'Менеджер',
+        name: 'manager',
+        visible_name: 'Менеджер',
     },
     master: {
         id: 3,
-        name: 'Мастер',
+        name: 'master',
+        visible_name: 'Мастер',
     },
     courier: {
         id: 4,
-        name: 'Курьер',
+        name: 'courier',
+        visible_name: 'Курьер',
     },
 };
 

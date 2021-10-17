@@ -20,6 +20,7 @@ export default function UserCreate(props) {
                     label="Роль"
                     source="role_id"
                     choices={Object.values(userRoles)}
+                    optionText='visible_name'
                     validate={createUserFormValidators.role_id}
                 />
             </SimpleForm>

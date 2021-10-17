@@ -28,6 +28,7 @@ export default function UserEdit(props) {
                     label="Роль"
                     source="role.id"
                     choices={Object.values(userRoles)}
+                    optionText='visible_name'
                     validate={editUserFormValidators.role_id}
                 />
             </SimpleForm>

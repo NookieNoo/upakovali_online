@@ -8,7 +8,8 @@ import {
     SelectInput,
     BooleanInput,
     BooleanField,
-    ChipField
+    ChipField,
+    EditButton
 } from 'react-admin';
 import { userRoles } from '@app-constants';
 
@@ -61,6 +62,7 @@ export default function OrderList(props) {
                 <TextField label="Источник" source="source.name" />
                 <BooleanField label="Оплачено" source="isPaid" />
                 <TextField label="Комментарий" source="comment" />
+                <EditButton label={null} />
             </Datagrid>
         </List>
     );

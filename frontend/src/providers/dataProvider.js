@@ -13,10 +13,8 @@ export const dataProvider = {
 
         const query = {
             sort: order === 'ASC' ? transformedField : `-${transformedField}`,
-            range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
             'page[number]': page,
             'page[size]': perPage,
-            // filter: JSON.stringify(params.filter),
             ...params.filter,
         };
         const url = `${baseApiUrl}/${resource}?${stringify(query)}`;
@@ -48,7 +46,6 @@ export const dataProvider = {
             }
             return { data: json.data };
         }),
-    // getMany: (resource, params) => Promise,
     getMany: (resource, params) => {
         const query = {
             filter: JSON.stringify({ ids: params.ids }),
@@ -56,7 +53,37 @@ export const dataProvider = {
         const url = `${baseApiUrl}/${resource}?${stringify(query)}`;
         return httpClient(url).then(({ json }) => ({ data: json.data }));
     },
-    getManyReference: (resource, params) => Promise,
+    getManyReference: (resource, params) => {
+        console.log('getManyReference', params);
+        const { target, id: fk_id } = params;
+        const { page, perPage } = params.pagination;
+        const { field, order } = params.sort;
+
+        // Временно преобразуем поля типа manager.name в manager_id @FIXME
+        const splittedField = field.split('.');
+        const transformedField = splittedField.length > 1 ? splittedField[0] + '_id' : field;
+
+        let referenceFilterFields = {};
+        target.split(',').forEach(it => {
+            referenceFilterFields[it] = fk_id;
+        });
+
+        const query = {
+            sort: order === 'ASC' ? transformedField : `-${transformedField}`,
+            'page[number]': page,
+            'page[size]': perPage,
+            // filter: JSON.stringify(params.filter),
+            ...params.filter,
+            ...referenceFilterFields,
+        };
+        const url = `${baseApiUrl}/${resource}?${stringify(query)}`;
+
+        return httpClient(url).then(({ headers, json }) => ({
+            data: json.data,
+            meta: json.meta,
+            total: json.meta.total,
+        }));
+    },
     create: (resource, params) =>
         httpClient(`${baseApiUrl}/${resource}`, {
             method: 'POST',
@@ -77,7 +104,6 @@ export const dataProvider = {
         httpClient(`${baseApiUrl}/${resource}/${params.id}`, {
             method: 'DELETE',
         }).then(({ json }) => ({ data: json })),
-    // deleteMany: (resource, params) => Promise,
     deleteMany: (resource, params) => {
         const query = {
             filter: JSON.stringify({ id: params.ids }),

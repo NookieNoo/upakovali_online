@@ -60,8 +60,8 @@ export const authProvider = {
     },
     getIdentity: () => {
         try {
-            const { id, full_name, avatar } = JSON.parse(localStorage.getItem('user'));
-            return Promise.resolve({ id, fullName: full_name, avatar });
+            const { id, full_name, avatar, role, phone, email } = JSON.parse(localStorage.getItem('user'));
+            return Promise.resolve({ id, fullName: full_name, avatar, role, phone, email });
         } catch (error) {
             return Promise.reject(error);
         }
