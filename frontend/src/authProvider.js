@@ -41,7 +41,6 @@ const authProvider = {
     },
     // called when the API returns an error
     checkError: ({ status }) => {
-        // if (status === 401 || status === 403) {
         if (status === 401) {
             localStorage.removeItem("username");
             return Promise.reject();

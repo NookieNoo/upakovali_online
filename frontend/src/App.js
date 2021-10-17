@@ -25,7 +25,7 @@ import {
     UserCreate,
 } from '@app-pages';
 import authProvider from './authProvider';
-import { dataProvider } from '@app-providers';
+import { dataProvider, i18nProvider } from '@app-providers';
 
 const history = createHistory();
 const options = {
@@ -50,6 +50,7 @@ const App = () => (
         dataProvider={dataProvider}
         dashboard={Dashboard}
         authProvider={authProvider}
+        i18nProvider={i18nProvider}
     >
         <Resource
             name="client"
