@@ -38,15 +38,11 @@ export default function UserShow(props) {
                 }
                 rightSide={
                     <TabbedShowLayout>
-                        <Tab label="Заказы">
-                            {isCourier || isMaster ? (
+                        {isCourier && (
+                            <Tab label="Заказы(принимающий курьер)">
                                 <ReferenceManyField
-                                    label={
-                                        isCourier
-                                            ? 'Список заказов, отфильтрованный по курьеру'
-                                            : 'Список заказов, отфильтрованный по мастеру'
-                                    }
-                                    target={isCourier ? 'courier_receiver_id,courier_issuer_id' : 'master_id'}
+                                    label="Список заказов, отфильтрованный по курьеру"
+                                    target="courier_receiver_id"
                                     reference="order"
                                 >
                                     <Datagrid isRowSelectable={() => false}>
@@ -59,10 +55,51 @@ export default function UserShow(props) {
                                         <TextField label="Комментарий" source="comment" />
                                     </Datagrid>
                                 </ReferenceManyField>
-                            ) : (
+                            </Tab>
+                        )}
+                        {isCourier && (
+                            <Tab label="Заказы(выдающий курьер)">
+                                <ReferenceManyField
+                                    label="Список заказов, отфильтрованный по курьеру"
+                                    target="courier_issuer_id"
+                                    reference="order"
+                                >
+                                    <Datagrid isRowSelectable={() => false}>
+                                        <TextField label="id" source="id" />
+                                        <ChipField label="Статус" source="order_status.name" />
+                                        <TextField label="Клиент" source="client.full_name" />
+                                        <TextField label="Партнер" source="parthner.full_name" />
+                                        <TextField label="Источник" source="source.name" />
+                                        <BooleanField label="Оплачено" source="isPaid" />
+                                        <TextField label="Комментарий" source="comment" />
+                                    </Datagrid>
+                                </ReferenceManyField>
+                            </Tab>
+                        )}
+                        {isMaster && (
+                            <Tab label="Заказы">
+                                <ReferenceManyField
+                                    label="Список заказов, отфильтрованный по мастеру"
+                                    target="master_id"
+                                    reference="order"
+                                >
+                                    <Datagrid isRowSelectable={() => false}>
+                                        <TextField label="id" source="id" />
+                                        <ChipField label="Статус" source="order_status.name" />
+                                        <TextField label="Клиент" source="client.full_name" />
+                                        <TextField label="Партнер" source="parthner.full_name" />
+                                        <TextField label="Источник" source="source.name" />
+                                        <BooleanField label="Оплачено" source="isPaid" />
+                                        <TextField label="Комментарий" source="comment" />
+                                    </Datagrid>
+                                </ReferenceManyField>
+                            </Tab>
+                        )}
+                        {!isMaster && !isCourier && (
+                            <Tab label="Заказы">
                                 <TextField label="Заказы отображаются только для курьеров/мастеров" />
-                            )}
-                        </Tab>
+                            </Tab>
+                        )}
                         <Tab label="Комментарии">
                             <TextField source="comment" label="Здесь должны быть комментарии" />
                         </Tab>
