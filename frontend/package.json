@@ -7,6 +7,7 @@
         "@testing-library/react": "^11.1.0",
         "@testing-library/user-event": "^12.1.10",
         "prop-types": "^15.7.2",
+        "ra-access-control-lists": "^0.1.1",
         "ra-data-json-server": "^3.18.0",
         "ra-language-russian": "^3.13.5",
         "react": "^17.0.2",

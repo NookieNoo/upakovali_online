@@ -63,7 +63,7 @@ export default function Aside(props) {
                                             <Link to={`/commands/`}>{it.status.name}</Link>
                                         </Typography>
                                         <Typography variant="body2" color="textSecondary">
-                                            {it.user.full_name} ({it.user.role.name})
+                                            {it.user.full_name} ({it.user.role.visible_name})
                                         </Typography>
                                     </StepContent>
                                 </Step>

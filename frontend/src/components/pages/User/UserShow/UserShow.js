@@ -13,7 +13,7 @@ export default function UserShow(props) {
                         <TextField label="ФИО" source="full_name" />
                         <EmailField label="Email" source="email" />
                         <TextField label="Телефон" source="phone" />
-                        <TextField label="Роль" source="role.name" />
+                        <TextField label="Роль" source="role.visible_name" />
                     </SimpleShowLayout>
                 }
                 rightSide={

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Admin, Resource } from 'react-admin';
+import { ResourceWithPermission } from 'ra-access-control-lists';
 import { createBrowserHistory as createHistory } from 'history';
 import {
     Dashboard,
@@ -24,8 +25,7 @@ import {
     UserShow,
     UserCreate,
 } from '@app-pages';
-import authProvider from './authProvider';
-import { dataProvider, i18nProvider } from '@app-providers';
+import { dataProvider, i18nProvider, authProvider } from '@app-providers';
 
 const history = createHistory();
 const options = {
@@ -52,7 +52,7 @@ const App = () => (
         authProvider={authProvider}
         i18nProvider={i18nProvider}
     >
-        <Resource
+        <ResourceWithPermission
             name="client"
             list={ClientList}
             edit={ClientEdit}
@@ -61,7 +61,7 @@ const App = () => (
             create={ClientCreate}
             options={options.client}
         />
-        <Resource
+        <ResourceWithPermission
             name="parthner"
             list={ParthnerList}
             icon={ParthnerIcon}
@@ -70,7 +70,7 @@ const App = () => (
             create={ParthnerCreate}
             options={options.parthner}
         />
-        <Resource
+        <ResourceWithPermission
             name="order"
             list={OrderList}
             edit={OrderEdit}
@@ -79,7 +79,7 @@ const App = () => (
             create={OrderCreate}
             options={options.order}
         />
-        <Resource
+        <ResourceWithPermission
             name="user"
             list={UserList}
             icon={UserIcon}

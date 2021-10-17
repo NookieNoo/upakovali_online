@@ -16,7 +16,7 @@ export default function UserList(props) {
                 <TextField label="ФИО" source="full_name" />
                 <TextField label="Телефон" source="phone" />
                 <EmailField label="Email" source="email" />
-                <TextField label="Роль" source="role.name" />
+                <TextField label="Роль" source="role.visible_name" />
                 <TextField label="Комментарий" source="comment" />
             </Datagrid>
         </List>

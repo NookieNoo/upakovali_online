@@ -1,6 +1,7 @@
-import { baseApiUrl } from "@app-helpers";
+import { baseApiUrl } from '@app-helpers';
+import { permissions } from '@app-constants';
 
-const authProvider = {
+export const authProvider = {
     // called when the user attempts to log in
     // login: ({ username }) => {
     //     localStorage.setItem("username", username);
@@ -15,14 +16,14 @@ const authProvider = {
         });
 
         return fetch(request)
-            .then(response => {
+            .then((response) => {
                 if (!response.ok) {
                     //FIXME Протестировать
                     throw new Error(response.statusText);
                 }
                 return response.json();
             })
-            .then(auth => {
+            .then((auth) => {
                 localStorage.setItem('token', auth.token);
                 localStorage.setItem('user', JSON.stringify(auth.user));
                 return Promise.resolve();
@@ -33,26 +34,36 @@ const authProvider = {
     },
     // called when the user clicks on the logout button
     logout: () => {
-        localStorage.removeItem("user");
-        localStorage.removeItem("token");
+        localStorage.removeItem('user');
+        localStorage.removeItem('token');
         return Promise.resolve();
     },
     // called when the API returns an error
     checkError: ({ status }) => {
         if (status === 401) {
-            localStorage.removeItem("username");
+            localStorage.removeItem('username');
             return Promise.reject();
         }
         return Promise.resolve();
     },
     // called when the user navigates to a new location, to check for authentication
     checkAuth: () => {
-        return localStorage.getItem("user")
-            ? Promise.resolve()
-            : Promise.reject();
+        return localStorage.getItem('user') ? Promise.resolve() : Promise.reject();
     },
     // called when the user navigates to a new location, to check for permissions / roles
-    getPermissions: () => Promise.resolve(),
-};
+    // getPermissions: () => Promise.resolve(),
+    getPermissions: () => {
+        const user = JSON.parse(localStorage.getItem('user'));
+        const roleName = user.role.name;
 
-export default authProvider;
+        return roleName ? Promise.resolve(permissions[roleName]) : Promise.reject();
+    },
+    getIdentity: () => {
+        try {
+            const { id, full_name, avatar } = JSON.parse(localStorage.getItem('user'));
+            return Promise.resolve({ id, fullName: full_name, avatar });
+        } catch (error) {
+            return Promise.reject(error);
+        }
+    },
+};
