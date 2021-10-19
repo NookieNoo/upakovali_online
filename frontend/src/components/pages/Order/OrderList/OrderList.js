@@ -9,8 +9,9 @@ import {
     BooleanInput,
     BooleanField,
     ChipField,
-    EditButton
+    EditButton,
 } from 'react-admin';
+import { useACL } from 'ra-access-control-lists';
 import { userRoles } from '@app-constants';
 
 const courierFilter = { role_id: userRoles.courier.id };
@@ -52,6 +53,9 @@ const orderFilters = [
 ];
 
 export default function OrderList(props) {
+    const { resource } = props;
+    const { edit: canEdit } = useACL(resource);
+
     return (
         <List {...props} title="Заказы" filters={orderFilters}>
             <Datagrid rowClick="show" isRowSelectable={() => false}>
@@ -62,7 +66,7 @@ export default function OrderList(props) {
                 <TextField label="Источник" source="source.name" />
                 <BooleanField label="Оплачено" source="isPaid" />
                 <TextField label="Комментарий" source="comment" />
-                <EditButton label={null} />
+                {canEdit && <EditButton label={null} />}
             </Datagrid>
         </List>
     );

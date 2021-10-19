@@ -4,8 +4,10 @@
         "module": "commonjs",
         "baseUrl": "./src",
         "paths": {
+            "@app-components": ["./components"],
             "@app-universal": ["./components/universal"],
             "@app-constants": ["./constants"],
+            "@app-hooks": ["./hooks"],
             "@app-helpers": ["./helpers"],
             "@app-pages": ["./components/pages"],
             "@app-providers": ["./providers"],

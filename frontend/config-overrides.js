@@ -7,7 +7,9 @@ const aliasMap = {
     "@app-helpers": "./src/helpers",
     "@app-providers": "./src/providers",
     "@app-http": "./src/http",
-    "@app-constants": "./src/constants"
+    "@app-constants": "./src/constants",
+    "@app-hooks": "./src/hooks",
+    "@app-components": "./src/components"
 };
 
 module.exports = alias(aliasMap);
