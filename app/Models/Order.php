@@ -135,4 +135,15 @@ class Order extends BaseModel
                 $query->where($this->getTable() . ".receiver_id", $receiverId);
             });
     }
+
+    public function scopeWithFiltersByPermission($query, User $user)
+    {
+        if ($user->isCourier()) {
+            return $query->where($this->getTable() . ".courier_receiver_id", $user->id)
+                ->orWhere($this->getTable() . ".courier_issuer_id", $user->id);
+        } elseif ($user->isMaster()) {
+            return $query->where($this->getTable() . ".master_id", $user->id);
+        }
+        return $query;
+    }
 }

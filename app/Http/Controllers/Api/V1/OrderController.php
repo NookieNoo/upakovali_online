@@ -25,8 +25,9 @@ class OrderController extends Controller
         if ($request->user()->cannot('viewAny', Order::class)) {
             return $this->sendError('Доступ закрыт', Response::HTTP_FORBIDDEN);
         }
-        return Order::withFilters($request)->with('orderStatus', 'source', 'parthner', 'client', 'workshop', 'addressee', 'pickUpPoint',
-            'deliveryPoint', 'courierReceiver', 'courierIssuer', 'master')->withOrder($request)->withPaginate($request);
+        return Order::withFiltersByPermission($request->user())->withFilters($request)->with('orderStatus', 'source', 'parthner',
+            'client', 'workshop', 'addressee', 'pickUpPoint', 'deliveryPoint', 'courierReceiver', 'courierIssuer', 'master')
+            ->withOrder($request)->withPaginate($request);
     }
 
     /**
