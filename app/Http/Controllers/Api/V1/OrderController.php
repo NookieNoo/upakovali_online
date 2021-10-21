@@ -7,7 +7,9 @@ use App\Http\Requests\Order\OrderGetRequest;
 use App\Http\Requests\Order\OrderStoreRequest;
 use App\Http\Requests\Order\OrderUpdateRequest;
 use App\Models\Order;
+use App\Models\OrderHistory;
 use App\Models\OrderStatus;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -99,6 +101,39 @@ class OrderController extends Controller
         $order->update($validatedData);
 
         return $this->send(Response::HTTP_OK, 'Данные сохранены.', $order->load(Order::$supportedRelations));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return JsonResponse
+     */
+    public function updateStatus(Request $request, $id)
+    {
+        try {
+            $order = Order::findOrFail($id);
+            if ($request->user()->cannot('updateStatus', $order, Order::class)) {
+                return $this->sendError('Доступ закрыт', Response::HTTP_FORBIDDEN);
+            }
+        } catch (ModelNotFoundException $e) {
+            return $this->sendError('Заказ не найден.', Response::HTTP_NOT_FOUND);
+        }
+
+        $order->order_status_id = $request->get('order_status_id');
+        $order->save();
+
+        //@TODO обернуть в транзакцию
+        $orderHistory = new OrderHistory([
+            'order_id' => $order->id,
+            'status_id' => $order->order_status_id,
+            'user_id' => $request->user()->id,
+            'date' => Carbon::now(),
+        ]);
+        $orderHistory->save();
+
+        return $this->send(Response::HTTP_OK, 'Статус обновлен', ["order_status" => ['id' => 11, 'name' => 'Отмена']]);
     }
 
     /**

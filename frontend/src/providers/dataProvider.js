@@ -92,13 +92,17 @@ export const dataProvider = {
             data: json.data,
         })),
     update: (resource, params) => {
-        console.log('update', params);
         return httpClient(`${baseApiUrl}/${resource}/${params.id}`, {
             method: 'PUT',
             body: JSON.stringify(params.data),
         }).then(({ json }) => ({ data: json.data }));
     },
-
+    updateField: (resource, params) => {
+        return httpClient(`${baseApiUrl}/${resource}/${params.id}`, {
+            method: 'PATCH',
+            body: JSON.stringify(params.data),
+        }).then(({ json }) => ({ data: json.data, message: json.message }));
+    },
     updateMany: (resource, params) => Promise,
     delete: (resource, params) =>
         httpClient(`${baseApiUrl}/${resource}/${params.id}`, {

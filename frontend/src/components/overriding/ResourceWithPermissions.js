@@ -7,7 +7,6 @@ const hasAccess = (permissions, permission) => get(permissions, permission, fals
 
 export const ResourceWithPermissions = ({ name, list, create, edit, show, ...props }) => {
     const { permissions } = usePermissions();
-    console.log('permissions', permissions);
     const access = {
         enabled: hasAccess(permissions, `${name}.enabled`),
         list: hasAccess(permissions, `${name}.list`),

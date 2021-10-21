@@ -64,6 +64,24 @@ class OrderPolicy
     }
 
     /**
+     * Может ли пользователь менять статус заказа
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Order  $order
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function updateStatus(User $user, Order $order)
+    {
+        if ($user->isMaster()) {
+            return $user->id === $order->master_id;
+        }
+        if ($user->isCourier()) {
+            return $user->id === $order->courier_receiver_id || $user->id === $order->courier_issuer_id;
+        }
+        return true;
+    }
+
+    /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user

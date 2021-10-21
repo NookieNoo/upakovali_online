@@ -11,12 +11,17 @@ import {
     useShowController,
 } from 'react-admin';
 import Aside from './Aside';
+import { OrderShowActions } from './includes/OrderShowActions';
 
 export default function OrderShow(props) {
-    const { record } = useShowController(props);
+    const { record, loaded } = useShowController(props);
 
     return (
-        <Show {...props} aside={<Aside history={record?.history} />}>
+        <Show
+            actions={<OrderShowActions isDataLoaded={loaded} />}
+            aside={<Aside history={record?.history} />}
+            {...props}
+        >
             <TabbedShowLayout>
                 <Tab label="Общее">
                     <TextField label="Источник" source="source.name" />
