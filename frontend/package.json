@@ -3,9 +3,11 @@
     "version": "0.1.0",
     "private": true,
     "dependencies": {
+        "@material-ui/lab": "^4.0.0-alpha.60",
         "@testing-library/jest-dom": "^5.11.4",
         "@testing-library/react": "^11.1.0",
         "@testing-library/user-event": "^12.1.10",
+        "fetch-jsonp": "^1.2.1",
         "prop-types": "^15.7.2",
         "ra-access-control-lists": "^0.1.1",
         "ra-auth-acl": "^0.1.1",
@@ -22,12 +24,24 @@
         "start": "react-app-rewired start",
         "build": "react-app-rewired build",
         "test": "react-app-rewired test",
-        "eject": "react-app-rewired eject"
+        "eject": "react-app-rewired eject",
+        "storybook": "start-storybook -p 6006 -s public",
+        "build-storybook": "build-storybook -s public"
     },
     "eslintConfig": {
         "extends": [
             "react-app",
             "react-app/jest"
+        ],
+        "overrides": [
+            {
+                "files": [
+                    "**/*.stories.*"
+                ],
+                "rules": {
+                    "import/no-anonymous-default-export": "off"
+                }
+            }
         ]
     },
     "browserslist": {
@@ -43,6 +57,12 @@
         ]
     },
     "devDependencies": {
+        "@storybook/addon-actions": "^6.3.12",
+        "@storybook/addon-essentials": "^6.3.12",
+        "@storybook/addon-links": "^6.3.12",
+        "@storybook/node-logger": "^6.3.12",
+        "@storybook/preset-create-react-app": "^3.2.0",
+        "@storybook/react": "^6.3.12",
         "react-app-rewire-alias": "^1.0.3",
         "react-app-rewired": "^2.1.8"
     }

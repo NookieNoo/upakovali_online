@@ -24,8 +24,6 @@ const submitValidator = ({
         errors.delivery_point_id = 'Выберите точку доставки';
     }
 
-    console.log('errors1', errors);
-
     return errors;
 };
 
