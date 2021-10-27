@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { TextInput } from 'react-admin';
 
 export default function KladrAutocomplete({
     value,
@@ -13,7 +14,7 @@ export default function KladrAutocomplete({
     loading,
     getOptionSelected,
     getOptionLabel,
-    label
+    label,
 }) {
     const [open, setOpen] = React.useState(false);
     const filterOptions = filterOptionsCallback ? filterOptionsCallback : (x) => x;
@@ -36,11 +37,12 @@ export default function KladrAutocomplete({
             loading={loading}
             onChange={handleChange}
             value={value}
+            freeSolo
             renderInput={(params) => (
                 <TextField
                     {...params}
                     label={label}
-                    variant="outlined"
+                    variant="filled"
                     onChange={handleInput}
                     InputProps={{
                         ...params.InputProps,
@@ -52,6 +54,7 @@ export default function KladrAutocomplete({
                         ),
                     }}
                 />
+
             )}
         />
     );
@@ -60,7 +63,7 @@ export default function KladrAutocomplete({
 KladrAutocomplete.defaultProps = {
     getOptionSelected: (option, value) => option === value,
     getOptionLabel: (option) => option.label,
-    label: "Asynchronous"
+    label: 'Asynchronous',
 };
 
 KladrAutocomplete.propTypes = {

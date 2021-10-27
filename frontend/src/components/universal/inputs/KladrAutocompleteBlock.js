@@ -29,20 +29,15 @@ const fetchKladrItems = ({ options, beforeFetch, afterFetch, successCallback, er
 };
 
 export function KladrAutocompleteBlock(props) {
-    const { source } = props;
+    const { source, validate } = props;
     const [options, setOptions] = React.useState([]);
     const [loading, setLoading] = React.useState(false);
-    const { input } = useInput({ source: source });
+    console.log("validate", validate);
+
+    const { input, meta } = useInput({ source: source, validate: validate });
     const dispatch = useDispatch();
     const notify = useNotify();
-    console.log('input', input);
-
-    const handleChange = (e, value) => {
-        console.log('e', e);
-        console.log('value', value);
-        input.onChange(value);
-    };
-
+    console.log('meta', meta);
     const showLoaders = () => {
         dispatch(fetchStart());
         setLoading(true);
@@ -70,9 +65,9 @@ export function KladrAutocompleteBlock(props) {
         });
     }, []);
 
-    const loadingCallback = (e) => {
+    const loadingCallback = (query) => {
         fetchKladrItems({
-            options: { ...defaultQueryOptions, query: e.target.value },
+            options: { ...defaultQueryOptions, query },
             beforeFetch: showLoaders,
             afterFetch: hideLoaders,
             successCallback,
@@ -82,14 +77,21 @@ export function KladrAutocompleteBlock(props) {
 
     const throttledKladrFetch = useThrottle(loadingCallback, 2000);
 
+    const handleChange = (e, val) => input.onChange(val?.fullName);
+
+    const handleInput = (e) => {
+        input.onChange(e);
+        throttledKladrFetch(e.target.value);
+    };
+
     return (
         <KladrAutocomplete
             // value={value}
-            label='Адрес забора товара'
+            label="Адрес забора товара"
             options={options}
             handleChange={handleChange}
             loading={loading}
-            handleInput={throttledKladrFetch}
+            handleInput={handleInput}
             getOptionSelected={(option, value) => option.id === value.id}
             getOptionLabel={(option) => option.fullName}
         />
