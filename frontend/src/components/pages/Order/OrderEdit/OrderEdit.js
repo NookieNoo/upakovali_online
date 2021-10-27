@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {
     Edit,
-    SimpleForm,
     TextInput,
     ReferenceInput,
     SelectInput,
@@ -15,6 +14,7 @@ import {
 } from 'react-admin';
 import { editOrderFormValidators } from '@app-helpers';
 import { userRoles } from '@app-constants';
+import { KladrAutocompleteBlock } from '@app-universal';
 
 const courierFilter = { role_id: userRoles.courier.id };
 const masterFilter = { role_id: userRoles.master.id };
@@ -77,9 +77,9 @@ export default function OrderEdit(props) {
                     <FormDataConsumer>
                         {({ formData, ...rest }) =>
                             formData.is_pickupable ? (
-                                <TextInput
+                                <KladrAutocompleteBlock
                                     source="pick_up_address"
-                                    label="Точка забора товара"
+                                    label="Адрес забора товара"
                                     validate={editOrderFormValidators.pick_up_address}
                                 />
                             ) : (
@@ -107,9 +107,9 @@ export default function OrderEdit(props) {
                     <FormDataConsumer>
                         {({ formData, ...rest }) =>
                             formData.is_deliverable ? (
-                                <TextInput
+                                <KladrAutocompleteBlock
                                     source="delivery_address"
-                                    label="Точка выдачи товара"
+                                    label="Адрес выдачи товара"
                                     validate={editOrderFormValidators.delivery_address}
                                 />
                             ) : (

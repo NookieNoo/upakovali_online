@@ -19,14 +19,11 @@ import { KladrAutocompleteBlock } from '@app-universal';
 const courierFilter = { role_id: userRoles.courier.id };
 const masterFilter = { role_id: userRoles.master.id };
 
-// const transform = data =>
-
 export default function OrderCreate(props) {
     return (
         <Create {...props} title="Создание заказа">
             <TabbedForm validate={createOrderFormValidators.submit}>
                 <FormTab label="Основное">
-                    <KladrAutocompleteBlock source="pick_up_address" />
                     <ReferenceInput label="Источник" source="source_id" reference="source">
                         <SelectInput
                             optionText="name"
@@ -83,9 +80,9 @@ export default function OrderCreate(props) {
                     <FormDataConsumer>
                         {({ formData, ...rest }) =>
                             formData.is_pickupable ? (
-                                <TextInput
+                                <KladrAutocompleteBlock
                                     source="pick_up_address"
-                                    label="Точка забора товара"
+                                    label="Адрес забора товара"
                                     validate={createOrderFormValidators.pick_up_address}
                                 />
                             ) : (
@@ -114,9 +111,9 @@ export default function OrderCreate(props) {
                     <FormDataConsumer>
                         {({ formData, ...rest }) =>
                             formData.is_deliverable ? (
-                                <TextInput
+                                <KladrAutocompleteBlock
                                     source="delivery_address"
-                                    label="Точка выдачи товара"
+                                    label="Адрес выдачи товара"
                                     validate={createOrderFormValidators.delivery_address}
                                 />
                             ) : (

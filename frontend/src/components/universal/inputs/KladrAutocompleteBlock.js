@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import KladrAutocomplete from 'stories/KladrAutocomplete';
 import fetchJsonp from 'fetch-jsonp';
 import { useThrottle } from '@app-hooks';
-import { useInput, useNotify, fetchStart, fetchEnd } from 'react-admin';
+import { useInput, useNotify, fetchStart, fetchEnd, useTranslate } from 'react-admin';
 import { useDispatch } from 'react-redux';
 import { kladrToken, kladrUrl } from '@app-helpers';
 import queryString from 'query-string';
@@ -29,15 +29,21 @@ const fetchKladrItems = ({ options, beforeFetch, afterFetch, successCallback, er
 };
 
 export function KladrAutocompleteBlock(props) {
-    const { source, validate } = props;
-    const [options, setOptions] = React.useState([]);
-    const [loading, setLoading] = React.useState(false);
-    console.log("validate", validate);
-
-    const { input, meta } = useInput({ source: source, validate: validate });
+    const { source, validate, id, label } = props;
     const dispatch = useDispatch();
     const notify = useNotify();
-    console.log('meta', meta);
+    const [options, setOptions] = React.useState([]);
+    const [loading, setLoading] = React.useState(false);
+    const translate = useTranslate();
+
+    const getValidationMsg = (msg) => {
+        if (!msg) return null;
+        return typeof msg === 'string' ? translate(msg) : translate(msg.message);
+    };
+
+    const useInputObj = useInput({ source: source, validate });
+    const { input, meta } = useInputObj;
+
     const showLoaders = () => {
         dispatch(fetchStart());
         setLoading(true);
@@ -86,14 +92,17 @@ export function KladrAutocompleteBlock(props) {
 
     return (
         <KladrAutocomplete
-            // value={value}
-            label="Адрес забора товара"
+            value={input.value}
             options={options}
             handleChange={handleChange}
             loading={loading}
             handleInput={handleInput}
             getOptionSelected={(option, value) => option.id === value.id}
-            getOptionLabel={(option) => option.fullName}
+            getOptionLabel={(option) => (typeof option === 'string' ? option : option.fullName)}
+            error={meta.submitFailed || meta.submitSucceeded ? meta.invalid : false}
+            helperText={getValidationMsg(meta.error)}
+            id={id}
+            label={label}
         />
     );
 }
