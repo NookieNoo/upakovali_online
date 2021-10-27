@@ -1,10 +1,20 @@
-
 import React from 'react';
+import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-export default function KladrAutocomplete({value, handleChange, options, handleInput, filterOptionsCallback, loading}) {
+export default function KladrAutocomplete({
+    value,
+    handleChange,
+    options,
+    handleInput,
+    filterOptionsCallback,
+    loading,
+    getOptionSelected,
+    getOptionLabel,
+    label
+}) {
     const [open, setOpen] = React.useState(false);
     const filterOptions = filterOptionsCallback ? filterOptionsCallback : (x) => x;
 
@@ -19,14 +29,8 @@ export default function KladrAutocomplete({value, handleChange, options, handleI
             onClose={() => {
                 setOpen(false);
             }}
-            getOptionSelected={(option, value) => {
-                // console.log(option, value);
-                return option.id === value.id;
-            }}
-            getOptionLabel={(option) => {
-                // console.log(option);
-                return option.fullName}
-            }
+            getOptionSelected={getOptionSelected}
+            getOptionLabel={getOptionLabel}
             options={options}
             filterOptions={filterOptions}
             loading={loading}
@@ -35,7 +39,7 @@ export default function KladrAutocomplete({value, handleChange, options, handleI
             renderInput={(params) => (
                 <TextField
                     {...params}
-                    label="Asynchronous"
+                    label={label}
                     variant="outlined"
                     onChange={handleInput}
                     InputProps={{
@@ -52,3 +56,13 @@ export default function KladrAutocomplete({value, handleChange, options, handleI
         />
     );
 }
+
+KladrAutocomplete.defaultProps = {
+    getOptionSelected: (option, value) => option === value,
+    getOptionLabel: (option) => option.label,
+    label: "Asynchronous"
+};
+
+KladrAutocomplete.propTypes = {
+    handleChange: PropTypes.func,
+};

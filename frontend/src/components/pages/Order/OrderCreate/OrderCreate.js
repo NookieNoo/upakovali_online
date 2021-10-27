@@ -14,15 +14,19 @@ import {
 } from 'react-admin';
 import { userRoles } from '@app-constants';
 import { createOrderFormValidators } from '@app-helpers';
+import { KladrAutocompleteBlock } from '@app-universal';
 
 const courierFilter = { role_id: userRoles.courier.id };
 const masterFilter = { role_id: userRoles.master.id };
+
+// const transform = data =>
 
 export default function OrderCreate(props) {
     return (
         <Create {...props} title="Создание заказа">
             <TabbedForm validate={createOrderFormValidators.submit}>
                 <FormTab label="Основное">
+                    <KladrAutocompleteBlock source="pick_up_address" />
                     <ReferenceInput label="Источник" source="source_id" reference="source">
                         <SelectInput
                             optionText="name"

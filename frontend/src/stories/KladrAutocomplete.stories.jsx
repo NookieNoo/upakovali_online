@@ -9,21 +9,6 @@ export default {
     component: KladrAutocomplete,
 };
 
-const fetchItems = (beforeFetch, afterFetch, successCallback) => {
-    beforeFetch();
-    fetch(`https://jsonplaceholder.typicode.com/todos`)
-        .then((response) => {
-            return response.json();
-        })
-        .then((data) => {
-            successCallback(data);
-        })
-        .catch((e) => {
-            console.log(e);
-        })
-        .finally(() => afterFetch());
-};
-
 const fetchKladrItems = (query, beforeFetch, afterFetch, successCallback) => {
     beforeFetch();
 
@@ -57,11 +42,6 @@ const Template = (args) => {
     console.log('value', value);
 
     React.useEffect(() => {
-        // fetchItems(
-        //     () => setLoading(true),
-        //     () => setLoading(false),
-        //     (data) => setOptions(data)
-        // );
         fetchKladrItems(
             '',
             () => setLoading(true),
@@ -69,15 +49,6 @@ const Template = (args) => {
             (data) => setOptions(data)
         );
     }, []);
-
-    const loadingCallback = (e) => {
-        console.log(e.target.value);
-        fetchItems(
-            () => setLoading(true),
-            () => setLoading(false),
-            (data) => setOptions(data)
-        );
-    };
 
     const loadingCallback2 = (e) => {
         console.log(e.target.value);
@@ -89,18 +60,18 @@ const Template = (args) => {
         );
     };
 
-    const throttledFetch = useThrottle(loadingCallback, 2000);
     const throttledKladrFetch = useThrottle(loadingCallback2, 2000);
 
     return (
         <KladrAutocomplete
             {...args}
-            value={value}
+            // value={value}
             options={options}
             handleChange={handleChange}
             loading={loading}
-            // handleInput={throttledFetch}
             handleInput={throttledKladrFetch}
+            getOptionSelected={(option, value) => option.id === value.id}
+            getOptionLabel={(option) => option.fullName}
         />
     );
 };
