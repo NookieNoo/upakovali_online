@@ -15,6 +15,7 @@ import {
 import { userRoles } from '@app-constants';
 import { createOrderFormValidators } from '@app-helpers';
 import { KladrAutocompleteBlock } from '@app-universal';
+import { SelectInputWrap } from '@app-components/overriding';
 
 const courierFilter = { role_id: userRoles.courier.id };
 const masterFilter = { role_id: userRoles.master.id };
@@ -25,10 +26,11 @@ export default function OrderCreate(props) {
             <TabbedForm validate={createOrderFormValidators.submit}>
                 <FormTab label="Основное">
                     <ReferenceInput label="Источник" source="source_id" reference="source">
-                        <SelectInput
+                        <SelectInputWrap
                             optionText="name"
                             optionValue="id"
                             validate={createOrderFormValidators.source_id}
+                            getDefaultValue={(choices) => choices[0].id}
                         />
                     </ReferenceInput>
                     <ReferenceInput label="Партнер" source="parthner_id" reference="parthner">
