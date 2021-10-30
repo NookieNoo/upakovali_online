@@ -7,7 +7,7 @@ class Service extends BaseModel
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $additionalHidden = ['price_id', 'product'];
+        $additionalHidden = ['price_id', 'product_id'];
         $this->hidden = array_merge($this->hidden, $additionalHidden);
     }
 

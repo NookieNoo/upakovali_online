@@ -4,10 +4,12 @@ import {
     ImageField,
     TextField,
     RichTextField,
+    ArrayField,
     BooleanField,
     DateField,
     TabbedShowLayout,
     Tab,
+    Datagrid,
     useShowController,
 } from 'react-admin';
 import Aside from './Aside';
@@ -31,6 +33,16 @@ export default function OrderShow(props) {
                     <TextField label="Клиент" source="client.full_name" />
                     <TextField label="Мастерская" source="workshop.address" />
                     <RichTextField label="Комментарий" source="comment" />
+                    <ArrayField source="gifts" fieldKey="id" label="Подарки">
+                        <Datagrid>
+                            <TextField source="id" />
+                            <TextField source="weight" label="Вес" />
+                            <TextField source="addressee.name" label="Кому" />
+                            <TextField source="service.name" label="Название услуги" />
+                            <TextField source="service.price.price" label="Цена" />
+                            <TextField source="service.product.name" label="Тип услуги" />
+                        </Datagrid>
+                    </ArrayField>
                 </Tab>
                 {/* Размер из прайса */}
                 <Tab label="Доставка">
