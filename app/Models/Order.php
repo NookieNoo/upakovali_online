@@ -11,7 +11,8 @@ class Order extends BaseModel
 {
     public static $supportedRelations = ['source', 'parthner', 'client', 'workshop', 'addressee', 'pickUpPoint',
         'deliveryPoint', 'courierReceiver', 'courierIssuer', 'master', 'receiver', 'history', 'history.status',
-        'history.user', 'history.user.role', 'orderStatus', 'orderPhotos'];
+        'history.user', 'history.user.role', 'orderStatus', 'orderPhotos', 'gifts', 'gifts.addressee', 'gifts.service',
+        'gifts.service.price', 'gifts.service.product'];
 
     public function __construct(array $attributes = [])
     {
@@ -89,6 +90,11 @@ class Order extends BaseModel
     public function orderPhotos()
     {
         return $this->hasMany(OrderPhoto::class);
+    }
+
+    public function gifts()
+    {
+        return $this->hasMany(Gift::class);
     }
 
     public function scopeWithAllRelations($query)
