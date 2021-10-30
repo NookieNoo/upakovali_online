@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Order\OrderGetRequest;
 use App\Http\Requests\Order\OrderStoreRequest;
 use App\Http\Requests\Order\OrderUpdateRequest;
+use App\Models\Gift;
 use App\Models\Order;
 use App\Models\OrderHistory;
 use App\Models\OrderStatus;
@@ -14,6 +15,8 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
+use App\Enums\OrderStatus as OrderStatusEnum;
 
 class OrderController extends Controller
 {
@@ -44,9 +47,24 @@ class OrderController extends Controller
             return $this->sendError('Доступ закрыт', Response::HTTP_FORBIDDEN);
         }
         try {
-            $validatedData = $request->validated();
-            $validatedData['order_status_id'] = OrderStatus::first()->id;
-            $order = Order::create($validatedData);
+            $order = DB::transaction(function () use ($request) {
+                $validatedData = $request->validated();
+                $validatedData['order_status_id'] = OrderStatus::first()->id;
+                $order = Order::create($validatedData);
+
+                foreach($validatedData['gifts'] as $giftData) {
+                    $gift = Gift::create(array_merge($giftData, ['order_id' => $order->id]));
+                }
+
+                $orderHistory = OrderHistory::create([
+                    'order_id' => $order->id,
+                    'status_id' => OrderStatusEnum::CREATED,
+                    'user_id' => $request->user()->id,
+                    'date' => Carbon::now(),
+                ]);
+
+                return $order;
+            });
         } catch (\Exception $e) {
             return $this->sendError('Не удалось создать заказ', Response::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
         }

@@ -11,6 +11,8 @@ import {
     ImageField,
     TabbedForm,
     FormTab,
+    ArrayInput,
+    SimpleFormIterator,
 } from 'react-admin';
 import { userRoles } from '@app-constants';
 import { createOrderFormValidators } from '@app-helpers';
@@ -59,6 +61,29 @@ export default function OrderCreate(props) {
                             validate={createOrderFormValidators.workshop_id}
                         />
                     </ReferenceInput>
+                    <ArrayInput source="gifts" label="Подарки" validate={createOrderFormValidators.gifts}>
+                        <SimpleFormIterator>
+                            <TextInput
+                                source="weight"
+                                label="Вес (кг)"
+                                validate={createOrderFormValidators['gifts.weight']}
+                            />
+                            <ReferenceInput label="Кому" source="addressee_id" reference="addressee">
+                                <SelectInput
+                                    optionText="name"
+                                    optionValue="id"
+                                    validate={createOrderFormValidators['gifts.addressee_id']}
+                                />
+                            </ReferenceInput>
+                            <ReferenceInput label="Размер подарка (см)" source="service_id" reference="service">
+                                <SelectInput
+                                    optionText="name"
+                                    optionValue="id"
+                                    validate={createOrderFormValidators['gifts.service_id']}
+                                />
+                            </ReferenceInput>
+                        </SimpleFormIterator>
+                    </ArrayInput>
                 </FormTab>
 
                 {/* Размер из прайса */}

@@ -88,6 +88,7 @@ const App = () => (
         <Resource name="addressee" />
         <Resource name="role" />
         <Resource name="order_status" />
+        <Resource name="service" />
     </Admin>
 );
 

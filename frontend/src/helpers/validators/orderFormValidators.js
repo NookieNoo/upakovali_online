@@ -1,4 +1,4 @@
-import { required, maxLength } from 'react-admin';
+import { required, maxLength, number, minValue } from 'react-admin';
 
 const submitValidator = ({
     is_pickupable,
@@ -33,6 +33,10 @@ const createOrderFormValidators = {
     external_number: [maxLength(255)],
     client_id: [required()],
     workshop_id: [required()],
+    gifts: [required()],
+    'gifts.weight': [required(), number(), minValue(0.1)],
+    'gifts.addressee_id': [required()],
+    'gifts.service_id': [required()],
     addressee_id: [required()],
     pick_up_point_id: [],
     pick_up_address: [maxLength(255)],

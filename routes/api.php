@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\V1\OrderController;
 use App\Http\Controllers\Api\V1\OrderStatusController;
 use App\Http\Controllers\Api\V1\ParthnerController;
 use App\Http\Controllers\Api\V1\RoleController;
+use App\Http\Controllers\Api\V1\ServiceController;
 use App\Http\Controllers\Api\V1\SourceController;
 use App\Http\Controllers\Api\V1\UserController;
 use App\Http\Controllers\Api\V1\WorkshopController;
@@ -83,6 +84,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::prefix('order_status')->group(function () {
         Route::get('/', [OrderStatusController::class, 'index']);
+    });
+
+    Route::prefix('service')->group(function () {
+        Route::get('/', [ServiceController::class, 'index']);
     });
 
     Route::post('/logout', [AuthController::class, 'logout']);
