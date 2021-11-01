@@ -49,13 +49,12 @@ export default function OrderCreate(props) {
                         label="Внешний номер"
                         validate={createOrderFormValidators.external_number}
                     />
-                    <ReferenceInput label="Клиент" source="client_id" reference="client">
-                        <SelectInput
-                            optionText="full_name"
-                            optionValue="id"
-                            validate={createOrderFormValidators.client_id}
-                        />
-                    </ReferenceInput>
+                    <AutocompleteWithRef
+                        label="Клиент"
+                        source="client_id"
+                        reference="client"
+                        validate={createOrderFormValidators.client_id}
+                    />
                     <ReferenceInput label="Мастерская" source="workshop_id" reference="workshop">
                         <SelectInput
                             optionText="address"
@@ -190,31 +189,20 @@ export default function OrderCreate(props) {
 
                     <TextInput label="Комментарий" source="comment" validate={createOrderFormValidators.comment} />
 
-                    <ReferenceInput
+                    <AutocompleteWithRef
                         label="Курьер принимающий"
                         source="courier_receiver_id"
                         reference="user"
                         filter={courierFilter}
-                    >
-                        <SelectInput
-                            optionText="full_name"
-                            optionValue="id"
-                            validate={createOrderFormValidators.courier_receiver_id}
-                        />
-                    </ReferenceInput>
-
-                    <ReferenceInput
+                        validate={createOrderFormValidators.courier_receiver_id}
+                    />
+                    <AutocompleteWithRef
                         label="Курьер выдающий"
                         source="courier_issuer_id"
                         reference="user"
                         filter={courierFilter}
-                    >
-                        <SelectInput
-                            optionText="full_name"
-                            optionValue="id"
-                            validate={createOrderFormValidators.courier_issuer_id}
-                        />
-                    </ReferenceInput>
+                        validate={createOrderFormValidators.courier_issuer_id}
+                    />
 
                     {/* Цена */}
 
@@ -224,20 +212,21 @@ export default function OrderCreate(props) {
                         validate={createOrderFormValidators.isPaid}
                         initialValue={false}
                     />
-                    <ReferenceInput label="Мастер" source="master_id" reference="user" filter={masterFilter}>
-                        <SelectInput
-                            optionText="full_name"
-                            optionValue="id"
-                            validate={createOrderFormValidators.master_id}
-                        />
-                    </ReferenceInput>
-                    <ReferenceInput label="Получатель" source="receiver_id" reference="client">
-                        <SelectInput
-                            optionText="full_name"
-                            optionValue="id"
-                            validate={createOrderFormValidators.receiver_id}
-                        />
-                    </ReferenceInput>
+
+                    <AutocompleteWithRef
+                        label="Мастер"
+                        source="master_id"
+                        reference="user"
+                        filter={masterFilter}
+                        validate={createOrderFormValidators.master_id}
+                    />
+
+                    <AutocompleteWithRef
+                        label="Получатель"
+                        source="receiver_id"
+                        reference="client"
+                        validate={createOrderFormValidators.receiver_id}
+                    />
                 </FormTab>
 
                 <FormTab label="Файлы">
