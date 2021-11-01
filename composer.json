@@ -7,14 +7,15 @@
     "require": {
         "php": "^8.0",
         "ext-json": "*",
+        "barryvdh/laravel-ide-helper": "^2.10",
+        "bensampo/laravel-enum": "^3.4",
         "darkaonline/l5-swagger": "^8.0",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "infureal/artisan-gui": "^2.0",
         "laravel/framework": "^8.54",
         "laravel/sanctum": "^2.11",
-        "laravel/tinker": "^2.5",
-        "barryvdh/laravel-ide-helper": "^2.10"
+        "laravel/tinker": "^2.5"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
