@@ -12,11 +12,11 @@ import {
     TabbedForm,
     FormTab,
     ArrayInput,
-    SimpleFormIterator
+    SimpleFormIterator,
 } from 'react-admin';
 import { editOrderFormValidators } from '@app-helpers';
 import { userRoles, serviceTypes } from '@app-constants';
-import { KladrAutocompleteBlock } from '@app-universal';
+import { KladrAutocompleteBlock, AutocompleteWithRef } from '@app-universal';
 
 const courierFilter = { role_id: userRoles.courier.id };
 const masterFilter = { role_id: userRoles.master.id };
@@ -26,7 +26,7 @@ const deliveryOrPickingFilter = { product_id: serviceTypes.PACKAGE.id };
 
 export default function OrderEdit(props) {
     return (
-        <Edit {...props} mutationMode="pessimistic" >
+        <Edit {...props} mutationMode="pessimistic">
             <TabbedForm validate={editOrderFormValidators.submit} redirect="show">
                 <FormTab label="Основное">
                     <ReferenceInput label="Источник" source="source_id" reference="source">
@@ -39,25 +39,27 @@ export default function OrderEdit(props) {
                             validate={editOrderFormValidators.order_status_id}
                         />
                     </ReferenceInput>
-                    <ReferenceInput label="Партнер" source="parthner_id" reference="parthner">
-                        <SelectInput
-                            optionText="full_name"
-                            optionValue="id"
-                            validate={editOrderFormValidators.parthner_id}
-                        />
-                    </ReferenceInput>
+
+                    <AutocompleteWithRef
+                        label="Партнер"
+                        source="parthner_id"
+                        reference="parthner"
+                        validate={editOrderFormValidators.parthner_id}
+                    />
+
                     <TextInput
                         source="external_number"
                         label="Внешний номер"
                         validate={editOrderFormValidators.external_number}
                     />
-                    <ReferenceInput label="Клиент" source="client_id" reference="client">
-                        <SelectInput
-                            optionText="full_name"
-                            optionValue="id"
-                            validate={editOrderFormValidators.client_id}
-                        />
-                    </ReferenceInput>
+
+                    <AutocompleteWithRef
+                        label="Клиент"
+                        source="client_id"
+                        reference="client"
+                        validate={editOrderFormValidators.client_id}
+                    />
+
                     <ReferenceInput label="Мастерская" source="workshop_id" reference="workshop">
                         <SelectInput
                             optionText="address"
@@ -79,7 +81,12 @@ export default function OrderEdit(props) {
                                     validate={editOrderFormValidators['gifts.addressee_id']}
                                 />
                             </ReferenceInput>
-                            <ReferenceInput label="Размер подарка (см)" source="service_id" reference="service"  filter={deliveryOrPickingFilter}>
+                            <ReferenceInput
+                                label="Размер подарка (см)"
+                                source="service_id"
+                                reference="service"
+                                filter={deliveryOrPickingFilter}
+                            >
                                 <SelectInput
                                     optionText="name"
                                     optionValue="id"
@@ -88,7 +95,11 @@ export default function OrderEdit(props) {
                             </ReferenceInput>
                         </SimpleFormIterator>
                     </ArrayInput>
-                    <ArrayInput source="additional_products" label="Дополнительные товары" validate={editOrderFormValidators.additional_products}>
+                    <ArrayInput
+                        source="additional_products"
+                        label="Дополнительные товары"
+                        validate={editOrderFormValidators.additional_products}
+                    >
                         <SimpleFormIterator>
                             <TextInput
                                 source="name"
@@ -175,49 +186,40 @@ export default function OrderEdit(props) {
 
                     <TextInput label="Комментарий" source="comment" validate={editOrderFormValidators.comment} />
 
-                    <ReferenceInput
+                    <AutocompleteWithRef
                         label="Курьер принимающий"
                         source="courier_receiver_id"
                         reference="user"
                         filter={courierFilter}
-                    >
-                        <SelectInput
-                            optionText="full_name"
-                            optionValue="id"
-                            validate={editOrderFormValidators.courier_receiver_id}
-                        />
-                    </ReferenceInput>
+                        validate={editOrderFormValidators.courier_receiver_id}
+                    />
 
-                    <ReferenceInput
+                    <AutocompleteWithRef
                         label="Курьер выдающий"
                         source="courier_issuer_id"
                         reference="user"
                         filter={courierFilter}
-                    >
-                        <SelectInput
-                            optionText="full_name"
-                            optionValue="id"
-                            validate={editOrderFormValidators.courier_issuer_id}
-                        />
-                    </ReferenceInput>
+                        validate={editOrderFormValidators.courier_issuer_id}
+                    />
 
                     {/* Цена */}
 
                     <BooleanInput label="Оплачено" source="isPaid" validate={editOrderFormValidators.isPaid} />
-                    <ReferenceInput label="Мастер" source="master_id" reference="user" filter={masterFilter}>
-                        <SelectInput
-                            optionText="full_name"
-                            optionValue="id"
-                            validate={editOrderFormValidators.master_id}
-                        />
-                    </ReferenceInput>
-                    <ReferenceInput label="Получатель" source="receiver_id" reference="client">
-                        <SelectInput
-                            optionText="full_name"
-                            optionValue="id"
-                            validate={editOrderFormValidators.receiver_id}
-                        />
-                    </ReferenceInput>
+
+                    <AutocompleteWithRef
+                        label="Мастер"
+                        source="master_id"
+                        reference="user"
+                        filter={masterFilter}
+                        validate={editOrderFormValidators.master_id}
+                    />
+
+                    <AutocompleteWithRef
+                        label="Получатель"
+                        source="receiver_id"
+                        reference="client"
+                        validate={editOrderFormValidators.receiver_id}
+                    />
                 </FormTab>
 
                 <FormTab label="Файлы">
