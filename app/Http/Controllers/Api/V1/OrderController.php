@@ -31,7 +31,7 @@ class OrderController extends Controller
             return $this->sendError('Доступ закрыт', Response::HTTP_FORBIDDEN);
         }
         return Order::withFiltersByPermission($request->user())->withFilters($request)->with('orderStatus', 'source', 'parthner',
-            'client', 'workshop', 'addressee', 'pickUpPoint', 'deliveryPoint', 'courierReceiver', 'courierIssuer', 'master')
+            'client', 'workshop', 'pickUpPoint', 'deliveryPoint', 'courierReceiver', 'courierIssuer', 'master')
             ->withOrder($request)->withPaginate($request);
     }
 
@@ -114,9 +114,28 @@ class OrderController extends Controller
             return $this->sendError('Заказ не найден.', Response::HTTP_NOT_FOUND);
         }
 
-        $validatedData = $request->validated();
+        $order = DB::transaction(function () use ($request, $order) {
+            $validatedData = $request->validated();
 
-        $order->update($validatedData);
+            if ($order->order_status_id !== $validatedData['order_status_id']) {
+                $orderHistory = OrderHistory::create([
+                    'order_id' => $order->id,
+                    'status_id' => $validatedData['order_status_id'],
+                    'user_id' => $request->user()->id,
+                    'date' => Carbon::now(),
+                ]);
+            }
+
+            $order->update($validatedData);
+
+            $order->gifts()->delete();
+
+            foreach($validatedData['gifts'] as $giftData) {
+                $gift = Gift::create(array_merge($giftData, ['order_id' => $order->id]));
+            }
+
+            return $order;
+        });
 
         return $this->send(Response::HTTP_OK, 'Данные сохранены.', $order->load(Order::$supportedRelations));
     }

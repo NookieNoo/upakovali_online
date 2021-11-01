@@ -14,13 +14,16 @@ import {
     ArrayInput,
     SimpleFormIterator,
 } from 'react-admin';
-import { userRoles } from '@app-constants';
+import { serviceTypes, userRoles } from '@app-constants';
 import { createOrderFormValidators } from '@app-helpers';
 import { KladrAutocompleteBlock } from '@app-universal';
 import { SelectInputWrap } from '@app-components/overriding';
 
 const courierFilter = { role_id: userRoles.courier.id };
 const masterFilter = { role_id: userRoles.master.id };
+
+//TODO Добавить фильтр по партнеру
+const deliveryOrPickingFilter = { product_id: serviceTypes.PACKAGE.id };
 
 export default function OrderCreate(props) {
     return (
@@ -75,7 +78,7 @@ export default function OrderCreate(props) {
                                     validate={createOrderFormValidators['gifts.addressee_id']}
                                 />
                             </ReferenceInput>
-                            <ReferenceInput label="Размер подарка (см)" source="service_id" reference="service">
+                            <ReferenceInput label="Размер подарка (см)" source="service_id" reference="service" filter={deliveryOrPickingFilter}>
                                 <SelectInput
                                     optionText="name"
                                     optionValue="id"
@@ -88,14 +91,6 @@ export default function OrderCreate(props) {
 
                 {/* Размер из прайса */}
                 <FormTab label="Доставка">
-                    <ReferenceInput label="Кому" source="addressee_id" reference="addressee">
-                        <SelectInput
-                            optionText="name"
-                            optionValue="id"
-                            validate={createOrderFormValidators.addressee_id}
-                        />
-                    </ReferenceInput>
-
                     <BooleanInput
                         label="Забор"
                         source="is_pickupable"

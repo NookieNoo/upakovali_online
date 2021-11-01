@@ -8,7 +8,7 @@ import {
     Tab,
     ReferenceManyField,
     RichTextField,
-    SimpleList,
+    ArrayField,
     Datagrid,
     ChipField,
     BooleanField,
@@ -48,7 +48,13 @@ export default function ParhtnerShow(props) {
                             </ReferenceManyField>
                         </Tab>
                         <Tab label="Прайсы">
-                            <TextField source="prices" label="Здесь должны быть прайсы" />
+                            <ArrayField source="prices" label="Список прайсов">
+                                <Datagrid>
+                                    <TextField source="id" />
+                                    <TextField source="name" label="Название"/>
+                                    <TextField source="price" label="Цена"/>
+                                </Datagrid>
+                            </ArrayField>
                         </Tab>
                     </TabbedShowLayout>
                 }

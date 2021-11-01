@@ -11,18 +11,23 @@ import {
     ImageField,
     TabbedForm,
     FormTab,
+    ArrayInput,
+    SimpleFormIterator
 } from 'react-admin';
 import { editOrderFormValidators } from '@app-helpers';
-import { userRoles } from '@app-constants';
+import { userRoles, serviceTypes } from '@app-constants';
 import { KladrAutocompleteBlock } from '@app-universal';
 
 const courierFilter = { role_id: userRoles.courier.id };
 const masterFilter = { role_id: userRoles.master.id };
 
+//TODO Добавить фильтр по партнеру
+const deliveryOrPickingFilter = { product_id: serviceTypes.PACKAGE.id };
+
 export default function OrderEdit(props) {
     return (
-        <Edit {...props} mutationMode="pessimistic">
-            <TabbedForm validate={editOrderFormValidators.submit}>
+        <Edit {...props} mutationMode="pessimistic" >
+            <TabbedForm validate={editOrderFormValidators.submit} redirect="show">
                 <FormTab label="Основное">
                     <ReferenceInput label="Источник" source="source_id" reference="source">
                         <SelectInput optionText="name" optionValue="id" validate={editOrderFormValidators.source_id} />
@@ -60,18 +65,33 @@ export default function OrderEdit(props) {
                             validate={editOrderFormValidators.workshop_id}
                         />
                     </ReferenceInput>
+                    <ArrayInput source="gifts" label="Подарки" validate={editOrderFormValidators.gifts}>
+                        <SimpleFormIterator>
+                            <TextInput
+                                source="weight"
+                                label="Вес (кг)"
+                                validate={editOrderFormValidators['gifts.weight']}
+                            />
+                            <ReferenceInput label="Кому" source="addressee_id" reference="addressee">
+                                <SelectInput
+                                    optionText="name"
+                                    optionValue="id"
+                                    validate={editOrderFormValidators['gifts.addressee_id']}
+                                />
+                            </ReferenceInput>
+                            <ReferenceInput label="Размер подарка (см)" source="service_id" reference="service"  filter={deliveryOrPickingFilter}>
+                                <SelectInput
+                                    optionText="name"
+                                    optionValue="id"
+                                    validate={editOrderFormValidators['gifts.service_id']}
+                                />
+                            </ReferenceInput>
+                        </SimpleFormIterator>
+                    </ArrayInput>
                 </FormTab>
 
                 {/* Размер из прайса */}
                 <FormTab label="Доставка">
-                    <ReferenceInput label="Кому" source="addressee_id" reference="addressee">
-                        <SelectInput
-                            optionText="name"
-                            optionValue="id"
-                            validate={editOrderFormValidators.addressee_id}
-                        />
-                    </ReferenceInput>
-
                     <BooleanInput label="Забор" source="is_pickupable" />
                     {/* @FIXME На каждое переключение идут запросы */}
                     <FormDataConsumer>
@@ -139,7 +159,7 @@ export default function OrderEdit(props) {
                         validate={editOrderFormValidators.issue_date}
                     />
 
-                    <TextInput source="comment" validate={editOrderFormValidators.comment} />
+                    <TextInput label="Комментарий" source="comment" validate={editOrderFormValidators.comment} />
 
                     <ReferenceInput
                         label="Курьер принимающий"

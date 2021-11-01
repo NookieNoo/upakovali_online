@@ -46,7 +46,6 @@ export default function OrderShow(props) {
                 </Tab>
                 {/* Размер из прайса */}
                 <Tab label="Доставка">
-                    <TextField label="Кому" source="addressee.name" />
                     <BooleanField label="Забор" source="is_pickupable" />
                     <TextField label="Точка забора товара" source="pick_up_point.address" />
                     <TextField label="Точка забора товара" source="pick_up_address" />

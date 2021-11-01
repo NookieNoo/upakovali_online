@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 
 class Order extends BaseModel
 {
-    public static $supportedRelations = ['source', 'parthner', 'client', 'workshop', 'addressee', 'pickUpPoint',
+    public static $supportedRelations = ['source', 'parthner', 'client', 'workshop', 'pickUpPoint',
         'deliveryPoint', 'courierReceiver', 'courierIssuer', 'master', 'receiver', 'history', 'history.status',
         'history.user', 'history.user.role', 'orderStatus', 'orderPhotos', 'gifts', 'gifts.addressee', 'gifts.service',
         'gifts.service.price', 'gifts.service.product'];
@@ -17,7 +17,7 @@ class Order extends BaseModel
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $additionalHidden = ['order_status_id', 'source_id', 'parthner_id', 'client_id', 'workshop_id', "addressee_id", 'pick_up_point_id',
+        $additionalHidden = ['order_status_id', 'source_id', 'parthner_id', 'client_id', 'workshop_id', 'pick_up_point_id',
             'delivery_point_id', 'courier_receiver_id', 'courier_issuer_id', 'master_id', 'receiver_id'];
         $this->hidden = array_merge($this->hidden, $additionalHidden);
     }
@@ -45,11 +45,6 @@ class Order extends BaseModel
     public function workshop()
     {
         return $this->belongsTo(Workshop::class);
-    }
-
-    public function addressee()
-    {
-        return $this->belongsTo(Addressee::class);
     }
 
     public function pickUpPoint()
@@ -121,9 +116,6 @@ class Order extends BaseModel
             })
             ->when($request->query('workshop_id'), function (Builder $query, $workshopId) {
                 $query->where($this->getTable() . ".workshop_id", $workshopId);
-            })
-            ->when($request->query('addressee_id'), function (Builder $query, $addresseeId) {
-                $query->where($this->getTable() . ".addressee_id", $addresseeId);
             })
             ->when($request->query('isPaid'), function (Builder $query, $isPaid) {
                 $query->where($this->getTable() . ".isPaid", $isPaid);

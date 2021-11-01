@@ -37,7 +37,6 @@ class OrderFactory extends Factory
             'external_number' => $this->faker->uuid(),
             'client_id' => fn() => Client::inRandomOrder()->first()->id,
             'workshop_id' => fn() => Workshop::inRandomOrder()->first()->id,
-            'addressee_id' => fn() => Addressee::inRandomOrder()->first()->id,
             'is_pickupable' => $isPickupable,
             'pick_up_point_id' => $isPickupable ? null : fn() => Workshop::inRandomOrder()->first()->id,
             'pick_up_address' => $isPickupable ? $this->faker->address() : null,

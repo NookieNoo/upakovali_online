@@ -31,7 +31,10 @@ export const dataProvider = {
             if (resource === 'parthner') {
                 json.data.manager_id = json.data.manager.id;
             } else if (resource === 'order') {
-                json.data.addressee_id = json.data.addressee?.id;
+                json.data.gifts.forEach((it) => {
+                    it.addressee_id = it.addressee.id;
+                    it.service_id = it.service.id;
+                });
                 json.data.client_id = json.data.client?.id;
                 json.data.courier_issuer_id = json.data.courier_issuer?.id;
                 json.data.courier_receiver_id = json.data.courier_receiver?.id;
@@ -64,7 +67,7 @@ export const dataProvider = {
         const transformedField = splittedField.length > 1 ? splittedField[0] + '_id' : field;
 
         let referenceFilterFields = {};
-        target.split(',').forEach(it => {
+        target.split(',').forEach((it) => {
             referenceFilterFields[it] = fk_id;
         });
 

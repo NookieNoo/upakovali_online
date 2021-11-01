@@ -30,7 +30,6 @@ class OrderUpdateRequest extends JsonRequest
             'external_number' => 'nullable|string|max:255',
             'client_id' => 'required|integer|min:1|exists:clients,id',
             'workshop_id' => 'required|integer|min:1|exists:workshops,id',
-            'addressee_id' => 'required|integer|min:1|exists:addressees,id',
             'is_pickupable' => 'nullable|boolean',
             'pick_up_point_id' => 'nullable|integer|min:1|exists:workshops,id',
             'pick_up_address' => 'nullable|string|max:255',
@@ -45,6 +44,10 @@ class OrderUpdateRequest extends JsonRequest
             'isPaid' => 'nullable|boolean',
             'master_id' => 'nullable|integer|min:1|exists:users,id,role_id,3',
             'receiver_id' => 'required|integer|min:1|exists:clients,id',
+            'gifts' => 'array',
+            'gifts.*.weight' => 'required|numeric|min:0.1',
+            'gifts.*.addressee_id' => 'required|integer|min:1|exists:addressees,id',
+            'gifts.*.service_id' => 'required|integer|min:1|exists:services,id',
         ];
     }
 }

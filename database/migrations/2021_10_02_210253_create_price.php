@@ -17,12 +17,12 @@ class CreatePrice extends Migration
             $table->id();
             $table->string('name');
             $table->decimal('price');
-            $table->unsignedInteger('parther_id');
+            $table->unsignedInteger('parthner_id');
             $table->timestamps();
         });
 
         Schema::table('prices', function (Blueprint $table) {
-            $table->foreign('parther_id')->references('id')->on('parthners');
+            $table->foreign('parthner_id')->references('id')->on('parthners');
         });
     }
 
@@ -34,7 +34,7 @@ class CreatePrice extends Migration
     public function down()
     {
         Schema::table('prices', function (Blueprint $table) {
-            $table->dropForeign(['parther_id']);
+            $table->dropForeign(['parthner_id']);
         });
         Schema::dropIfExists('prices');
     }

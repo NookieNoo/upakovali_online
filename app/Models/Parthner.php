@@ -24,6 +24,11 @@ class Parthner extends BaseModel
         return $this->hasMany(Order::class);
     }
 
+    public function prices()
+    {
+        return $this->hasMany(Price::class);
+    }
+
     public function scopeWithFilters($query, Request $request)
     {
         return $query->when($request->query('query'), function (Builder $query, $queryParam) {

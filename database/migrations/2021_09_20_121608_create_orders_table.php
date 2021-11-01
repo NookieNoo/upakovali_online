@@ -21,7 +21,6 @@ class CreateOrdersTable extends Migration
             $table->string('external_number')->nullable();
             $table->unsignedInteger('client_id');
             $table->unsignedInteger('workshop_id');
-            $table->unsignedInteger('addressee_id');
             $table->boolean('is_pickupable');
             $table->unsignedInteger('pick_up_point_id')->comment('Точка забора товара')->nullable();
             $table->string('pick_up_address')->comment('Точка забора товара')->nullable();
@@ -47,7 +46,6 @@ class CreateOrdersTable extends Migration
             $table->foreign('parthner_id')->references('id')->on('parthners');
             $table->foreign('client_id')->references('id')->on('clients');
             $table->foreign('workshop_id')->references('id')->on('workshops');
-            $table->foreign('addressee_id')->references('id')->on('addressees');
             $table->foreign('pick_up_point_id')->references('id')->on('workshops');
             $table->foreign('delivery_point_id')->references('id')->on('workshops');
             $table->foreign('courier_receiver_id')->references('id')->on('users');
@@ -70,7 +68,6 @@ class CreateOrdersTable extends Migration
             $table->dropForeign(['parthner_id']);
             $table->dropForeign(['client_id']);
             $table->dropForeign(['workshop_id']);
-            $table->dropForeign(['addressee_id']);
             $table->dropForeign(['pick_up_point_id']);
             $table->dropForeign(['delivery_point_id']);
             $table->dropForeign(['courier_receiver_id']);

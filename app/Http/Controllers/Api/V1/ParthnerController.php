@@ -87,7 +87,7 @@ class ParthnerController extends Controller
     public function show(Request $request, $id)
     {
         try {
-            $parthner = Parthner::with('manager', 'manager.role')->findOrFail($id);
+            $parthner = Parthner::with('manager', 'manager.role', 'prices')->findOrFail($id);
             if ($request->user()->cannot('view', $parthner, Parthner::class)) {
                 return $this->sendError('Доступ закрыт', Response::HTTP_FORBIDDEN);
             }

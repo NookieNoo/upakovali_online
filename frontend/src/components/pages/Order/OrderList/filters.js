@@ -22,9 +22,6 @@ const adminFilters = [
     <ReferenceInput label="Мастерская" source="workshop_id" reference="workshop">
         <SelectInput optionText="address" optionValue="id" />
     </ReferenceInput>,
-    <ReferenceInput label="Кому" source="addressee_id" reference="addressee" alwaysOn>
-        <SelectInput optionText="name" optionValue="id" />
-    </ReferenceInput>,
     <ReferenceInput label="Курьер принимающий" source="courier_receiver_id" reference="user" filter={courierFilter}>
         <SelectInput optionText="full_name" optionValue="id" />
     </ReferenceInput>,
@@ -70,9 +67,6 @@ const masterFilters = [
     <TextInput source="external_number" label="Внешний номер" />,
     <ReferenceInput label="Мастерская" source="workshop_id" reference="workshop">
         <SelectInput optionText="address" optionValue="id" />
-    </ReferenceInput>,
-    <ReferenceInput label="Кому" source="addressee_id" reference="addressee" alwaysOn>
-        <SelectInput optionText="name" optionValue="id" />
     </ReferenceInput>,
     <BooleanInput label="Оплачено" source="isPaid" />,
     <ReferenceInput label="Получатель" source="receiver_id" reference="client">
