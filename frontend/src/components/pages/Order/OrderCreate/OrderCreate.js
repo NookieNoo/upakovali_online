@@ -16,7 +16,7 @@ import {
 } from 'react-admin';
 import { serviceTypes, userRoles } from '@app-constants';
 import { createOrderFormValidators } from '@app-helpers';
-import { KladrAutocompleteBlock } from '@app-universal';
+import { KladrAutocompleteBlock, AutocompleteWithRef } from '@app-universal';
 import { SelectInputWrap } from '@app-components/overriding';
 
 const courierFilter = { role_id: userRoles.courier.id };
@@ -28,7 +28,7 @@ const deliveryOrPickingFilter = { product_id: serviceTypes.PACKAGE.id };
 export default function OrderCreate(props) {
     return (
         <Create {...props} title="Создание заказа">
-            <TabbedForm validate={createOrderFormValidators.submit}>
+            <TabbedForm validate={createOrderFormValidators.submit} redirect="show">
                 <FormTab label="Основное">
                     <ReferenceInput label="Источник" source="source_id" reference="source">
                         <SelectInputWrap
@@ -38,13 +38,12 @@ export default function OrderCreate(props) {
                             getDefaultValue={(choices) => choices[0].id}
                         />
                     </ReferenceInput>
-                    <ReferenceInput label="Партнер" source="parthner_id" reference="parthner">
-                        <SelectInput
-                            optionText="full_name"
-                            optionValue="id"
-                            validate={createOrderFormValidators.parthner_id}
-                        />
-                    </ReferenceInput>
+                    <AutocompleteWithRef
+                        label="Партнер"
+                        source="parthner_id"
+                        reference="parthner"
+                        validate={createOrderFormValidators.parthner_id}
+                    />
                     <TextInput
                         source="external_number"
                         label="Внешний номер"
@@ -78,7 +77,12 @@ export default function OrderCreate(props) {
                                     validate={createOrderFormValidators['gifts.addressee_id']}
                                 />
                             </ReferenceInput>
-                            <ReferenceInput label="Размер подарка (см)" source="service_id" reference="service" filter={deliveryOrPickingFilter}>
+                            <ReferenceInput
+                                label="Размер подарка (см)"
+                                source="service_id"
+                                reference="service"
+                                filter={deliveryOrPickingFilter}
+                            >
                                 <SelectInput
                                     optionText="name"
                                     optionValue="id"
@@ -87,7 +91,11 @@ export default function OrderCreate(props) {
                             </ReferenceInput>
                         </SimpleFormIterator>
                     </ArrayInput>
-                    <ArrayInput source="additional_products" label="Дополнительные товары" validate={createOrderFormValidators.additional_products}>
+                    <ArrayInput
+                        source="additional_products"
+                        label="Дополнительные товары"
+                        validate={createOrderFormValidators.additional_products}
+                    >
                         <SimpleFormIterator>
                             <TextInput
                                 source="name"

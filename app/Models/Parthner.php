@@ -34,6 +34,11 @@ class Parthner extends BaseModel
         return $query->when($request->query('query'), function (Builder $query, $queryParam) {
             $query->where(DB::raw("LOWER(" . $this->getTable() . ".full_name)"), 'LIKE', "%" . mb_strtolower($queryParam) . "%");
         })
+            ->when($request->query('q'), function (Builder $query, $q) {
+                $query->where(DB::raw("LOWER(" . $this->getTable() . ".full_name)"), 'LIKE', "%" . mb_strtolower($q) . "%")
+                    ->orWhere(DB::raw("LOWER(" . $this->getTable() . ".phone)"), 'LIKE', "%" . mb_strtolower($q) . "%")
+                    ->orWhere(DB::raw("LOWER(" . $this->getTable() . ".email)"), 'LIKE', "%" . mb_strtolower($q) . "%");
+            })
             ->when($request->query('manager_id'), function (Builder $query, $roleId) {
                 $query->where($this->getTable() . ".manager_id", $roleId);
             });

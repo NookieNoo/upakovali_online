@@ -58,8 +58,10 @@ class OrderController extends Controller
                     $gift = Gift::create(array_merge($giftData, ['order_id' => $order->id]));
                 }
 
-                foreach($validatedData['additional_products'] as $productData) {
-                    $product = AdditionalProduct::create(array_merge($productData, ['order_id' => $order->id]));
+                if (!empty($validatedData['additional_products'])) {
+                    foreach($validatedData['additional_products'] as $productData) {
+                        $product = AdditionalProduct::create(array_merge($productData, ['order_id' => $order->id]));
+                    }
                 }
 
                 $orderHistory = OrderHistory::create([
@@ -143,7 +145,7 @@ class OrderController extends Controller
             foreach($validatedData['additional_products'] as $productData) {
                 $product = AdditionalProduct::create(array_merge($productData, ['order_id' => $order->id]));
             }
-            
+
             return $order;
         });
 
