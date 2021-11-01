@@ -43,6 +43,7 @@ export default function OrderShow(props) {
                             <TextField source="service.product.name" label="Тип услуги" />
                         </Datagrid>
                     </ArrayField>
+                    <TextField label="Итоговая стоимость" source="total" />
                 </Tab>
                 {/* Размер из прайса */}
                 <Tab label="Доставка">

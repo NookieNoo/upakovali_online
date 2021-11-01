@@ -97,6 +97,16 @@ class Order extends BaseModel
         $query->with(self::$supportedRelations);
     }
 
+    public function getTotalAttribute()
+    {
+        $gifts = $this->gifts;
+        $total = 0;
+        foreach ($gifts as $gift) {
+            $total += $gift->service->price->price;
+        }
+        return $total;
+    }
+
     public function scopeWithFilters($query, Request $request)
     {
         return $query->when($request->query('source_id'), function (Builder $query, $sourceId) {

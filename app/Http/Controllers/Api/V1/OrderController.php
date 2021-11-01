@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Order\OrderGetRequest;
 use App\Http\Requests\Order\OrderStoreRequest;
 use App\Http\Requests\Order\OrderUpdateRequest;
+use App\Http\Resources\OrderShowOneResource;
 use App\Models\Gift;
 use App\Models\Order;
 use App\Models\OrderHistory;
@@ -93,7 +94,7 @@ class OrderController extends Controller
             return $this->sendError('Заказ не найден', Response::HTTP_NOT_FOUND);
         }
 
-        return $this->send(Response::HTTP_OK, null, $order);
+        return $this->send(Response::HTTP_OK, null, new OrderShowOneResource($order));
     }
 
     /**
