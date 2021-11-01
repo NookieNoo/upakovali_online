@@ -48,6 +48,9 @@ class OrderUpdateRequest extends JsonRequest
             'gifts.*.weight' => 'required|numeric|min:0.1',
             'gifts.*.addressee_id' => 'required|integer|min:1|exists:addressees,id',
             'gifts.*.service_id' => 'required|integer|min:1|exists:services,id',
+            'additional_products' => 'array',
+            'additional_products.*.price' => 'numeric|min:0.1',
+            'additional_products.*.name' => 'string|max:255',
         ];
     }
 }

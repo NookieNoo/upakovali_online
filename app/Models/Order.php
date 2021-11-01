@@ -12,7 +12,7 @@ class Order extends BaseModel
     public static $supportedRelations = ['source', 'parthner', 'client', 'workshop', 'pickUpPoint',
         'deliveryPoint', 'courierReceiver', 'courierIssuer', 'master', 'receiver', 'history', 'history.status',
         'history.user', 'history.user.role', 'orderStatus', 'orderPhotos', 'gifts', 'gifts.addressee', 'gifts.service',
-        'gifts.service.price', 'gifts.service.product'];
+        'gifts.service.price', 'gifts.service.product', 'additionalProducts'];
 
     public function __construct(array $attributes = [])
     {
@@ -90,6 +90,11 @@ class Order extends BaseModel
     public function gifts()
     {
         return $this->hasMany(Gift::class);
+    }
+
+    public function additionalProducts()
+    {
+        return $this->hasMany(AdditionalProduct::class);
     }
 
     public function scopeWithAllRelations($query)

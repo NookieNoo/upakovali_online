@@ -7,6 +7,7 @@ use App\Http\Requests\Order\OrderGetRequest;
 use App\Http\Requests\Order\OrderStoreRequest;
 use App\Http\Requests\Order\OrderUpdateRequest;
 use App\Http\Resources\OrderShowOneResource;
+use App\Models\AdditionalProduct;
 use App\Models\Gift;
 use App\Models\Order;
 use App\Models\OrderHistory;
@@ -55,6 +56,10 @@ class OrderController extends Controller
 
                 foreach($validatedData['gifts'] as $giftData) {
                     $gift = Gift::create(array_merge($giftData, ['order_id' => $order->id]));
+                }
+
+                foreach($validatedData['additional_products'] as $productData) {
+                    $product = AdditionalProduct::create(array_merge($productData, ['order_id' => $order->id]));
                 }
 
                 $orderHistory = OrderHistory::create([
@@ -130,11 +135,15 @@ class OrderController extends Controller
             $order->update($validatedData);
 
             $order->gifts()->delete();
-
             foreach($validatedData['gifts'] as $giftData) {
                 $gift = Gift::create(array_merge($giftData, ['order_id' => $order->id]));
             }
 
+            $order->additionalProducts()->delete();
+            foreach($validatedData['additional_products'] as $productData) {
+                $product = AdditionalProduct::create(array_merge($productData, ['order_id' => $order->id]));
+            }
+            
             return $order;
         });
 

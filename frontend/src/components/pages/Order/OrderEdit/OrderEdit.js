@@ -88,6 +88,20 @@ export default function OrderEdit(props) {
                             </ReferenceInput>
                         </SimpleFormIterator>
                     </ArrayInput>
+                    <ArrayInput source="additional_products" label="Дополнительные товары" validate={editOrderFormValidators.additional_products}>
+                        <SimpleFormIterator>
+                            <TextInput
+                                source="name"
+                                label="Название"
+                                validate={editOrderFormValidators['additional_products.name']}
+                            />
+                            <TextInput
+                                source="price"
+                                label="Стоимость"
+                                validate={editOrderFormValidators['additional_products.price']}
+                            />
+                        </SimpleFormIterator>
+                    </ArrayInput>
                 </FormTab>
 
                 {/* Размер из прайса */}

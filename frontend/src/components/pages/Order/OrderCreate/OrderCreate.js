@@ -87,6 +87,20 @@ export default function OrderCreate(props) {
                             </ReferenceInput>
                         </SimpleFormIterator>
                     </ArrayInput>
+                    <ArrayInput source="additional_products" label="Дополнительные товары" validate={createOrderFormValidators.additional_products}>
+                        <SimpleFormIterator>
+                            <TextInput
+                                source="name"
+                                label="Название"
+                                validate={createOrderFormValidators['additional_products.name']}
+                            />
+                            <TextInput
+                                source="price"
+                                label="Стоимость"
+                                validate={createOrderFormValidators['additional_products.price']}
+                            />
+                        </SimpleFormIterator>
+                    </ArrayInput>
                 </FormTab>
 
                 {/* Размер из прайса */}

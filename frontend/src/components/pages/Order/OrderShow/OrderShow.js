@@ -44,6 +44,13 @@ export default function OrderShow(props) {
                         </Datagrid>
                     </ArrayField>
                     <TextField label="Итоговая стоимость" source="total" />
+                    <ArrayField source="additional_products" fieldKey="id" label="Дополнительные товары">
+                        <Datagrid>
+                            <TextField source="id" />
+                            <TextField source="name" label="Название" />
+                            <TextField source="price" label="Цена" />
+                        </Datagrid>
+                    </ArrayField>
                 </Tab>
                 {/* Размер из прайса */}
                 <Tab label="Доставка">
