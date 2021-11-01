@@ -107,7 +107,7 @@ class Order extends BaseModel
         $gifts = $this->gifts;
         $total = 0;
         foreach ($gifts as $gift) {
-            $total += $gift->service->price->price;
+            $total += $gift->service->sum;
         }
         return $total;
     }

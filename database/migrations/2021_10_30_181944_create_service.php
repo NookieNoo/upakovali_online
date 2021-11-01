@@ -18,7 +18,7 @@ class CreateService extends Migration
             $table->unsignedInteger('price_id');
             $table->string('name');
             $table->unsignedInteger('product_id');
-//            $table->unsignedDecimal('price');
+            $table->unsignedDecimal('sum');
             $table->timestamps();
         });
 

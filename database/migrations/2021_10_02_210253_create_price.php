@@ -16,7 +16,7 @@ class CreatePrice extends Migration
         Schema::create('prices', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->decimal('price');
+//            $table->decimal('price');
             $table->unsignedInteger('parthner_id');
             $table->timestamps();
         });

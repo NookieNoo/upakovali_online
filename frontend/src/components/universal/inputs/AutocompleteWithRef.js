@@ -77,7 +77,6 @@ const AutocompleteWithRef = ({
     filter,
     ...rest
 }) => {
-    console.log(validate);
     return (
         <ReferenceInput label={label} source={source} reference={reference} filter={filter}>
             <AutocompleteInput

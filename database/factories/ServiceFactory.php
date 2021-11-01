@@ -22,7 +22,7 @@ class ServiceFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'sum' => $this->faker->randomFloat(2, 1, 1000),
         ];
     }
 }

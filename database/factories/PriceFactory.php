@@ -25,7 +25,7 @@ class PriceFactory extends Factory
 //            'Прайс для ЯМаркет', 'Прайс для WB'];
         return [
 //            'name' => \Arr::random($availablePriceNames),
-            'price' => $this->faker->randomFloat(2, 1, 1000),
+//            'price' => $this->faker->randomFloat(2, 1, 1000),
         ];
     }
 }

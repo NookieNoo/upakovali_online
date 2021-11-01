@@ -12,10 +12,16 @@ import {
     Datagrid,
     ChipField,
     BooleanField,
+    useShowController,
+    useRecordContext,
 } from 'react-admin';
 import { ShowSplitter } from '@app-universal';
+import { SimpleAccordionMemo } from '@app-universal';
 
 export default function ParhtnerShow(props) {
+    const { record } = useShowController(props);
+    // const data = useRecordContext({record});
+    // console.log('data', data);
     return (
         <Show {...props} component="div">
             <ShowSplitter
@@ -48,13 +54,17 @@ export default function ParhtnerShow(props) {
                             </ReferenceManyField>
                         </Tab>
                         <Tab label="Прайсы">
-                            <ArrayField source="prices" label="Список прайсов">
-                                <Datagrid>
-                                    <TextField source="id" />
-                                    <TextField source="name" label="Название"/>
-                                    <TextField source="price" label="Цена"/>
-                                </Datagrid>
-                            </ArrayField>
+                            {record?.prices?.map((it, index) => (
+                                <SimpleAccordionMemo key={index} heading={it.name}>
+                                    <ArrayField source={`prices[${index}].services`} label="Список прайсов">
+                                        <Datagrid>
+                                            <TextField source="id" />
+                                            <TextField source="name" label="Название" />
+                                            <TextField source="sum" label="Цена" />
+                                        </Datagrid>
+                                    </ArrayField>
+                                </SimpleAccordionMemo>
+                            ))}
                         </Tab>
                     </TabbedShowLayout>
                 }
