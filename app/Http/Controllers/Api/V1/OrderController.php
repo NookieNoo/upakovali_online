@@ -33,7 +33,7 @@ class OrderController extends Controller
             return $this->sendError('Доступ закрыт', Response::HTTP_FORBIDDEN);
         }
         return Order::withFiltersByPermission($request->user())->withFilters($request)->with('orderStatus', 'source', 'parthner',
-            'client', 'workshop', 'pickUpPoint', 'deliveryPoint', 'courierReceiver', 'courierIssuer', 'master')
+            'client', 'workshop', 'pickUpPoint', 'deliveryPoint', 'courierReceiver', 'courierIssuer', 'master', 'receiver')
             ->withOrder($request)->withPaginate($request);
     }
 

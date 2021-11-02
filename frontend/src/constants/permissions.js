@@ -28,6 +28,9 @@ let permissions = {
             show: true,
             enabled: true,
         },
+        analytics: {
+            enabled: true,
+        },
     },
     manager: {
         order: {
@@ -57,6 +60,9 @@ let permissions = {
             edit: false,
             show: true,
             enabled: true,
+        },
+        analytics: {
+            enabled: false,
         },
     },
     master: {
@@ -88,6 +94,9 @@ let permissions = {
             show: false,
             enabled: false,
         },
+        analytics: {
+            enabled: false,
+        },
     },
     courier: {
         order: {
@@ -116,6 +125,9 @@ let permissions = {
             create: false,
             edit: false,
             show: false,
+            enabled: false,
+        },
+        analytics: {
             enabled: false,
         },
     },

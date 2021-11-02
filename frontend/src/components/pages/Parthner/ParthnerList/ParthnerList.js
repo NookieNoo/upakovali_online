@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { List, Datagrid, TextField, EmailField, TextInput, SelectInput, ReferenceInput } from 'react-admin';
+import { List, TextField, EmailField, TextInput, SelectInput, ReferenceInput } from 'react-admin';
+import CustomizableDatagrid from 'ra-customizable-datagrid';
 import { userRoles } from '@app-constants';
 
 const managerFilter = { role_id: userRoles.manager.id };
@@ -14,13 +15,13 @@ const parthnerFilters = [
 export default function ParthnerList(props) {
     return (
         <List {...props} title="Партнеры" filters={parthnerFilters}>
-            <Datagrid rowClick="show" isRowSelectable={() => false}>
+            <CustomizableDatagrid rowClick="show" isRowSelectable={() => false}>
                 <TextField label="id" source="id" />
                 <TextField label="ФИО" source="full_name" />
                 <TextField label="Телефон" source="phone" />
                 <EmailField label="Email" source="email" />
                 <TextField label="Комментарий" source="comment" />
-            </Datagrid>
+            </CustomizableDatagrid>
         </List>
     );
 }
