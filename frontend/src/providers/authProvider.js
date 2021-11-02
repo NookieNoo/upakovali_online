@@ -54,7 +54,7 @@ export const authProvider = {
     // getPermissions: () => Promise.resolve(),
     getPermissions: () => {
         const user = JSON.parse(localStorage.getItem('user'));
-        const roleName = user.role.name;
+        const roleName = user?.role.name;
 
         return roleName ? Promise.resolve(permissions[roleName]) : Promise.reject();
     },
