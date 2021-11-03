@@ -14,6 +14,7 @@ import {
     BooleanField,
     useShowController,
     useRecordContext,
+    DateField
 } from 'react-admin';
 import { ShowSplitter } from '@app-universal';
 import { SimpleAccordionMemo } from '@app-universal';
@@ -55,7 +56,7 @@ export default function ParhtnerShow(props) {
                         </Tab>
                         <Tab label="Прайсы">
                             {record?.prices?.map((it, index) => (
-                                <SimpleAccordionMemo key={index} heading={it.name}>
+                                <SimpleAccordionMemo key={index} heading={it.name} secondaryHeading={`${it.start} - ${it.end}`}>
                                     <ArrayField source={`prices[${index}].services`} label="Список прайсов">
                                         <Datagrid>
                                             <TextField source="id" />

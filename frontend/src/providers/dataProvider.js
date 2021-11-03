@@ -57,7 +57,6 @@ export const dataProvider = {
         return httpClient(url).then(({ json }) => ({ data: json.data }));
     },
     getManyReference: (resource, params) => {
-        console.log('getManyReference', params);
         const { target, id: fk_id } = params;
         const { page, perPage } = params.pagination;
         const { field, order } = params.sort;

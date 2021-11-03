@@ -2,12 +2,6 @@ import { baseApiUrl } from '@app-helpers';
 import { permissions } from '@app-constants';
 
 export const authProvider = {
-    // called when the user attempts to log in
-    // login: ({ username }) => {
-    //     localStorage.setItem("username", username);
-    //     // accept all username/password combinations
-    //     return Promise.resolve();
-    // },
     login: ({ username, password }) => {
         const request = new Request(`${baseApiUrl}/login`, {
             method: 'POST',
@@ -32,13 +26,11 @@ export const authProvider = {
                 throw new Error('Не удалось аутентифицироваться');
             });
     },
-    // called when the user clicks on the logout button
     logout: () => {
         localStorage.removeItem('user');
         localStorage.removeItem('token');
         return Promise.resolve();
     },
-    // called when the API returns an error
     checkError: ({ status }) => {
         if (status === 401) {
             localStorage.removeItem('username');
@@ -46,12 +38,9 @@ export const authProvider = {
         }
         return Promise.resolve();
     },
-    // called when the user navigates to a new location, to check for authentication
     checkAuth: () => {
         return localStorage.getItem('user') ? Promise.resolve() : Promise.reject();
     },
-    // called when the user navigates to a new location, to check for permissions / roles
-    // getPermissions: () => Promise.resolve(),
     getPermissions: () => {
         const user = JSON.parse(localStorage.getItem('user'));
         const roleName = user?.role.name;
