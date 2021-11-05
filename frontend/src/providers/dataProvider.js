@@ -86,13 +86,57 @@ export const dataProvider = {
             total: json.meta.total,
         }));
     },
-    create: (resource, params) =>
-        httpClient(`${baseApiUrl}/${resource}`, {
-            method: 'POST',
-            body: JSON.stringify(params.data),
-        }).then(({ json }) => ({
-            data: json.data,
-        })),
+    // create: (resource, params) =>
+    //     httpClient(`${baseApiUrl}/${resource}`, {
+    //         method: 'POST',
+    //         body: JSON.stringify(params.data),
+    //     }).then(({ json }) => ({
+    //         data: json.data,
+    //     })),
+    create: (resource, params) => {
+        // if (params.data.order_photos) {
+        console.log("params", params);
+
+        const newPictures = params.data.order_photos.filter((p) => p.rawFile instanceof File);
+        const formerPictures = params.data.order_photos.filter((p) => !(p.rawFile instanceof File));
+        console.log(newPictures);
+        return (
+            Promise.all(newPictures.map(convertFileToBase64))
+                .then((base64Pictures) =>
+                    // base64Pictures.map((picture64) => ({
+                    //     src: picture64,
+                    //     title: `${params.data.title}`,
+                    // }))
+                    base64Pictures.map((picture64) => {
+                        return {
+                            src: picture64.result,
+                            title: picture64.title,
+                        };
+                    })
+                )
+                // .then((transformedNewPictures) =>
+                //     dataProvider.update(resource, {
+                //         ...params,
+                //         data: {
+                //             ...params.data,
+                //             order_photos: [...transformedNewPictures, ...formerPictures],
+                //         },
+                //     })
+                // )
+                .then((transformedNewPictures) =>
+                    httpClient(`${baseApiUrl}/${resource}`, {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            ...params.data,
+                            order_photos: [...transformedNewPictures, ...formerPictures],
+                        }),
+                    })
+                )
+                .then(({ json }) => ({
+                    data: json.data,
+                }))
+        );
+    },
     update: (resource, params) => {
         return httpClient(`${baseApiUrl}/${resource}/${params.id}`, {
             method: 'PUT',
@@ -120,3 +164,13 @@ export const dataProvider = {
         }).then(({ json }) => ({ data: json }));
     },
 };
+
+const convertFileToBase64 = (file) =>
+    new Promise((resolve, reject) => {
+        console.log(file);
+        const reader = new FileReader();
+        reader.onload = () => resolve({result: reader.result, title: file.title});
+        reader.onerror = reject;
+
+        reader.readAsDataURL(file.rawFile);
+    });

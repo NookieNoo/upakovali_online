@@ -11,6 +11,7 @@ use App\Models\AdditionalProduct;
 use App\Models\Gift;
 use App\Models\Order;
 use App\Models\OrderHistory;
+use App\Models\OrderPhoto;
 use App\Models\OrderStatus;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -19,6 +20,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use App\Enums\OrderStatus as OrderStatusEnum;
+use Illuminate\Support\Facades\Storage;
 
 class OrderController extends Controller
 {
@@ -70,6 +72,16 @@ class OrderController extends Controller
                     'user_id' => $request->user()->id,
                     'date' => Carbon::now(),
                 ]);
+
+                foreach($validatedData['order_photos'] as $photo) {
+                    $base64str = preg_replace('/^data:image\/\w+;base64,/', '', $photo['src']);
+                    Storage::disk('order_images')->put($order->id . '/' . $photo['title'], base64_decode($base64str));
+
+                    $orderPhoto = OrderPhoto::create([
+                        'order_id' => $order->id,
+                        'path' => '/' . basename(Storage::disk('order_images')->getAdapter()->getPathPrefix()) . '/' . $order->id . '/' . $photo['title'],
+                    ]);
+                }
 
                 return $order;
             });

@@ -23,10 +23,17 @@ import MainFormBlock from './includes/MainFormBlock';
 const courierFilter = { role_id: userRoles.courier.id };
 const masterFilter = { role_id: userRoles.master.id };
 
+const initialState = {
+    order_photos: [],
+    is_pickupable: true,
+    is_deliverable: true,
+    isPaid: false
+}
+
 export default function OrderCreate(props) {
     return (
         <Create {...props} title="Создание заказа">
-            <TabbedForm validate={createOrderFormValidators.submit} redirect="show">
+            <TabbedForm initialValues={initialState} validate={createOrderFormValidators.submit} redirect="show">
                 <FormTab label="Основное">
                     <MainFormBlock />
                 </FormTab>
@@ -37,7 +44,6 @@ export default function OrderCreate(props) {
                         label="Забор"
                         source="is_pickupable"
                         validate={createOrderFormValidators.is_pickupable}
-                        initialValue={false}
                     />
 
                     {/* @FIXME На каждое переключение идут запросы */}
@@ -69,7 +75,6 @@ export default function OrderCreate(props) {
                         label="Доставка"
                         source="is_deliverable"
                         validate={createOrderFormValidators.is_deliverable}
-                        initialValue={false}
                     />
 
                     <FormDataConsumer>
@@ -131,7 +136,6 @@ export default function OrderCreate(props) {
                         label="Оплачено"
                         source="isPaid"
                         validate={createOrderFormValidators.isPaid}
-                        initialValue={false}
                     />
 
                     <AutocompleteWithRef
@@ -156,6 +160,7 @@ export default function OrderCreate(props) {
                         label="Фото к заказу"
                         accept="image/*"
                         placeholder={<p>Прикрепите фото здесь</p>}
+                        multiple
                     >
                         <ImageField source="src" title="title" />
                     </ImageInput>

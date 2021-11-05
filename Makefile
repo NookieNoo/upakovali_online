@@ -66,3 +66,6 @@ db.query:
 
 php.shell:
 	docker exec -it $(PHP_CONTAINER_NAME) bash
+
+php.tinker:
+	docker exec -it $(PHP_CONTAINER_NAME) php artisan tinker
