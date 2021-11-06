@@ -5,10 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class Order extends BaseModel
 {
+    use LogsActivity;
+
     public static $supportedRelations = ['source', 'parthner', 'client', 'workshop', 'pickUpPoint',
         'deliveryPoint', 'courierReceiver', 'courierIssuer', 'master', 'receiver', 'history', 'history.status',
         'history.user', 'history.user.role', 'orderStatus', 'orderPhotos', 'gifts', 'gifts.addressee', 'gifts.service',
@@ -158,5 +161,12 @@ class Order extends BaseModel
             return $query->where($this->getTable() . ".master_id", $user->id);
         }
         return $query;
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logUnguarded()
+            ->logOnlyDirty();
     }
 }

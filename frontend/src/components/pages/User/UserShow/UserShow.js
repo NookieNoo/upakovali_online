@@ -8,18 +8,23 @@ import {
     Tab,
     ReferenceManyField,
     useShowController,
-    SimpleList,
+    Pagination,
     Datagrid,
     ChipField,
     BooleanField,
+    DateField,
 } from 'react-admin';
 import { ShowSplitter } from '@app-universal';
 import AvatarShowField from './AvatarShowField';
 import { userRoles } from '@app-constants';
+import { useHasAccess } from '@app-hooks';
+
+const PropertiesPanel = ({ id, record, resource }) => <div>{JSON.stringify(record.properties)}</div>;
 
 export default function UserShow(props) {
     const { record = {} } = useShowController(props);
     const { role: userRole } = record;
+    const { list: canWatchActivity } = useHasAccess('activity');
 
     const isCourier = userRole?.id === userRoles.courier.id;
     const isMaster = userRole?.id === userRoles.master.id;
@@ -98,6 +103,30 @@ export default function UserShow(props) {
                         {!isMaster && !isCourier && (
                             <Tab label="Заказы">
                                 <TextField label="Заказы отображаются только для курьеров/мастеров" />
+                            </Tab>
+                        )}
+                        {canWatchActivity && (
+                            <Tab label="Логи">
+                                <ReferenceManyField
+                                    label="Список действий пользователя"
+                                    target="user_id"
+                                    reference="activity"
+                                    perPage={10}
+                                    pagination={<Pagination />}
+                                >
+                                    <Datagrid
+                                        isRowSelectable={() => false}
+                                        isRowExpandable={(row) => row.properties}
+                                        expand={<PropertiesPanel />}
+                                    >
+                                        <TextField label="id" source="id" />
+                                        <TextField label="Тип" source="event" />
+                                        <TextField label="Сущность" source="subject_type" />
+                                        <TextField label="№" source="subject_id" />
+                                        {/* <TextField label="Поля" source="properties" sortable={false} /> */}
+                                        <DateField label="Дата" source="created_at" showTime />
+                                    </Datagrid>
+                                </ReferenceManyField>
                             </Tab>
                         )}
                         <Tab label="Комментарии">

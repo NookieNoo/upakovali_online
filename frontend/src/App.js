@@ -91,6 +91,7 @@ const App = () => (
         <Resource name="role" />
         <Resource name="order_status" />
         <Resource name="service" />
+        <Resource name="activity" />
     </Admin>
 );
 

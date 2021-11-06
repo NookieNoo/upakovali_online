@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\V1\ActivityController;
 use App\Http\Controllers\Api\V1\AddresseeController;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\ClientController;
@@ -88,6 +89,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::prefix('service')->group(function () {
         Route::get('/', [ServiceController::class, 'index']);
+    });
+
+    Route::prefix('activity')->group(function () {
+        Route::get('/', [ActivityController::class, 'index']);
     });
 
     Route::post('/logout', [AuthController::class, 'logout']);

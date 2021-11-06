@@ -5,9 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Parthner extends BaseModel
 {
+    use LogsActivity;
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
@@ -42,5 +45,12 @@ class Parthner extends BaseModel
             ->when($request->query('manager_id'), function (Builder $query, $roleId) {
                 $query->where($this->getTable() . ".manager_id", $roleId);
             });
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logUnguarded()
+            ->logOnlyDirty();
     }
 }
