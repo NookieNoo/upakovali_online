@@ -158,6 +158,20 @@ class OrderController extends Controller
                 $product = AdditionalProduct::create(array_merge($productData, ['order_id' => $order->id]));
             }
 
+            if (empty($validatedData['order_photos'])) $order->orderPhotos()->delete();
+
+            foreach($validatedData['order_photos'] as $photo) {
+                if (!empty($photo['id'])) continue;
+
+                $base64str = preg_replace('/^data:image\/\w+;base64,/', '', $photo['src']);
+                Storage::disk('order_images')->put($order->id . '/' . $photo['title'], base64_decode($base64str));
+
+                $orderPhoto = OrderPhoto::create([
+                    'order_id' => $order->id,
+                    'path' => '/' . basename(Storage::disk('order_images')->getAdapter()->getPathPrefix()) . '/' . $order->id . '/' . $photo['title'],
+                ]);
+            }
+
             return $order;
         });
 

@@ -51,6 +51,7 @@ class OrderUpdateRequest extends JsonRequest
             'additional_products' => 'array',
             'additional_products.*.price' => 'numeric|min:0.1',
             'additional_products.*.name' => 'string|max:255',
+            'order_photos' => 'array',
         ];
     }
 }

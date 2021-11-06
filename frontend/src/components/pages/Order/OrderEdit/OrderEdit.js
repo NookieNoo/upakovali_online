@@ -228,8 +228,9 @@ export default function OrderEdit(props) {
                         label="Фото к заказу"
                         accept="image/*"
                         placeholder={<p>Прикрепите фото здесь</p>}
+                        multiple
                     >
-                        <ImageField source="abs_path" title="title" />
+                        <ImageField source="src" title="title" />
                     </ImageInput>
                 </FormTab>
             </TabbedForm>
