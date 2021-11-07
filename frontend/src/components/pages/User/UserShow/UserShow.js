@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { isPlainObject } from 'lodash';
+import { makeStyles } from '@material-ui/core';
 import {
     Show,
     SimpleShowLayout,
@@ -18,13 +20,20 @@ import { ShowSplitter } from '@app-universal';
 import AvatarShowField from './AvatarShowField';
 import { userRoles } from '@app-constants';
 import { useHasAccess } from '@app-hooks';
+import ExpandActivityBlock from './ExpandActivityBlock';
 
-const PropertiesPanel = ({ id, record, resource }) => <div>{JSON.stringify(record.properties)}</div>;
+const useStyles = makeStyles({
+    table: {
+        width: '100%',
+    },
+});
 
 export default function UserShow(props) {
     const { record = {} } = useShowController(props);
     const { role: userRole } = record;
     const { list: canWatchActivity } = useHasAccess('activity');
+
+    const classes = useStyles();
 
     const isCourier = userRole?.id === userRoles.courier.id;
     const isMaster = userRole?.id === userRoles.master.id;
@@ -107,26 +116,26 @@ export default function UserShow(props) {
                         )}
                         {canWatchActivity && (
                             <Tab label="Логи">
-                                <ReferenceManyField
-                                    label="Список действий пользователя"
-                                    target="user_id"
-                                    reference="activity"
-                                    perPage={10}
-                                    pagination={<Pagination />}
-                                >
-                                    <Datagrid
-                                        isRowSelectable={() => false}
-                                        isRowExpandable={(row) => row.properties}
-                                        expand={<PropertiesPanel />}
+                                <div>
+                                    <ReferenceManyField
+                                        label="Список действий пользователя"
+                                        target="user_id"
+                                        reference="activity"
+                                        perPage={10}
+                                        pagination={<Pagination />}
                                     >
-                                        <TextField label="id" source="id" />
-                                        <TextField label="Тип" source="event" />
-                                        <TextField label="Сущность" source="subject_type" />
-                                        <TextField label="№" source="subject_id" />
-                                        {/* <TextField label="Поля" source="properties" sortable={false} /> */}
-                                        <DateField label="Дата" source="created_at" showTime />
-                                    </Datagrid>
-                                </ReferenceManyField>
+                                        <Datagrid
+                                            isRowSelectable={() => false}
+                                            isRowExpandable={(row) => isPlainObject(row.properties)}
+                                            expand={<ExpandActivityBlock />}
+                                            classes={classes}
+                                        >
+                                            <TextField label="id" source="id" />
+                                            <TextField label="Описание" source="description" />
+                                            <DateField label="Дата" source="created_at" showTime />
+                                        </Datagrid>
+                                    </ReferenceManyField>
+                                </div>
                             </Tab>
                         )}
                         <Tab label="Комментарии">

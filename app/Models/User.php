@@ -146,7 +146,23 @@ class User extends Authenticatable
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logUnguarded()
-            ->logOnlyDirty();
+            ->logFillable()
+            ->logOnlyDirty()
+            ->setDescriptionForEvent(function ($eventName) {
+                switch ($eventName) {
+                    case "updated":
+                        $logName = "Редактирование пользователя {$this->full_name}";
+                        break;
+                    case "created":
+                        $logName = "Создание пользователя {$this->full_name}";
+                        break;
+                    case "deleted":
+                        $logName = "Удаление пользователя {$this->full_name}";
+                        break;
+                    default:
+                        $logName = "Другое действие с пользователя {$this->full_name}";
+                }
+                return $logName;
+            });
     }
 }

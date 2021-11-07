@@ -167,6 +167,22 @@ class Order extends BaseModel
     {
         return LogOptions::defaults()
             ->logUnguarded()
-            ->logOnlyDirty();
+            ->logOnlyDirty()
+            ->setDescriptionForEvent(function ($eventName) {
+                switch ($eventName) {
+                    case "updated":
+                        $logName = "Редактирование заказа №{$this->id}";
+                        break;
+                    case "created":
+                        $logName = "Создание заказа №{$this->id}";
+                        break;
+                    case "deleted":
+                        $logName = "Удаление заказа №{$this->id}";
+                        break;
+                    default:
+                        $logName = "Другое действие с заказом №{$this->id}";
+                }
+                return $logName;
+            });
     }
 }

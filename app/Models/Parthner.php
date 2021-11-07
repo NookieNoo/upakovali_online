@@ -51,6 +51,22 @@ class Parthner extends BaseModel
     {
         return LogOptions::defaults()
             ->logUnguarded()
-            ->logOnlyDirty();
+            ->logOnlyDirty()
+            ->setDescriptionForEvent(function ($eventName) {
+                switch ($eventName) {
+                    case "updated":
+                        $logName = "Редактирование партнера {$this->full_name}";
+                        break;
+                    case "created":
+                        $logName = "Создание партнера {$this->full_name}";
+                        break;
+                    case "deleted":
+                        $logName = "Удаление партнера {$this->full_name}";
+                        break;
+                    default:
+                        $logName = "Другое действие с партнера {$this->full_name}";
+                }
+                return $logName;
+            });
     }
 }

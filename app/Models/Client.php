@@ -38,6 +38,22 @@ class Client extends BaseModel
     {
         return LogOptions::defaults()
             ->logUnguarded()
-            ->logOnlyDirty();
+            ->logOnlyDirty()
+            ->setDescriptionForEvent(function ($eventName) {
+                switch ($eventName) {
+                    case "updated":
+                        $logName = "Редактирование клиента {$this->full_name}";
+                        break;
+                    case "created":
+                        $logName = "Создание клиента {$this->full_name}";
+                        break;
+                    case "deleted":
+                        $logName = "Удаление клиента {$this->full_name}";
+                        break;
+                    default:
+                        $logName = "Другое действие с клиента {$this->full_name}";
+                }
+                return $logName;
+            });
     }
 }
