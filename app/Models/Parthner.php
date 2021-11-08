@@ -5,16 +5,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Laravel\Sanctum\HasApiTokens;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class Parthner extends BaseModel
 {
-    use LogsActivity;
+    use LogsActivity, HasApiTokens;
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->hidden[] = 'manager_id';
+        $additionalHidden = ['manager_id', 'parthner_hash'];
+        $this->hidden = array_merge($this->hidden, $additionalHidden);
+
+        $additionalGuarded = ['parthner_hash'];
+        $this->guarded = array_merge($this->guarded, $additionalGuarded);
     }
 
     public function manager()

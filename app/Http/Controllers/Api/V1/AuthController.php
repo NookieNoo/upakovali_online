@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\LoginParthnerRequest;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
+use App\Models\Parthner;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -58,6 +60,16 @@ class AuthController extends Controller
             'user' => $user,
             'token' => $token,
         ], Response::HTTP_OK);
+    }
+
+    public function loginParthner(LoginParthnerRequest $request)
+    {
+        $validated = $request->validated();
+        $parthner = Parthner::where('parthner_hash', $validated['parthner_hash'])->exists();
+        if (!$parthner) return $this->sendError('Unauthorized', Response::HTTP_UNAUTHORIZED);
+        $token = $parthner->createToken('parthner_token')->plainTextToken;
+
+        return $this->send(Response::HTTP_OK, null, ['token' => $token]);
     }
 
     public function logout(Request $request)

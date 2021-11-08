@@ -18,7 +18,7 @@ class CreateOrdersTable extends Migration
             $table->unsignedInteger('order_status_id');
             $table->unsignedInteger('source_id');
             $table->unsignedInteger('parthner_id')->nullable();
-            $table->string('external_number')->nullable();
+            $table->string('external_number')->unique()->nullable();
             $table->unsignedInteger('client_id');
             $table->unsignedInteger('workshop_id');
             $table->boolean('is_pickupable');

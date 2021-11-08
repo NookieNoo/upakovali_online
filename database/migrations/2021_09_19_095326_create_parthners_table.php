@@ -20,6 +20,7 @@ class CreateParthnersTable extends Migration
             $table->string('phone');
             $table->text('email');
             $table->text('comment')->nullable();
+            $table->string('parthner_hash');
             $table->timestamps();
         });
 

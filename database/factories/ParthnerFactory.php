@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\Parthner;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Hash;
 
 class ParthnerFactory extends Factory
 {
@@ -22,14 +23,16 @@ class ParthnerFactory extends Factory
      */
     public function definition()
     {
+        $email = $this->faker->email();
         return [
             'full_name' => $this->faker->company(),
             'manager_id' => function () {
                 return User::where(['role_id' => 2])->inRandomOrder()->first()->id;
             },
             'phone' => $this->faker->phoneNumber(),
-            'email' => $this->faker->email(),
+            'email' => $email,
             'comment' => $this->faker->sentence(),
+            'parthner_hash' => Hash::make($email),
         ];
     }
 }

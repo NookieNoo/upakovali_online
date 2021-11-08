@@ -27,7 +27,7 @@ class OrderUpdateRequest extends JsonRequest
             'order_status_id' => 'required|integer|min:1|exists:order_statuses,id',
             'source_id' => 'required|integer|min:1|exists:sources,id',
             'parthner_id' => 'nullable|integer|min:1|exists:parthners,id',
-            'external_number' => 'nullable|string|max:255',
+            'external_number' => 'nullable|string|max:255|unique:orders,external_number',
             'client_id' => 'required|integer|min:1|exists:clients,id',
             'workshop_id' => 'required|integer|min:1|exists:workshops,id',
             'is_pickupable' => 'nullable|boolean',

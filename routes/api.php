@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\ClientController;
 use App\Http\Controllers\Api\V1\OrderController;
 use App\Http\Controllers\Api\V1\OrderStatusController;
+use App\Http\Controllers\Api\V1\OuterApiController;
 use App\Http\Controllers\Api\V1\ParthnerController;
 use App\Http\Controllers\Api\V1\RoleController;
 use App\Http\Controllers\Api\V1\ServiceController;
@@ -32,6 +33,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/login/parthner', [AuthController::class, 'loginParthner']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::prefix('client')->group(function () {
@@ -98,6 +100,14 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
+Route::group(['middleware' => ['auth.parthner']], function () {
+    Route::prefix('outer-api')->group(function () {
+        Route::get('/getServiceData', [OuterApiController::class, 'getServiceData']);
+        Route::post('/createOrder', [OuterApiController::class, 'createOrder']);
+        Route::patch('/setStatus', [OuterApiController::class, 'setStatus']);
+        Route::patch('/cancelOrder', [OuterApiController::class, 'cancelOrder']);
+    });
+});
 
 Route::fallback(function () {
     return response()->json([

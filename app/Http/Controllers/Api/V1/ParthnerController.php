@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Hash;
 
 class ParthnerController extends Controller
 {
@@ -66,7 +67,9 @@ class ParthnerController extends Controller
             return $this->sendError('Доступ закрыт', Response::HTTP_FORBIDDEN);
         }
         try {
-            $parthner = Parthner::create($request->validated());
+            $validated = $request->validated();
+            $validated['parthner_hash'] = Hash::make($validated['email']);
+            $parthner = Parthner::create($validated);
         } catch (\Exception $e) {
             return $this->sendError('Не удалось создать партнера', Response::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
         }
