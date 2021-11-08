@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'web',
+        'guard' => 'users',
         'passwords' => 'users',
     ],
 
@@ -40,6 +40,14 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'users' => [
+            'driver' => 'sanctum',
+            'provider' => 'users',
+        ],
+        'parthners' => [
+            'driver' => 'sanctum',
+            'provider' => 'parthners',
+        ],
     ],
 
     /*
@@ -64,11 +72,10 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
-
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+         'parthners' => [
+             'driver' => 'eloquent',
+             'model' => App\Models\Parthner::class,
+         ],
     ],
 
     /*

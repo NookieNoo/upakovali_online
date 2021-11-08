@@ -65,7 +65,7 @@ class AuthController extends Controller
     public function loginParthner(LoginParthnerRequest $request)
     {
         $validated = $request->validated();
-        $parthner = Parthner::where('parthner_hash', $validated['parthner_hash'])->exists();
+        $parthner = Parthner::where('parthner_hash', $validated['parthner_hash'])->first();
         if (!$parthner) return $this->sendError('Unauthorized', Response::HTTP_UNAUTHORIZED);
         $token = $parthner->createToken('parthner_token')->plainTextToken;
 

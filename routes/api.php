@@ -35,7 +35,7 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/login/parthner', [AuthController::class, 'loginParthner']);
 
-Route::group(['middleware' => ['auth:sanctum']], function () {
+Route::group(['middleware' => ['auth:users']], function () {
     Route::prefix('client')->group(function () {
         Route::post('', [ClientController::class, 'store']);
         Route::get('/', [ClientController::class, 'index']);
@@ -100,7 +100,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
-Route::group(['middleware' => ['auth.parthner']], function () {
+Route::group(['middleware' => ['auth:parthners']], function () {
     Route::prefix('outer-api')->group(function () {
         Route::get('/getServiceData', [OuterApiController::class, 'getServiceData']);
         Route::post('/createOrder', [OuterApiController::class, 'createOrder']);

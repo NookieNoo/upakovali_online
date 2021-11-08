@@ -208,7 +208,7 @@ class OrderController extends Controller
         ]);
         $orderHistory->save();
 
-        return $this->send(Response::HTTP_OK, 'Статус обновлен', ["order_status" => ['id' => 11, 'name' => 'Отмена']]);
+        return $this->send(Response::HTTP_OK, 'Статус обновлен');
     }
 
     /**
