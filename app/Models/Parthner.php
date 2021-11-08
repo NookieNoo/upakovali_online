@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
-use Illuminate\Foundation\Auth\User;
+
 
 class Parthner extends BaseModel implements
     AuthenticatableContract,
@@ -42,6 +42,16 @@ class Parthner extends BaseModel implements
     public function prices()
     {
         return $this->hasMany(Price::class);
+    }
+
+    public function orderHistory()
+    {
+        return $this->morphOne(OrderHistory::class, 'user');
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
     }
 
     public function scopeWithFilters($query, Request $request)

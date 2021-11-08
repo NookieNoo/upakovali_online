@@ -26,7 +26,7 @@ class OrderStoreRequest extends JsonRequest
         return [
             'source_id' => 'required|integer|min:1|exists:sources,id',
             'parthner_id' => 'nullable|integer|min:1|exists:parthners,id',
-            'external_number' => 'nullable|string|max:255|unique:orders,external_number',
+            'external_number' => 'nullable|string|max:255',
             'client_id' => 'required|integer|min:1|exists:clients,id',
             'workshop_id' => 'required|integer|min:1|exists:workshops,id',
             'is_pickupable' => 'nullable|boolean',

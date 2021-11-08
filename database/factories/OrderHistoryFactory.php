@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\OrderHistory;
 use App\Models\OrderStatus;
+use App\Models\Parthner;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -23,10 +24,12 @@ class OrderHistoryFactory extends Factory
      */
     public function definition()
     {
+        $causerType = get_class(new User());
         return [
             'status_id' => fn() => OrderStatus::inRandomOrder()->first()->id,
             'date' => $this->faker->dateTime(),
-            'user_id' => fn() => User::inRandomOrder()->first()->id,
+            'causer_id' => fn() => User::inRandomOrder()->first()->id,
+            'causer_type' => $causerType,
         ];
     }
 }

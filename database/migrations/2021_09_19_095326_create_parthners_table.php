@@ -21,6 +21,7 @@ class CreateParthnersTable extends Migration
             $table->text('email');
             $table->text('comment')->nullable();
             $table->string('parthner_hash');
+            $table->unsignedInteger('role_id')->default(\App\Enums\UserType::PARTHNER);
             $table->timestamps();
         });
 

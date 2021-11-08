@@ -97,6 +97,11 @@ class User extends Authenticatable
         return $this->hasMany(Order::class, 'courier_issuer_id');
     }
 
+    public function orderHistory()
+    {
+        return $this->morphOne(OrderHistory::class, 'user');
+    }
+
     public function scopeWithFilters($query, Request $request)
     {
         return $query->when($request->query('query'), function (Builder $query, $queryParam) {

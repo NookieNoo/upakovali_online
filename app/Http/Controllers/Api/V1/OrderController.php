@@ -69,7 +69,8 @@ class OrderController extends Controller
                 $orderHistory = OrderHistory::create([
                     'order_id' => $order->id,
                     'status_id' => OrderStatusEnum::CREATED,
-                    'user_id' => $request->user()->id,
+                    'causer_id' => $request->user()->id,
+                    'causer_type' => get_class($request->user()),
                     'date' => Carbon::now(),
                 ]);
 
@@ -134,46 +135,51 @@ class OrderController extends Controller
             return $this->sendError('Заказ не найден.', Response::HTTP_NOT_FOUND);
         }
 
-        $order = DB::transaction(function () use ($request, $order) {
-            $validatedData = $request->validated();
+        try {
+            $order = DB::transaction(function () use ($request, $order) {
+                $validatedData = $request->validated();
 
-            if ($order->order_status_id !== $validatedData['order_status_id']) {
-                $orderHistory = OrderHistory::create([
-                    'order_id' => $order->id,
-                    'status_id' => $validatedData['order_status_id'],
-                    'user_id' => $request->user()->id,
-                    'date' => Carbon::now(),
-                ]);
-            }
+                if ($order->order_status_id !== $validatedData['order_status_id']) {
+                    $orderHistory = OrderHistory::create([
+                        'order_id' => $order->id,
+                        'status_id' => $validatedData['order_status_id'],
+                        'causer_id' => $request->user()->id,
+                        'causer_type' => get_class($request->user()),
+                        'date' => Carbon::now(),
+                    ]);
+                }
 
-            $order->update($validatedData);
+                $order->update($validatedData);
 
-            $order->gifts()->delete();
-            foreach($validatedData['gifts'] as $giftData) {
-                $gift = Gift::create(array_merge($giftData, ['order_id' => $order->id]));
-            }
+                $order->gifts()->delete();
+                foreach($validatedData['gifts'] as $giftData) {
+                    $gift = Gift::create(array_merge($giftData, ['order_id' => $order->id]));
+                }
 
-            $order->additionalProducts()->delete();
-            foreach($validatedData['additional_products'] as $productData) {
-                $product = AdditionalProduct::create(array_merge($productData, ['order_id' => $order->id]));
-            }
+                $order->additionalProducts()->delete();
+                foreach($validatedData['additional_products'] as $productData) {
+                    $product = AdditionalProduct::create(array_merge($productData, ['order_id' => $order->id]));
+                }
 
-            if (empty($validatedData['order_photos'])) $order->orderPhotos()->delete();
+                if (empty($validatedData['order_photos'])) $order->orderPhotos()->delete();
 
-            foreach($validatedData['order_photos'] as $photo) {
-                if (!empty($photo['id'])) continue;
+                foreach($validatedData['order_photos'] as $photo) {
+                    if (!empty($photo['id'])) continue;
 
-                $base64str = preg_replace('/^data:image\/\w+;base64,/', '', $photo['src']);
-                Storage::disk('order_images')->put($order->id . '/' . $photo['title'], base64_decode($base64str));
+                    $base64str = preg_replace('/^data:image\/\w+;base64,/', '', $photo['src']);
+                    Storage::disk('order_images')->put($order->id . '/' . $photo['title'], base64_decode($base64str));
 
-                $orderPhoto = OrderPhoto::create([
-                    'order_id' => $order->id,
-                    'path' => '/' . basename(Storage::disk('order_images')->getAdapter()->getPathPrefix()) . '/' . $order->id . '/' . $photo['title'],
-                ]);
-            }
+                    $orderPhoto = OrderPhoto::create([
+                        'order_id' => $order->id,
+                        'path' => '/' . basename(Storage::disk('order_images')->getAdapter()->getPathPrefix()) . '/' . $order->id . '/' . $photo['title'],
+                    ]);
+                }
 
-            return $order;
-        });
+                return $order;
+            });
+        } catch (\Exception $e) {
+            return $this->sendError('Не удалось обновить заказ', Response::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
+        }
 
         return $this->send(Response::HTTP_OK, 'Данные сохранены.', $order->load(Order::$supportedRelations));
     }
@@ -196,17 +202,23 @@ class OrderController extends Controller
             return $this->sendError('Заказ не найден.', Response::HTTP_NOT_FOUND);
         }
 
-        $order->order_status_id = $request->get('order_status_id');
-        $order->save();
+        try {
+            DB::transaction(function () use ($request, $order) {
+                $order->order_status_id = $request->get('order_status_id');
+                $order->save();
 
-        //@TODO обернуть в транзакцию
-        $orderHistory = new OrderHistory([
-            'order_id' => $order->id,
-            'status_id' => $order->order_status_id,
-            'user_id' => $request->user()->id,
-            'date' => Carbon::now(),
-        ]);
-        $orderHistory->save();
+                $orderHistory = new OrderHistory([
+                    'order_id' => $order->id,
+                    'status_id' => $order->order_status_id,
+                    'causer_id' => $request->user()->id,
+                    'causer_type' => get_class($request->user()),
+                    'date' => Carbon::now(),
+                ]);
+                $orderHistory->save();
+            });
+        } catch (\Exception $e) {
+            return $this->sendError('Не удалось изменить статус заказа', Response::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
+        }
 
         return $this->send(Response::HTTP_OK, 'Статус обновлен');
     }

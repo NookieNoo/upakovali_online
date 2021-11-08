@@ -8,7 +8,7 @@ class OrderHistory extends BaseModel
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $additionalHidden = ['status_id', 'order_id', 'user_id'];
+        $additionalHidden = ['status_id', 'order_id', 'causer_id'];
         $this->hidden = array_merge($this->hidden, $additionalHidden);
     }
 
@@ -19,6 +19,6 @@ class OrderHistory extends BaseModel
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->morphTo(__FUNCTION__, 'causer_type', 'causer_id');
     }
 }
