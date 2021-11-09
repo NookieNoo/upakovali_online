@@ -74,6 +74,7 @@ class AuthController extends Controller
      *         @OA\MediaType(mediaType="application/json",
      *              @OA\Schema(
      *                  @OA\Property(property="parthner_hash", type="string", description="Parthner hash"),
+     *                  example={"parthner_hash": "$2y$10$XVxaSMF64H3NdAUfkULvFuLESv1w5GaokWUJMzpQgAR/bY8zsCa6a"}
      *              )
      *         )
      *     ),

@@ -20,10 +20,6 @@ use Illuminate\Routing\Controller as BaseController;
  *         url="http://www.apache.org/licenses/LICENSE-2.0.html"
  *     )
  * )
- * @OA\Tag(
- *     name="Examples",
- *     description="Some example pages",
- * )
  * @OA\Server(
  *     description="Тестовый url для методов API (префикс)",
  *     url="https://upakovali-online.herokuapp.com/api/v1"

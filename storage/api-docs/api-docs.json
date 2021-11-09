@@ -39,7 +39,10 @@
                                         "type": "string"
                                     }
                                 },
-                                "type": "object"
+                                "type": "object",
+                                "example": {
+                                    "parthner_hash": "$2y$10$XVxaSMF64H3NdAUfkULvFuLESv1w5GaokWUJMzpQgAR/bY8zsCa6a"
+                                }
                             }
                         }
                     }
@@ -49,6 +52,53 @@
                         "description": "Everything is fine"
                     }
                 }
+            }
+        },
+        "/outer-api/updateOrder": {
+            "patch": {
+                "tags": [
+                    "Order"
+                ],
+                "summary": "Изменить время приема/доставки заказа",
+                "operationId": "updateOrder",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "external_number": {
+                                        "description": "Внешний номер заказа",
+                                        "type": "string"
+                                    },
+                                    "receiving_date": {
+                                        "description": "Время приема в формате (d-m-Y H:i)",
+                                        "type": "string"
+                                    },
+                                    "issue_date": {
+                                        "description": "Время выдачи в формате (d-m-Y H:i)",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "external_number": "04073d28-5ffd-3715-b7fa-77736767bf29",
+                                    "receiving_date": "09-11-2021 15:21",
+                                    "issue_date": "09-11-2021 16:00"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ok"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer Token": []
+                    }
+                ]
             }
         },
         "/outer-api/setStatus": {
@@ -72,7 +122,11 @@
                                         "type": "integer"
                                     }
                                 },
-                                "type": "object"
+                                "type": "object",
+                                "example": {
+                                    "external_number": "04073d28-5ffd-3715-b7fa-77736767bf29",
+                                    "order_status_id": 2
+                                }
                             }
                         }
                     }
@@ -106,7 +160,10 @@
                                         "type": "string"
                                     }
                                 },
-                                "type": "object"
+                                "type": "object",
+                                "example": {
+                                    "external_number": "04073d28-5ffd-3715-b7fa-77736767bf29"
+                                }
                             }
                         }
                     }
@@ -291,12 +348,6 @@
             }
         }
     },
-    "tags": [
-        {
-            "name": "Examples",
-            "description": "Some example pages"
-        }
-    ],
     "security": [
         []
     ]
