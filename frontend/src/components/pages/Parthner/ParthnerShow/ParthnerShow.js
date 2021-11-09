@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { isPlainObject } from 'lodash';
 import {
     Show,
     SimpleShowLayout,
@@ -14,13 +15,18 @@ import {
     BooleanField,
     useShowController,
     useRecordContext,
-    DateField
+    DateField,
+    Pagination
 } from 'react-admin';
-import { ShowSplitter } from '@app-universal';
-import { SimpleAccordionMemo } from '@app-universal';
+import { ShowSplitter, SimpleAccordionMemo } from '@app-universal';
+import { useHasAccess } from '@app-hooks';
+import { ExpandActivityBlock } from '@app-universal';
+
+const filter = { causer_type: 'parthner' };
 
 export default function ParhtnerShow(props) {
     const { record } = useShowController(props);
+    const { list: canWatchActivity } = useHasAccess('activity');
     // const data = useRecordContext({record});
     // console.log('data', data);
     return (
@@ -56,7 +62,11 @@ export default function ParhtnerShow(props) {
                         </Tab>
                         <Tab label="Прайсы">
                             {record?.prices?.map((it, index) => (
-                                <SimpleAccordionMemo key={index} heading={it.name} secondaryHeading={`${it.start} - ${it.end}`}>
+                                <SimpleAccordionMemo
+                                    key={index}
+                                    heading={it.name}
+                                    secondaryHeading={`${it.start} - ${it.end}`}
+                                >
                                     <ArrayField source={`prices[${index}].services`} label="Список прайсов">
                                         <Datagrid>
                                             <TextField source="id" />
@@ -67,6 +77,30 @@ export default function ParhtnerShow(props) {
                                 </SimpleAccordionMemo>
                             ))}
                         </Tab>
+                        {canWatchActivity && (
+                            <Tab label="Логи">
+                                <div>
+                                    <ReferenceManyField
+                                        label="Список действий пользователя"
+                                        target="causer_id"
+                                        reference="activity"
+                                        filter={filter}
+                                        perPage={10}
+                                        pagination={<Pagination />}
+                                    >
+                                        <Datagrid
+                                            isRowSelectable={() => false}
+                                            isRowExpandable={(row) => isPlainObject(row.properties)}
+                                            expand={<ExpandActivityBlock />}
+                                        >
+                                            <TextField label="id" source="id" />
+                                            <TextField label="Описание" source="description" />
+                                            <DateField label="Дата" source="created_at" showTime />
+                                        </Datagrid>
+                                    </ReferenceManyField>
+                                </div>
+                            </Tab>
+                        )}
                     </TabbedShowLayout>
                 }
             />

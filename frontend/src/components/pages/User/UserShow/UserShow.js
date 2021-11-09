@@ -20,13 +20,15 @@ import { ShowSplitter } from '@app-universal';
 import AvatarShowField from './AvatarShowField';
 import { userRoles } from '@app-constants';
 import { useHasAccess } from '@app-hooks';
-import ExpandActivityBlock from './ExpandActivityBlock';
+import { ExpandActivityBlock } from '@app-universal';
 
 const useStyles = makeStyles({
     table: {
         width: '100%',
     },
 });
+
+const filter = { causer_type: 'user' };
 
 export default function UserShow(props) {
     const { record = {} } = useShowController(props);
@@ -119,8 +121,9 @@ export default function UserShow(props) {
                                 <div>
                                     <ReferenceManyField
                                         label="Список действий пользователя"
-                                        target="user_id"
+                                        target="causer_id"
                                         reference="activity"
+                                        filter={filter}
                                         perPage={10}
                                         pagination={<Pagination />}
                                     >

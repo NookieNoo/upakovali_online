@@ -24,7 +24,8 @@ class ActivityGetRequest extends JsonRequest
     public function rules()
     {
         return [
-            'user_id' => 'integer|min:1|exists:users,id',
+            'causer_id' => 'integer|min:1',
+            'causer_type' => 'string|min:1|in:user,parthner',
         ];
     }
 }

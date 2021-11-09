@@ -59,7 +59,7 @@ return [
         'array' => 'The :attribute must have :value items or more.',
     ],
     'image' => 'The :attribute must be an image.',
-    'in' => 'The selected :attribute is invalid.',
+    'in' => 'Поле :attribute не валидно.',
     'in_array' => 'The :attribute field does not exist in :other.',
     'integer' => 'Поле :attribute должно быть целым числом.',
     'ip' => 'The :attribute must be a valid IP address.',
