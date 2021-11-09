@@ -22,7 +22,9 @@ class Parthner extends BaseModel implements
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $additionalHidden = ['manager_id', 'parthner_hash'];
+        $additionalHidden = ['manager_id'];
+        //@FIXME Скрывать parthner_hash всем, кроме админов
+        // $additionalHidden = ['manager_id', 'parthner_hash'];
         $this->hidden = array_merge($this->hidden, $additionalHidden);
 
         $additionalGuarded = ['parthner_hash'];

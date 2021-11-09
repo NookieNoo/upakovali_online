@@ -17,6 +17,7 @@ class WorkshopController extends Controller
      */
     public function index(Request $request)
     {
-        return Workshop::paginate();
+//        return Workshop::paginate();
+        return Workshop::withPaginate($request);
     }
 }

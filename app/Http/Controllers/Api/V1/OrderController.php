@@ -53,7 +53,7 @@ class OrderController extends Controller
         try {
             $order = DB::transaction(function () use ($request) {
                 $validatedData = $request->validated();
-                $validatedData['order_status_id'] = OrderStatus::first()->id;
+                $validatedData['order_status_id'] = OrderStatusEnum::CREATED;
                 $order = Order::create($validatedData);
 
                 foreach($validatedData['gifts'] as $giftData) {

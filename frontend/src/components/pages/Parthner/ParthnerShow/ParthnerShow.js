@@ -38,6 +38,7 @@ export default function ParhtnerShow(props) {
                         <EmailField label="Email" source="email" />
                         <TextField label="Телефон" source="phone" />
                         <TextField label="Менеджер" source="manager.full_name" />
+                        <RichTextField label="parthner_hash @FIXME открыто для теста" source="parthner_hash" />
                         <RichTextField label="Комментарий" source="comment" />
                     </SimpleShowLayout>
                 }

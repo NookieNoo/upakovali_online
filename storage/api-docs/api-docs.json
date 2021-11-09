@@ -54,10 +54,119 @@
                 }
             }
         },
+        "/outer-api/createOrder": {
+            "post": {
+                "tags": [
+                    "Заказ"
+                ],
+                "summary": "Создать заказ",
+                "operationId": "createOrder",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "external_number": {
+                                        "description": "Внешний номер заказа",
+                                        "type": "string"
+                                    },
+                                    "client": {
+                                        "description": "Клиент",
+                                        "properties": {
+                                            "full_name": {
+                                                "description": "ФИО клиента",
+                                                "type": "string"
+                                            },
+                                            "phone": {
+                                                "description": "Телефон клиента",
+                                                "type": "string"
+                                            },
+                                            "email": {
+                                                "description": "email клиента",
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    },
+                                    "workshop_id": {
+                                        "description": "Id мастерской",
+                                        "type": "integer"
+                                    },
+                                    "is_pickupable": {
+                                        "description": "Забор (если да, то указать pick_up_address, иначе выбрать мастерскую)",
+                                        "type": "boolean"
+                                    },
+                                    "pick_up_address": {
+                                        "description": "Адрес, откуда будем забирать",
+                                        "type": "string"
+                                    },
+                                    "pick_up_point_id": {
+                                        "description": "Id мастерской, откуда будем забирать",
+                                        "type": "integer"
+                                    },
+                                    "is_deliverable": {
+                                        "description": "Доставка (если да, то указать delivery_address, иначе выбрать мастерскую)",
+                                        "type": "boolean"
+                                    },
+                                    "delivery_address": {
+                                        "description": "Адрес, куда доставить",
+                                        "type": "string"
+                                    },
+                                    "delivery_point_id": {
+                                        "description": "Id мастерской, куда доставить",
+                                        "type": "integer"
+                                    },
+                                    "receiving_date": {
+                                        "description": "Время приема в формате (d-m-Y H:i)",
+                                        "type": "string"
+                                    },
+                                    "issue_date": {
+                                        "description": "Время выдачи в формате (d-m-Y H:i)",
+                                        "type": "string"
+                                    },
+                                    "comment": {
+                                        "description": "Комментарий к заказу",
+                                        "type": "string",
+                                        "maxLength": 255
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "external_number": "14073d28-5ffd-3715-b7fa-77736767bf29",
+                                    "client": {
+                                        "full_name": "Григорьев Алексей",
+                                        "phone": "+79568956624",
+                                        "email": "test@email.com"
+                                    },
+                                    "workshop_id": 1,
+                                    "is_pickupable": true,
+                                    "pick_up_address": "г. Воронеж, Революции проспект 17",
+                                    "is_deliverable": false,
+                                    "delivery_point_id": 1,
+                                    "receiving_date": "10-11-2021 09:00",
+                                    "issue_date": "11-11-2021 10:00",
+                                    "comment": "О чернилах и чернильном оружии головоногих моллюсков."
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Ok"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer Token": []
+                    }
+                ]
+            }
+        },
         "/outer-api/updateOrder": {
             "patch": {
                 "tags": [
-                    "Order"
+                    "Заказ"
                 ],
                 "summary": "Изменить время приема/доставки заказа",
                 "operationId": "updateOrder",
@@ -104,7 +213,7 @@
         "/outer-api/setStatus": {
             "patch": {
                 "tags": [
-                    "Order"
+                    "Заказ"
                 ],
                 "summary": "Изменить статус заказа",
                 "operationId": "setStatus",
@@ -146,7 +255,7 @@
         "/outer-api/cancelOrder": {
             "patch": {
                 "tags": [
-                    "Order"
+                    "Заказ"
                 ],
                 "summary": "Отменить заказ",
                 "operationId": "cancelOrder",
@@ -168,6 +277,39 @@
                         }
                     }
                 },
+                "responses": {
+                    "200": {
+                        "description": "Ok"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer Token": []
+                    }
+                ]
+            }
+        },
+        "/outer-api/workshops": {
+            "get": {
+                "tags": [
+                    "Мастерские"
+                ],
+                "summary": "Получить список мастерских",
+                "operationId": "getWorkshops",
+                "parameters": [
+                    {
+                        "name": "page[number]",
+                        "in": "query",
+                        "description": "Номер страницы/сдвиг(целое число)",
+                        "required": true
+                    },
+                    {
+                        "name": "page[size]",
+                        "in": "query",
+                        "description": "Записей на странице(целое число)",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Ok"
