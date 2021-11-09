@@ -51,6 +51,44 @@
                 }
             }
         },
+        "/outer-api/setStatus": {
+            "patch": {
+                "tags": [
+                    "Order"
+                ],
+                "summary": "Изменить статус заказа",
+                "operationId": "setStatus",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "external_number": {
+                                        "description": "Внешний номер заказа",
+                                        "type": "string"
+                                    },
+                                    "order_status_id": {
+                                        "description": "Новый статус заказа ( 1 - Создан, 2 - Курьер назначен, 3 - Забрали, 4 - Приняли, 5 - В работе, 6 - Упаковали, 7 - Выдали, 8 - Курьер выдает, 9 - Доставили, 10 - Оплатили, 11 - Отмена)",
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ok"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer Token": []
+                    }
+                ]
+            }
+        },
         "/outer-api/cancelOrder": {
             "patch": {
                 "tags": [
