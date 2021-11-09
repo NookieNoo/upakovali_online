@@ -25,14 +25,20 @@ use Illuminate\Routing\Controller as BaseController;
  *     description="Some example pages",
  * )
  * @OA\Server(
- *     description="Локальный базовый url для методов API (префикс)",
+ *     description="Тестовый url для методов API (префикс)",
+ *     url="https://upakovali-online.herokuapp.com/api/v1"
+ * )
+ * @OA\Server(
+ *     description="Локальный url для методов API (префикс)",
  *     url="http://localhost:29080/api/v1"
  * )
  * @OA\SecurityScheme(
- *     type="apiKey",
+ *     type="http",
+ *     description="Login with parthner_hash to get the authentication token",
+ *     scheme="bearer",
  *     in="header",
- *     name="X-APP-ID",
- *     securityScheme="X-APP-ID"
+ *     name="bearerAuth",
+ *     securityScheme="Bearer Token"
  * )
  */
 class Controller extends BaseController

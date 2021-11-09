@@ -17,7 +17,6 @@ class CancelOrderRequest extends JsonRequest
     }
 
     /**
-     * Get the validation rules that apply to the request.
      *
      * @return array
      */

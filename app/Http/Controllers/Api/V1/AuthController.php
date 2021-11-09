@@ -8,6 +8,7 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\Parthner;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
@@ -62,6 +63,31 @@ class AuthController extends Controller
         ], Response::HTTP_OK);
     }
 
+    /**
+     * @OA\Post (
+     *     path="/login/parthner",
+     *     operationId="loginParthner",
+     *     tags={"Login"},
+     *     summary="Получить токен доступа",
+     *
+     *     @OA\RequestBody(
+     *         @OA\MediaType(mediaType="application/json",
+     *              @OA\Schema(
+     *                  @OA\Property(property="parthner_hash", type="string", description="Parthner hash"),
+     *              )
+     *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response="200",
+     *         description="Everything is fine",
+     *     ),
+     * )
+     *
+     * Получить токен доступа
+     *
+     * @return JsonResponse
+     */
     public function loginParthner(LoginParthnerRequest $request)
     {
         $validated = $request->validated();

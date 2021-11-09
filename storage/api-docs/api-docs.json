@@ -13,67 +13,74 @@
     },
     "servers": [
         {
+            "url": "https://upakovali-online.herokuapp.com/api/v1",
+            "description": "Тестовый url для методов API (префикс)"
+        },
+        {
             "url": "http://localhost:29080/api/v1",
-            "description": "Локальный базовый url для методов API (префикс)"
+            "description": "Локальный url для методов API (префикс)"
         }
     ],
     "paths": {
-        "/client": {
-            "get": {
+        "/login/parthner": {
+            "post": {
                 "tags": [
-                    "Client"
+                    "Login"
                 ],
-                "summary": "Получить список клиентов",
-                "operationId": "clientsAll",
-                "parameters": [
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "description": "The page number",
-                        "required": false,
-                        "schema": {
-                            "type": "integer"
+                "summary": "Получить токен доступа",
+                "operationId": "loginParthner",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "parthner_hash": {
+                                        "description": "Parthner hash",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
                         }
                     }
-                ],
+                },
                 "responses": {
                     "200": {
                         "description": "Everything is fine"
                     }
-                },
-                "security": [
-                    {
-                        "api_key": []
-                    }
-                ]
+                }
             }
         },
-        "/parthner": {
-            "get": {
+        "/outer-api/cancelOrder": {
+            "patch": {
                 "tags": [
-                    "Parthner"
+                    "Order"
                 ],
-                "summary": "Получить список партнеров",
-                "operationId": "parthnersAll",
-                "parameters": [
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "description": "The page number",
-                        "required": false,
-                        "schema": {
-                            "type": "integer"
+                "summary": "Отменить заказ",
+                "operationId": "cancelOrder",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "external_number": {
+                                        "description": "Внешний номер заказа",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
                         }
                     }
-                ],
+                },
                 "responses": {
                     "200": {
-                        "description": "Everything is fine"
+                        "description": "Ok"
                     }
                 },
                 "security": [
                     {
-                        "api_key": []
+                        "Bearer Token": []
                     }
                 ]
             }
@@ -237,10 +244,12 @@
             }
         },
         "securitySchemes": {
-            "X-APP-ID": {
-                "type": "apiKey",
-                "name": "X-APP-ID",
-                "in": "header"
+            "Bearer Token": {
+                "type": "http",
+                "description": "Login with parthner_hash to get the authentication token",
+                "name": "bearerAuth",
+                "in": "header",
+                "scheme": "bearer"
             }
         }
     },

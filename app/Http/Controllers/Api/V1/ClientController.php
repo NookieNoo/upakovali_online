@@ -15,29 +15,6 @@ use Illuminate\Http\Response;
 class ClientController extends Controller
 {
     /**
-     * @OA\Get(
-     *     path="/client",
-     *     operationId="clientsAll",
-     *     tags={"Client"},
-     *     summary="Получить список клиентов",
-     *     security={
-     *       {"api_key": {}},
-     *     },
-     *     @OA\Parameter(
-     *         name="page",
-     *         in="query",
-     *         description="The page number",
-     *         required=false,
-     *         @OA\Schema(
-     *             type="integer",
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response="200",
-     *         description="Everything is fine",
-     *     ),
-     * )
-     *
      * Получить список клиентов
      *
      * @return JsonResponse

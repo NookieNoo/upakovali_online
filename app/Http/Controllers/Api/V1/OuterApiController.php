@@ -12,6 +12,7 @@ use App\Models\Order;
 use App\Models\OrderHistory;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -36,6 +37,34 @@ class OuterApiController extends Controller
         return ['success' => true];
     }
 
+    /**
+     * @OA\Patch (
+     *     path="/outer-api/cancelOrder",
+     *     operationId="cancelOrder",
+     *     tags={"Order"},
+     *     summary="Отменить заказ",
+     *     security={
+     *       {"Bearer Token": {}},
+     *     },
+     *
+     *     @OA\RequestBody(
+     *         @OA\MediaType(mediaType="application/json",
+     *              @OA\Schema(
+     *                  @OA\Property(property="external_number", type="string", description="Внешний номер заказа"),
+     *              )
+     *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response="200",
+     *         description="Ok",
+     *     ),
+     * )
+     *
+     * Отменить заказ
+     *
+     * @return JsonResponse
+     */
     public function cancelOrder(CancelOrderRequest $request)
     {
         $validatedData = $request->validated();
@@ -65,7 +94,7 @@ class OuterApiController extends Controller
                     ]);
                     $orderHistory->save();
                 }
-                
+
                 $order->order_status_id = OrderStatus::CANCELED;
                 $order->save();
             });

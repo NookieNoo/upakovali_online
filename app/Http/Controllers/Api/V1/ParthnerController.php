@@ -20,29 +20,6 @@ use Illuminate\Support\Facades\Hash;
 class ParthnerController extends Controller
 {
     /**
-     * @OA\Get(
-     *     path="/parthner",
-     *     operationId="parthnersAll",
-     *     tags={"Parthner"},
-     *     summary="Получить список партнеров",
-     *     security={
-     *       {"api_key": {}},
-     *     },
-     *     @OA\Parameter(
-     *         name="page",
-     *         in="query",
-     *         description="The page number",
-     *         required=false,
-     *         @OA\Schema(
-     *             type="integer",
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response="200",
-     *         description="Everything is fine",
-     *     ),
-     * )
-     *
      * Получить список партнеров
      *
      * @return JsonResponse
