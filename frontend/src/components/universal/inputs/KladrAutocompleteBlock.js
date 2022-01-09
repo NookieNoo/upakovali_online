@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import KladrAutocomplete from 'stories/KladrAutocomplete';
+import KladrAutocomplete from './KladrAutocomplete';
 import fetchJsonp from 'fetch-jsonp';
 import { useThrottle } from '@app-hooks';
 import { useInput, useNotify, fetchStart, fetchEnd, useTranslate } from 'react-admin';
