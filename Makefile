@@ -69,3 +69,6 @@ php.shell:
 
 php.tinker:
 	docker exec -it $(PHP_CONTAINER_NAME) php artisan tinker
+
+php.analyse:
+	docker exec -it $(PHP_CONTAINER_NAME) ./vendor/bin/phpstan analyse
