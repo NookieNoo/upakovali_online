@@ -34,6 +34,9 @@ let permissions = {
         activity: {
             list: true,
         },
+        handbooks: {
+            enabled: true,
+        },
     },
     manager: {
         order: {
@@ -69,6 +72,9 @@ let permissions = {
         },
         activity: {
             list: false,
+        },
+        handbooks: {
+            enabled: false,
         },
     },
     master: {
@@ -106,6 +112,9 @@ let permissions = {
         activity: {
             list: false,
         },
+        handbooks: {
+            enabled: false,
+        },
     },
     courier: {
         order: {
@@ -141,6 +150,9 @@ let permissions = {
         },
         activity: {
             list: false,
+        },
+        handbooks: {
+            enabled: false,
         },
     },
 };
