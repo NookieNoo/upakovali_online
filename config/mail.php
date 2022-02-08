@@ -115,4 +115,6 @@ return [
         ],
     ],
 
+    'reset_link_url' => env('FRONTEND_DOMAIN'),
+
 ];

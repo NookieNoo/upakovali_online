@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Auth\Notifications\ResetPassword;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -32,6 +33,11 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
+
+        ResetPassword::createUrlUsing(function ($user, string $token) {
+            $domain = config('mail.reset_link_url');
+            return "https://$domain/reset-password?token=$token&email=$user->email";
+        });
 
 //        Gate::define('show-one-order', function (User $user, Order $order) {
 //            if ($user->id === $order->client_id) {

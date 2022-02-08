@@ -3,15 +3,19 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\ForgotPasswordRequest;
 use App\Http\Requests\Auth\LoginParthnerRequest;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
+use App\Http\Requests\Auth\ResetPasswordRequest;
 use App\Models\Parthner;
 use App\Models\User;
+use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 
 class AuthController extends Controller
@@ -107,5 +111,36 @@ class AuthController extends Controller
             'code' => Response::HTTP_NO_CONTENT,
             'message' => 'Logged out',
         ], Response::HTTP_NO_CONTENT);
+    }
+
+    public function forgotPassword(ForgotPasswordRequest $request)
+    {
+        $status = Password::sendResetLink(
+            $request->only('email')
+        );
+
+        return $status === Password::RESET_LINK_SENT
+            ? $this->send(Response::HTTP_OK, __($status))
+            : $this->sendError(__($status), Response::HTTP_INTERNAL_SERVER_ERROR);
+    }
+
+    public function resetPassword(ResetPasswordRequest $request)
+    {
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function ($user, $password) {
+                $user->forceFill([
+                    'password' => Hash::make($password)
+                ])->setRememberToken(Str::random(60));
+
+                $user->save();
+
+                event(new PasswordReset($user));
+            }
+        );
+
+        return $status === Password::PASSWORD_RESET
+            ? $this->send(Response::HTTP_OK, __($status))
+            : $this->sendError(__($status), Response::HTTP_INTERNAL_SERVER_ERROR);
     }
 }

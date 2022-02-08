@@ -33,6 +33,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
+Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.reset');
 Route::post('/login/parthner', [AuthController::class, 'loginParthner']);
 
 Route::group(['middleware' => ['auth:users']], function () {
