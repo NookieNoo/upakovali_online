@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use App\Http\Middleware\ForseJsonResponse;
+use App\Http\Middleware\TransformStringBoolToBoolean;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -46,6 +47,7 @@ class Kernel extends HttpKernel
             \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             // 'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            TransformStringBoolToBoolean::class
         ],
     ];
 
