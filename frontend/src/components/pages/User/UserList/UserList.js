@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { List, TextField, EmailField, TextInput, ReferenceInput, SelectInput } from 'react-admin';
+import { List, TextField, EmailField, TextInput, ReferenceInput, SelectInput, BooleanInput } from 'react-admin';
 import CustomizableDatagrid from 'ra-customizable-datagrid';
 
 const userFilters = [
@@ -7,6 +7,7 @@ const userFilters = [
     <ReferenceInput label="Роль" source="role_id" reference="role" alwaysOn>
         <SelectInput optionText="visible_name" optionValue="id" />
     </ReferenceInput>,
+    <BooleanInput label="Только активные" source="is_active" alwaysOn />,
 ];
 
 export default function UserList(props) {

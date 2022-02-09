@@ -31,7 +31,8 @@ class User extends Authenticatable
         'remember_token',
         'phone',
         'role_id',
-        'email'
+        'email',
+        'is_active'
     ];
 
     /**
@@ -70,10 +71,6 @@ class User extends Authenticatable
 
     public function isCourier() {
         return $this->role->id === UserType::COURIER;
-    }
-
-    public function isUnconfirmed() {
-        return $this->role->id === UserType::UNCONFIRMED;
     }
 
     public function role()
@@ -115,6 +112,9 @@ class User extends Authenticatable
                 $query->where(DB::raw("LOWER(" . $this->getTable() . ".full_name)"), 'LIKE', "%" . mb_strtolower($q) . "%")
                     ->orWhere(DB::raw("LOWER(" . $this->getTable() . ".phone)"), 'LIKE', "%" . mb_strtolower($q) . "%")
                     ->orWhere(DB::raw("LOWER(" . $this->getTable() . ".email)"), 'LIKE', "%" . mb_strtolower($q) . "%");
+            })
+            ->when($request->query('is_active'), function (Builder $query, $is_active) {
+                if ($is_active) $query->where($this->getTable() . ".is_active", $is_active);
             })
             ->when($request->query('role_id'), function (Builder $query, $roleId) {
                 $query->where($this->getTable() . ".role_id", $roleId);

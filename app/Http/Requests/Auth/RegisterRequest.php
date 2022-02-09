@@ -28,7 +28,6 @@ class RegisterRequest extends JsonRequest
             'full_name' => 'required|string|max:255',
             'phone' => 'required|string|max:50',
             'email' => 'required|string|email|unique:users,email',
-            'role_id' => 'required|integer|min:1|exists:roles,id',
             'password' => 'required|string|min:4|max:255|confirmed'
         ];
     }

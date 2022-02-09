@@ -24,11 +24,6 @@ let userRoles = {
         name: 'parthner',
         visible_name: 'Партнер',
     },
-    unconfirmed: {
-        id: 6,
-        name: 'unconfirmed',
-        visible_name: 'Неподтвержденный пользователь',
-    },
 };
 
 userRoles = Object.freeze(userRoles);

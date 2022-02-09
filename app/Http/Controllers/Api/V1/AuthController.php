@@ -57,7 +57,7 @@ class AuthController extends Controller
             ], Response::HTTP_UNAUTHORIZED);
         }
 
-        if ($user->isUnconfirmed()) {
+        if (!$user->is_active) {
             return $this->sendError('Пожалуйста, дождитесь подтверждения аккаунта', Response::HTTP_UNAUTHORIZED);
         }
 

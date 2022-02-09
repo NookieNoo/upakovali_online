@@ -74,21 +74,18 @@ const Input = ({
     );
 };
 
-const initialState = {
-    role_id: userRoles.unconfirmed.id,
-}
-
 const RegistrationPage = (props) => {
     const classes = useStyles();
     const notify = useNotify();
 
     const submit = (values) => {
         console.log(values);
-        authProvider.register(values)
+        authProvider
+            .register(values)
             .then((res) => notify(res?.message || 'Пользователь зарегистрирован', { type: 'success' }))
             .catch((error) => {
                 notify(error?.message || 'Пожалуйста, попробуйте позже', { type: 'error' });
-        });
+            });
     };
 
     return (
@@ -114,7 +111,6 @@ const RegistrationPage = (props) => {
                         <Form
                             onSubmit={submit}
                             validate={registerFormValidators.submit}
-                            initialValues={initialState}
                             render={({ handleSubmit }) => (
                                 <form onSubmit={handleSubmit} noValidate>
                                     <Field

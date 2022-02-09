@@ -29,13 +29,18 @@ class UserGetRequest extends FormRequest
         return [
             'query' => 'string|max:255',
             'role_id' => 'integer|min:1|exists:roles,id',
+            'is_active' => 'boolean',
         ];
     }
 
     protected function failedValidation(Validator $validator) {
+        $errors = $validator->errors();
+        $messages = $errors->all();
+
         throw new HttpResponseException(response()->json([
             'code' => Response::HTTP_BAD_REQUEST,
-            'message' => $validator->errors(),
+            'errors' => $errors,
+            'message' => implode(' ', $messages),
         ], Response::HTTP_BAD_REQUEST));
     }
 }

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Edit, SimpleForm, TextInput, PasswordInput, SelectInput, EmailField } from 'react-admin';
+import { Edit, SimpleForm, TextInput, PasswordInput, SelectInput, EmailField, BooleanInput } from 'react-admin';
 import { editUserFormValidators } from 'helpers/validators/userFormValidators';
 import { userRoles } from '@app-constants';
 
@@ -31,6 +31,7 @@ export default function UserEdit(props) {
                     optionText='visible_name'
                     validate={editUserFormValidators.role_id}
                 />
+                <BooleanInput label="Активен?" source="is_active" />
             </SimpleForm>
         </Edit>
     );

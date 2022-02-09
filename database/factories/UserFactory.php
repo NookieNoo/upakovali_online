@@ -30,7 +30,8 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => Hash::make('0000'), // password
             'remember_token' => Str::random(10),
-            'role_id' => rand(1, 4)
+            'role_id' => rand(1, 4),
+            'is_active' => true
         ];
     }
 
