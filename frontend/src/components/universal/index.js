@@ -4,4 +4,4 @@ export * from './inputs/KladrAutocompleteBlock';
 export * from './inputs/SelectInput';
 export * from './inputs/AutocompleteWithRef';
 export * from './accordions/SimpleAccordion';
-export * from './fields'
+export * from './fields';

@@ -36,7 +36,7 @@ class AuthServiceProvider extends ServiceProvider
 
         ResetPassword::createUrlUsing(function ($user, string $token) {
             $domain = config('mail.reset_link_url');
-            return "https://$domain/reset-password?token=$token&email=$user->email";
+            return "https://$domain/new-password?token=$token&email=$user->email";
         });
 
 //        Gate::define('show-one-order', function (User $user, Order $order) {

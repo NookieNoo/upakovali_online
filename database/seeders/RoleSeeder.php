@@ -19,6 +19,7 @@ class RoleSeeder extends Seeder
             ['id' => 3, 'name' => 'master', 'visible_name' => 'Мастер'],
             ['id' => 4, 'name' => 'courier', 'visible_name' => 'Курьер'],
             ['id' => 5, 'name' => 'parthner', 'visible_name' => 'Партнер'],
+            ['id' => 6, 'name' => 'unconfirmed', 'visible_name' => 'Неподтвержденный пользователь'],
         ]);
     }
 }

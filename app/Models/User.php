@@ -72,6 +72,10 @@ class User extends Authenticatable
         return $this->role->id === UserType::COURIER;
     }
 
+    public function isUnconfirmed() {
+        return $this->role->id === UserType::UNCONFIRMED;
+    }
+
     public function role()
     {
         return $this->belongsTo(Role::class);

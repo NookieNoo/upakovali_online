@@ -19,6 +19,16 @@ let userRoles = {
         name: 'courier',
         visible_name: 'Курьер',
     },
+    parthner: {
+        id: 5,
+        name: 'parthner',
+        visible_name: 'Партнер',
+    },
+    unconfirmed: {
+        id: 6,
+        name: 'unconfirmed',
+        visible_name: 'Неподтвержденный пользователь',
+    },
 };
 
 userRoles = Object.freeze(userRoles);

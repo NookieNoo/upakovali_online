@@ -57,6 +57,10 @@ class AuthController extends Controller
             ], Response::HTTP_UNAUTHORIZED);
         }
 
+        if ($user->isUnconfirmed()) {
+            return $this->sendError('Пожалуйста, дождитесь подтверждения аккаунта', Response::HTTP_UNAUTHORIZED);
+        }
+
         $token = $user->createToken('myapptoken')->plainTextToken;
 
         return response()->json([

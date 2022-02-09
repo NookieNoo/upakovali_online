@@ -1,35 +1,47 @@
 import { baseApiUrl } from '@app-helpers';
 import { permissions } from '@app-constants';
+import { fetchUtils } from 'react-admin';
 
 export const authProvider = {
     login: ({ username, password }) => {
-        const request = new Request(`${baseApiUrl}/login`, {
-            method: 'POST',
-            body: JSON.stringify({ email: username, password }),
-            headers: new Headers({ 'Content-Type': 'application/json' }),
-        });
-
-        return fetch(request)
-            .then((response) => {
-                if (!response.ok) {
-                    //FIXME Протестировать
-                    throw new Error(response.statusText);
-                }
-                return response.json();
+        return fetchUtils
+            .fetchJson(`${baseApiUrl}/login`, {
+                method: 'post',
+                body: JSON.stringify({ email: username, password }),
+                headers: new Headers({ 'Content-Type': 'application/json' }),
             })
-            .then((auth) => {
-                localStorage.setItem('token', auth.token);
-                localStorage.setItem('user', JSON.stringify(auth.user));
+            .then(({ status, headers, body, json }) => {
+                localStorage.setItem('token', json.token);
+                localStorage.setItem('user', JSON.stringify(json.user));
                 return Promise.resolve();
             })
             .catch((e) => {
-                throw new Error('Не удалось аутентифицироваться');
+                console.log('Не удалось аутентифицироваться', e.message);
+                throw new Error(e.message || 'Не удалось аутентифицироваться');
             });
     },
     logout: () => {
         localStorage.removeItem('user');
         localStorage.removeItem('token');
         return Promise.resolve();
+    },
+    register: (values) => {
+        return fetchUtils.fetchJson(`${baseApiUrl}/register`, {
+            method: 'post',
+            body: JSON.stringify(values),
+        });
+    },
+    forgotPassword: (values) => {
+        return fetchUtils.fetchJson(`${baseApiUrl}/forgot-password`, {
+            method: 'post',
+            body: JSON.stringify(values),
+        });
+    },
+    resetPassword: (values) => {
+        return fetchUtils.fetchJson(`${baseApiUrl}/reset-password`, {
+            method: 'post',
+            body: JSON.stringify(values),
+        });
     },
     checkError: ({ status }) => {
         if (status === 401) {

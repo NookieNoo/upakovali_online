@@ -23,6 +23,7 @@ import {
 import { dataProvider, i18nProvider, authProvider } from '@app-providers';
 import { ResourceWithPermissions, CustomLayout } from '@app-components/overriding';
 import { customRoutes } from 'routes/customRoutes';
+import { LoginPage } from '@app-pages';
 
 const history = createHistory();
 const options = {
@@ -51,6 +52,7 @@ const App = () => (
         layout={CustomLayout}
         title="upakovali.online"
         customRoutes={customRoutes}
+        loginPage={LoginPage}
     >
         <ResourceWithPermissions
             name="client"
