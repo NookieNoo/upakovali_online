@@ -42,6 +42,14 @@ export const Dashboard = (props) => {
                                             >
                                                 Клиента
                                             </Button>
+                                            <Button
+                                                size="small"
+                                                color="primary"
+                                                component={Link}
+                                                to={{ pathname: '/order' }}
+                                            >
+                                                Заказ
+                                            </Button>
                                         </CardContent>
                                     </Card>
                                 </Grid>
@@ -72,6 +80,14 @@ export const Dashboard = (props) => {
                                                 to={{ pathname: '/client/create' }}
                                             >
                                                 Клиента
+                                            </Button>
+                                            <Button
+                                                size="small"
+                                                color="primary"
+                                                component={Link}
+                                                to={{ pathname: '/order/create' }}
+                                            >
+                                                Заказ
                                             </Button>
                                         </CardContent>
                                     </Card>
