@@ -149,6 +149,9 @@ class Order extends BaseModel
             })
             ->when($request->query('receiver_id'), function (Builder $query, $receiverId) {
                 $query->where($this->getTable() . ".receiver_id", $receiverId);
+            })
+            ->when($request->query('issue_date'), function (Builder $query, $issueDate) {
+                $query->whereDate($this->getTable() . ".issue_date", '=', $issueDate);
             });
     }
 
