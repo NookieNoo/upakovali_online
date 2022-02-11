@@ -13,6 +13,7 @@ import {
     FormTab,
     ArrayInput,
     SimpleFormIterator,
+    NumberInput,
 } from 'react-admin';
 import { editOrderFormValidators } from '@app-helpers';
 import { userRoles, serviceTypes } from '@app-constants';
@@ -69,10 +70,28 @@ export default function OrderEdit(props) {
                     </ReferenceInput>
                     <ArrayInput source="gifts" label="Подарки" validate={editOrderFormValidators.gifts}>
                         <SimpleFormIterator>
-                            <TextInput
+                            <NumberInput
                                 source="weight"
                                 label="Вес (кг)"
                                 validate={editOrderFormValidators['gifts.weight']}
+                            />
+                            <NumberInput
+                                source="length"
+                                label="Длина (см)"
+                                min={1}
+                                validate={editOrderFormValidators['gifts.length']}
+                            />
+                            <NumberInput
+                                source="width"
+                                label="Ширина (см)"
+                                min={1}
+                                validate={editOrderFormValidators['gifts.width']}
+                            />
+                            <NumberInput
+                                source="height"
+                                label="Высота (см)"
+                                min={1}
+                                validate={editOrderFormValidators['gifts.height']}
                             />
                             <ReferenceInput label="Кому" source="addressee_id" reference="addressee">
                                 <SelectInput

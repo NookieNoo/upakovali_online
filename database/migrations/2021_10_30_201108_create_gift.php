@@ -19,6 +19,9 @@ class CreateGift extends Migration
             $table->unsignedInteger('order_id');
             $table->unsignedInteger('service_id');
             $table->unsignedDecimal('weight');
+            $table->unsignedInteger('length');
+            $table->unsignedInteger('width');
+            $table->unsignedInteger('height');
             $table->unsignedInteger('addressee_id');
 
             $table->timestamps();

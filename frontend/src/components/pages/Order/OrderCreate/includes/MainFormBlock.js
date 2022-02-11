@@ -1,16 +1,10 @@
 import * as React from 'react';
-import {
-    TextInput,
-    ReferenceInput,
-    SelectInput,
-    ArrayInput,
-    SimpleFormIterator,
-} from 'react-admin';
+import { TextInput, ReferenceInput, SelectInput, ArrayInput, SimpleFormIterator, NumberInput } from 'react-admin';
 import { serviceTypes } from '@app-constants';
 import { createOrderFormValidators } from '@app-helpers';
 import { AutocompleteWithRef } from '@app-universal';
 import { SelectInputWrap } from '@app-components/overriding';
-import { useFormState } from "react-final-form";
+import { useFormState } from 'react-final-form';
 
 //TODO Добавить фильтр по партнеру
 const deliveryOrPickingFilter = { product_id: serviceTypes.PACKAGE.id };
@@ -50,7 +44,29 @@ export default function MainFormBlock(props) {
             </ReferenceInput>
             <ArrayInput source="gifts" label="Подарки" validate={createOrderFormValidators.gifts}>
                 <SimpleFormIterator>
-                    <TextInput source="weight" label="Вес (кг)" validate={createOrderFormValidators['gifts.weight']} />
+                    <NumberInput
+                        source="weight"
+                        label="Вес (кг)"
+                        validate={createOrderFormValidators['gifts.weight']}
+                    />
+                    <NumberInput
+                        source="length"
+                        label="Длина (см)"
+                        min={1}
+                        validate={createOrderFormValidators['gifts.length']}
+                    />
+                    <NumberInput
+                        source="width"
+                        label="Ширина (см)"
+                        min={1}
+                        validate={createOrderFormValidators['gifts.width']}
+                    />
+                    <NumberInput
+                        source="height"
+                        label="Высота (см)"
+                        min={1}
+                        validate={createOrderFormValidators['gifts.height']}
+                    />
                     <ReferenceInput label="Кому" source="addressee_id" reference="addressee">
                         <SelectInput
                             optionText="name"

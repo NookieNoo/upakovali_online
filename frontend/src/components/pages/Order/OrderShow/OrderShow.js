@@ -36,7 +36,10 @@ export default function OrderShow(props) {
                     <ArrayField source="gifts" fieldKey="id" label="Подарки">
                         <Datagrid>
                             <TextField source="id" />
-                            <TextField source="weight" label="Вес" />
+                            <TextField source="weight" label="Вес (кг)" />
+                            <TextField source="length" label="Длина (см)" />
+                            <TextField source="width" label="Ширина (см)" />
+                            <TextField source="height" label="Высота (см)" />
                             <TextField source="addressee.name" label="Кому" />
                             <TextField source="service.name" label="Название услуги" />
                             <TextField source="service.sum" label="Цена" />
