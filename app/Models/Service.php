@@ -29,6 +29,13 @@ class Service extends BaseModel
     {
         return $query->when($request->query('product_id'), function (Builder $query, $productId) {
             $query->where($this->getTable() . ".product_id", $productId);
+        })
+            ->when($request->query('parthner_id'), function (Builder $query, $parthnerId) {
+                if (!self::isJoined($query, Price::getTableName())) {
+                    $query->join(Price::getTableName(), Service::getTableName() . '.price_id', '=', Price::getTableName() . '.id')
+                        ->select(Service::getTableName() . '.*');
+                }
+                $query->where(Price::getTableName() . ".parthner_id", $parthnerId);
         });
     }
 }

@@ -17,6 +17,6 @@ class ServiceController extends Controller
      */
     public function index(Request $request)
     {
-        return Service::withFilters($request)->paginate();
+        return Service::withFilters($request)->with('price')->paginate();
     }
 }

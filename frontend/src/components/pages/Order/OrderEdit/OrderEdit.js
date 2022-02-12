@@ -18,6 +18,7 @@ import {
 import { editOrderFormValidators } from '@app-helpers';
 import { userRoles, serviceTypes } from '@app-constants';
 import { KladrAutocompleteBlock, AutocompleteWithRef } from '@app-universal';
+import { useFormState } from 'react-final-form';
 
 const courierFilter = { role_id: userRoles.courier.id };
 const masterFilter = { role_id: userRoles.master.id };
@@ -26,6 +27,10 @@ const masterFilter = { role_id: userRoles.master.id };
 const deliveryOrPickingFilter = { product_id: serviceTypes.PACKAGE.id };
 
 export default function OrderEdit(props) {
+    // const { values } = useFormState();
+
+    // const servicesFilter = {};
+    // console.log(values);
     return (
         <Edit {...props} mutationMode="pessimistic">
             <TabbedForm validate={editOrderFormValidators.submit} redirect="show">
@@ -101,7 +106,7 @@ export default function OrderEdit(props) {
                                 />
                             </ReferenceInput>
                             <ReferenceInput
-                                label="Размер подарка (см)"
+                                label="Сервис"
                                 source="service_id"
                                 reference="service"
                                 filter={deliveryOrPickingFilter}
@@ -125,8 +130,9 @@ export default function OrderEdit(props) {
                                 label="Название"
                                 validate={editOrderFormValidators['additional_products.name']}
                             />
-                            <TextInput
+                            <NumberInput
                                 source="price"
+                                min={0}
                                 label="Стоимость"
                                 validate={editOrderFormValidators['additional_products.price']}
                             />

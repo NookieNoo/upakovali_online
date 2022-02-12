@@ -44,4 +44,25 @@ class BaseModel extends Model
     protected function getColumnNames() {
         return DB::getSchemaBuilder()->getColumnListing($this->getTable());
     }
+
+    public static function getTableName(): string
+    {
+        return with(new static)->getTable();
+    }
+
+    protected static function isJoined($query, $table)
+    {
+        $joins = $query->getQuery()->joins;
+        if($joins == null) {
+            return false;
+        }
+
+        foreach ($joins as $join) {
+            if ($join->table == $table) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
