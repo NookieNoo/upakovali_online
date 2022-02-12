@@ -19,6 +19,10 @@ import {
     UserEdit,
     UserShow,
     UserCreate,
+    PriceList,
+    PriceShow,
+    PriceEdit,
+    PriceCreate,
 } from '@app-pages';
 import { dataProvider, i18nProvider, authProvider } from '@app-providers';
 import { ResourceWithPermissions, CustomLayout } from '@app-components/overriding';
@@ -86,6 +90,7 @@ const App = () => (
             create={UserCreate}
             options={options.user}
         />
+        <ResourceWithPermissions name="price" list={PriceList} show={PriceShow} edit={PriceEdit} create={PriceCreate} />
 
         <Resource name="source" />
         <Resource name="workshop" />

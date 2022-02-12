@@ -9,3 +9,4 @@ export * from './Login';
 export * from './ForgotPassword';
 export * from './PasswordRestore';
 export * from './NewPassword';
+export * from './Price';

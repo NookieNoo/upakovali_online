@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\V1\OrderController;
 use App\Http\Controllers\Api\V1\OrderStatusController;
 use App\Http\Controllers\Api\V1\OuterApiController;
 use App\Http\Controllers\Api\V1\ParthnerController;
+use App\Http\Controllers\Api\V1\PriceController;
 use App\Http\Controllers\Api\V1\RoleController;
 use App\Http\Controllers\Api\V1\ServiceController;
 use App\Http\Controllers\Api\V1\SourceController;
@@ -97,6 +98,13 @@ Route::group(['middleware' => ['auth:users']], function () {
 
     Route::prefix('activity')->group(function () {
         Route::get('/', [ActivityController::class, 'index']);
+    });
+
+    Route::prefix('price')->group(function () {
+        Route::get('/', [PriceController::class, 'index']);
+        Route::get('/{id}', [PriceController::class, 'show'])->where('id', '[0-9]+');
+        Route::post('', [PriceController::class, 'store']);
+        Route::put('/{id}', [PriceController::class, 'update'])->where('id', '[0-9]+');
     });
 
     Route::post('/logout', [AuthController::class, 'logout']);

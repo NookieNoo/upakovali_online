@@ -34,6 +34,13 @@ let permissions = {
         activity: {
             list: true,
         },
+        price: {
+            enabled: true,
+            list: true,
+            show: true,
+            edit: true,
+            create: true,
+        },
     },
     manager: {
         order: {
@@ -69,6 +76,13 @@ let permissions = {
         },
         activity: {
             list: false,
+        },
+        price: {
+            enabled: false,
+            list: false,
+            show: false,
+            edit: false,
+            create: false,
         },
     },
     master: {
@@ -106,6 +120,9 @@ let permissions = {
         activity: {
             list: false,
         },
+        price: {
+            list: false,
+        },
     },
     courier: {
         order: {
@@ -140,6 +157,9 @@ let permissions = {
             enabled: false,
         },
         activity: {
+            list: false,
+        },
+        price: {
             list: false,
         },
     },

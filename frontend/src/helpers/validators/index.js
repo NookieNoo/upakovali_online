@@ -5,3 +5,4 @@ export * from './orderFormValidators';
 export * from './registerFormValidators';
 export * from './passwordRestoreFormValidators';
 export * from './newPasswordFormValidators';
+export * from './priceFormValidators';
