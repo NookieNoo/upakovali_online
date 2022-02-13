@@ -25,6 +25,7 @@ import {
     PriceCreate,
     WorkshopList,
     AddresseeList,
+    ProductList,
 } from '@app-pages';
 import { dataProvider, i18nProvider, authProvider } from '@app-providers';
 import { ResourceWithPermissions, CustomLayout } from '@app-components/overriding';
@@ -100,6 +101,7 @@ const App = () => (
         <Resource name="order_status" />
         <Resource name="service" />
         <Resource name="activity" />
+        <Resource name="product" list={ProductList} />
     </Admin>
 );
 

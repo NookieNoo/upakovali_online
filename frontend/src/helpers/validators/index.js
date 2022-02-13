@@ -8,3 +8,4 @@ export * from './newPasswordFormValidators';
 export * from './priceFormValidators';
 export * from './workshopFormValidators';
 export * from './addresseeFormValidators';
+export * from './productFormValidators';

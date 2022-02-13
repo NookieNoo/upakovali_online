@@ -12,3 +12,4 @@ export * from './NewPassword';
 export * from './Price';
 export * from './Workshop';
 export * from './Addressee';
+export * from './Product';

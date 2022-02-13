@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\V1\OrderStatusController;
 use App\Http\Controllers\Api\V1\OuterApiController;
 use App\Http\Controllers\Api\V1\ParthnerController;
 use App\Http\Controllers\Api\V1\PriceController;
+use App\Http\Controllers\Api\V1\ProductController;
 use App\Http\Controllers\Api\V1\RoleController;
 use App\Http\Controllers\Api\V1\ServiceController;
 use App\Http\Controllers\Api\V1\SourceController;
@@ -94,6 +95,14 @@ Route::group(['middleware' => ['auth:users']], function () {
         Route::put('/{id}', [AddresseeController::class, 'update'])->where('id', '[0-9]+');
         Route::get('/{id}', [AddresseeController::class, 'show'])->where('id', '[0-9]+');
         Route::delete('/{id}', [AddresseeController::class, 'destroy'])->where('id', '[0-9]+');
+    });
+
+    Route::prefix('product')->group(function () {
+        Route::get('/', [ProductController::class, 'index']);
+        Route::post('', [ProductController::class, 'store']);
+        Route::put('/{id}', [ProductController::class, 'update'])->where('id', '[0-9]+');
+        Route::get('/{id}', [ProductController::class, 'show'])->where('id', '[0-9]+');
+        Route::delete('/{id}', [ProductController::class, 'destroy'])->where('id', '[0-9]+');
     });
 
     Route::prefix('order_status')->group(function () {
