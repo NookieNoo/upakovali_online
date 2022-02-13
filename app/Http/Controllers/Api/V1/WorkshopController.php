@@ -3,12 +3,8 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Price\PriceStoreRequest;
-use App\Http\Requests\Price\PriceUpdateRequest;
 use App\Http\Requests\Workshop\WorkshopStoreRequest;
 use App\Http\Requests\Workshop\WorkshopUpdateRequest;
-use App\Models\Price;
-use App\Models\Service;
 use App\Models\Workshop;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -33,7 +29,7 @@ class WorkshopController extends Controller
     public function show(Request $request, $id)
     {
         try {
-            $price = Workshop::findOrFail($id);
+            $workshop = Workshop::findOrFail($id);
 //            if ($request->user()->cannot('view', $price, Price::class)) {
 //                return $this->sendError('Доступ закрыт', Response::HTTP_FORBIDDEN);
 //            }
@@ -41,7 +37,7 @@ class WorkshopController extends Controller
             return $this->sendError('Мастерская не найдена', Response::HTTP_NOT_FOUND);
         }
 
-        return $this->send(Response::HTTP_OK, null, $price);
+        return $this->send(Response::HTTP_OK, null, $workshop);
     }
 
     /**

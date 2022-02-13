@@ -90,6 +90,10 @@ Route::group(['middleware' => ['auth:users']], function () {
 
     Route::prefix('addressee')->group(function () {
         Route::get('/', [AddresseeController::class, 'index']);
+        Route::post('', [AddresseeController::class, 'store']);
+        Route::put('/{id}', [AddresseeController::class, 'update'])->where('id', '[0-9]+');
+        Route::get('/{id}', [AddresseeController::class, 'show'])->where('id', '[0-9]+');
+        Route::delete('/{id}', [AddresseeController::class, 'destroy'])->where('id', '[0-9]+');
     });
 
     Route::prefix('order_status')->group(function () {

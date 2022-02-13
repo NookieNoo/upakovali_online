@@ -48,6 +48,13 @@ let permissions = {
             edit: true,
             create: true,
         },
+        addressee: {
+            enabled: true,
+            list: true,
+            show: true,
+            edit: true,
+            create: true,
+        },
     },
     manager: {
         order: {

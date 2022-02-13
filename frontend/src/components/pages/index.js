@@ -11,3 +11,4 @@ export * from './PasswordRestore';
 export * from './NewPassword';
 export * from './Price';
 export * from './Workshop';
+export * from './Addressee';
