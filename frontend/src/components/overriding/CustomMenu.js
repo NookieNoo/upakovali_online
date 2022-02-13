@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { DashboardMenuItem, Menu, MenuItemLink } from 'react-admin';
-import { ClientIcon, ParthnerIcon, OrderIcon, UserIcon, AnalyticsIcon, PriceIcon } from '@app-pages';
+import { ClientIcon, ParthnerIcon, OrderIcon, UserIcon, AnalyticsIcon, PriceIcon, WorkshopIcon } from '@app-pages';
 import { useHasAccess } from '@app-hooks';
 
 export const CustomMenu = (props) => {
@@ -10,6 +10,7 @@ export const CustomMenu = (props) => {
     const { enabled: hasAccessToUser } = useHasAccess('user');
     const { enabled: hasAccessToAnalytics } = useHasAccess('analytics');
     const { enabled: hasAccessToPrice } = useHasAccess('price');
+    const { enabled: hasAccessToWorkshop } = useHasAccess('workshop');
 
     return (
         <Menu {...props}>
@@ -22,6 +23,7 @@ export const CustomMenu = (props) => {
                 <MenuItemLink to="/analytics" primaryText="Аналитика" leftIcon={<AnalyticsIcon />} />
             )}
             {hasAccessToPrice && <MenuItemLink to="/price" primaryText="Прайсы" leftIcon={<PriceIcon />} />}
+            {hasAccessToWorkshop && <MenuItemLink to="/workshop" primaryText="Мастерские" leftIcon={<WorkshopIcon />} />}
         </Menu>
     );
 };

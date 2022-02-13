@@ -41,6 +41,13 @@ let permissions = {
             edit: true,
             create: true,
         },
+        workshop: {
+            enabled: true,
+            list: true,
+            show: true,
+            edit: true,
+            create: true,
+        },
     },
     manager: {
         order: {

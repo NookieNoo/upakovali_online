@@ -6,3 +6,4 @@ export * from './registerFormValidators';
 export * from './passwordRestoreFormValidators';
 export * from './newPasswordFormValidators';
 export * from './priceFormValidators';
+export * from './workshopFormValidators';

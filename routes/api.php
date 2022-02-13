@@ -82,6 +82,10 @@ Route::group(['middleware' => ['auth:users']], function () {
 
     Route::prefix('workshop')->group(function () {
         Route::get('/', [WorkshopController::class, 'index']);
+        Route::post('', [WorkshopController::class, 'store']);
+        Route::put('/{id}', [WorkshopController::class, 'update'])->where('id', '[0-9]+');
+        Route::get('/{id}', [WorkshopController::class, 'show'])->where('id', '[0-9]+');
+        Route::delete('/{id}', [WorkshopController::class, 'destroy'])->where('id', '[0-9]+');
     });
 
     Route::prefix('addressee')->group(function () {
