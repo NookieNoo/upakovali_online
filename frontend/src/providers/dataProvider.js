@@ -38,6 +38,9 @@ export const dataProvider = {
                 json.data.manager_id = json.data.manager.id;
             } else if (resource === 'price') {
                 json.data.parthner_id = json.data.parthner.id;
+                json.data.services.forEach((it) => {
+                    it.product_id = it.product.id;
+                });
             } else if (resource === 'order') {
                 json.data.gifts.forEach((it) => {
                     it.addressee_id = it.addressee.id;

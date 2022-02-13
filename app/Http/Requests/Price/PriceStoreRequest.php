@@ -28,6 +28,10 @@ class PriceStoreRequest extends JsonRequest
             'parthner_id' => 'required|integer|min:1|exists:parthners,id',
             'start' => 'required|date|date_format:Y-m-d',
             'end' => 'required|date|date_format:Y-m-d',
+            'services' => 'required|array',
+            'services.*.name' => 'required||string|max:255',
+            'services.*.sum' => 'required|numeric|min:0',
+            'services.*.product_id' => 'required|integer|min:1|exists:products,id',
         ];
     }
 }

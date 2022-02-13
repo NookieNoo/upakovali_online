@@ -7,10 +7,12 @@ use App\Http\Requests\Price\PriceGetRequest;
 use App\Http\Requests\Price\PriceStoreRequest;
 use App\Http\Requests\Price\PriceUpdateRequest;
 use App\Models\Price;
+use App\Models\Service;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 
 class PriceController extends Controller
 {
@@ -22,7 +24,7 @@ class PriceController extends Controller
     public function show(Request $request, $id)
     {
         try {
-            $price = Price::with('parthner', 'services')->findOrFail($id);
+            $price = Price::with('parthner', 'services', 'services.product')->findOrFail($id);
             if ($request->user()->cannot('view', $price, Price::class)) {
                 return $this->sendError('Доступ закрыт', Response::HTTP_FORBIDDEN);
             }
@@ -45,8 +47,16 @@ class PriceController extends Controller
             return $this->sendError('Доступ закрыт', Response::HTTP_FORBIDDEN);
         }
         try {
-            $validated = $request->validated();
-            $price = Price::create($validated);
+            $price = DB::transaction(function () use ($request) {
+                $validated = $request->validated();
+                $price = Price::create($validated);
+
+                foreach($validated['services'] as $serviceData) {
+                    $service = Service::create(array_merge($serviceData, ['price_id' => $price->id]));
+                }
+
+                return $price;
+            });
         } catch (\Exception $e) {
             return $this->sendError('Не удалось создать прайс', Response::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
         }
@@ -76,15 +86,30 @@ class PriceController extends Controller
             return $this->sendError('Прайс не найден.', Response::HTTP_NOT_FOUND);
         }
 
-        $validatedData = $request->validated();
+        try {
+            $price = DB::transaction(function () use ($request, $price) {
+                $validatedData = $request->validated();
+                $price->update($validatedData);
 
-//        if ($validatedData['manager_id'] !== $parthner->manager_id) {
+
+                //@FIXME Запретить изменение services, если на них уже есть ссылка
+                //        if ($validatedData['manager_id'] !== $parthner->manager_id) {
 //            if ($parthner->orders()->exists()) {
 //                return $this->sendError('Нельзя изменить менеджера этого партнера, т.к. у него есть заказы', Response::HTTP_BAD_REQUEST);
 //            }
 //        }
 
-        $price->update($validatedData);
+
+                $price->services()->delete();
+                foreach($validatedData['services'] as $serviceData) {
+                    $service = Service::create(array_merge($serviceData, ['price_id' => $price->id]));
+                }
+
+                return $price;
+            });
+        } catch (\Exception $e) {
+            return $this->sendError('Не удалось обновить прайс', Response::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
+        }
 
         return $this->send(Response::HTTP_OK, 'Данные сохранены.', $price);
     }
