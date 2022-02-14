@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { YMaps, Map, FullscreenControl, TypeSelector, ZoomControl, Placemark } from 'react-yandex-maps';
+import { YMaps, Map, FullscreenControl, TypeSelector, ZoomControl, Placemark, Clusterer } from 'react-yandex-maps';
 
-export function YandexMapsBlock({ width, height, typeSelectorProps, location, showPlacemark }) {
+export function YandexMapsBlock({ width, height, typeSelectorProps, location, showPlacemark, clustererPoints }) {
     const [optionsState, setOptionsState] = React.useState({
-        zoom: 5,
+        zoom: 8,
         center: location && Object.values(location),
         showPlacemark,
     });
@@ -20,7 +20,19 @@ export function YandexMapsBlock({ width, height, typeSelectorProps, location, sh
                     <FullscreenControl />
                     <TypeSelector {...typeSelectorProps} />
                     <ZoomControl />
-                    {optionsState.showPlacemark && <Placemark geometry={optionsState.center} />}
+                    {/* {optionsState.showPlacemark && <Placemark geometry={optionsState.center} />} */}
+                    {clustererPoints && (
+                        <Clusterer
+                            options={{
+                                preset: 'islands#invertedDarkBlueClusterIcons',
+                                groupByCoordinates: false,
+                            }}
+                        >
+                            {clustererPoints.map((it, index) => (
+                                <Placemark key={index} geometry={it} />
+                            ))}
+                        </Clusterer>
+                    )}
                 </Map>
             </div>
         </YMaps>
@@ -44,4 +56,5 @@ YandexMapsBlock.propTypes = {
     typeSelectorProps: PropTypes.object,
     showPlacemark: PropTypes.bool,
     yandexApiResponse: PropTypes.object,
+    clustererPoints: PropTypes.array,
 };

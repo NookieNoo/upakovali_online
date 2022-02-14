@@ -6,9 +6,6 @@ import { AutocompleteWithRef } from '@app-universal';
 import { SelectInputWrap } from '@app-components/overriding';
 import { useFormState } from 'react-final-form';
 
-//TODO Добавить фильтр по партнеру
-const deliveryOrPickingFilter = { product_id: serviceTypes.PACKAGE.id };
-
 export default function MainFormBlock(props) {
     const { values: formState, ...rest } = useFormState();
 
