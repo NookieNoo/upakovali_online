@@ -79,6 +79,10 @@ Route::group(['middleware' => ['auth:users']], function () {
 
     Route::prefix('source')->group(function () {
         Route::get('/', [SourceController::class, 'index']);
+        Route::post('', [SourceController::class, 'store']);
+        Route::put('/{id}', [SourceController::class, 'update'])->where('id', '[0-9]+');
+        Route::get('/{id}', [SourceController::class, 'show'])->where('id', '[0-9]+');
+        Route::delete('/{id}', [SourceController::class, 'destroy'])->where('id', '[0-9]+');
     });
 
     Route::prefix('workshop')->group(function () {

@@ -10,6 +10,7 @@ import {
     WorkshopIcon,
     AddresseeIcon,
     ProductIcon,
+    SourceIcon,
 } from '@app-pages';
 import { useHasAccess } from '@app-hooks';
 
@@ -23,6 +24,7 @@ export const CustomMenu = (props) => {
     const { enabled: hasAccessToWorkshop } = useHasAccess('workshop');
     const { enabled: hasAccessToAddressee } = useHasAccess('addressee');
     const { enabled: hasAccessToProduct } = useHasAccess('product');
+    const { enabled: hasAccessToSource } = useHasAccess('source');
 
     return (
         <Menu {...props}>
@@ -42,6 +44,7 @@ export const CustomMenu = (props) => {
                 <MenuItemLink to="/addressee" primaryText="Адресаты" leftIcon={<AddresseeIcon />} />
             )}
             {hasAccessToProduct && <MenuItemLink to="/product" primaryText="ServiceType" leftIcon={<ProductIcon />} />}
+            {hasAccessToSource && <MenuItemLink to="/source" primaryText="Источники" leftIcon={<SourceIcon />} />}
         </Menu>
     );
 };
