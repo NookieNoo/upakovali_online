@@ -13,7 +13,9 @@ const defaultQueryOptions = {
     oneString: true,
     limit: 10,
     token: kladrToken,
-    query: '',
+    query: 'А',
+    // parentType: 'region',
+    regionId: 7700000000000
 };
 
 const fetchKladrItems = ({ options, beforeFetch, afterFetch, successCallback, errorCallback }) => {
@@ -72,6 +74,8 @@ export function KladrAutocompleteBlock(props) {
     }, []);
 
     const loadingCallback = (query) => {
+        if (!query) return;
+
         fetchKladrItems({
             options: { ...defaultQueryOptions, query },
             beforeFetch: showLoaders,
