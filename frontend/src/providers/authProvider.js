@@ -44,7 +44,7 @@ export const authProvider = {
         });
     },
     checkError: ({ status }) => {
-        if (status === 401) {
+        if (status === 401 || status === 403) {
             localStorage.removeItem('username');
             return Promise.reject();
         }

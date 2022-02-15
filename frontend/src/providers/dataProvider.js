@@ -26,10 +26,7 @@ export const dataProvider = {
                 data: json.data,
                 meta: json.meta,
                 total: json.meta.total,
-            }))
-            .catch((e) => {
-                throw new Error(e.message);
-            });
+            }));
     },
     getOne: (resource, params) =>
         httpClient(`${baseApiUrl}/${resource}/${params.id}`).then(({ json }) => {

@@ -37,7 +37,6 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'flex-start',
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
-        border: '1px solid red',
         width: '100%',
         backgroundImage: 'radial-gradient(circle at 50% 14em, #313264 0%, #00023b 60%, #00023b 100%)',
     },
