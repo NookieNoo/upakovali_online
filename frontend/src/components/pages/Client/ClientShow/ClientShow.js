@@ -63,9 +63,9 @@ export default function ClientShow(props) {
                                 </Datagrid>
                             </ReferenceManyField>
                         </Tab>
-                        <Tab label="Комментарии">
+                        {/* <Tab label="Комментарии">
                             <TextField source="prices" label="Здесь должны быть комментарии по клиенту" />
-                        </Tab>
+                        </Tab> */}
                     </TabbedShowLayout>
                 }
             />
