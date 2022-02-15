@@ -21,10 +21,10 @@ export const CustomMenu = (props) => {
     const { enabled: hasAccessToUser } = useHasAccess('user');
     const { enabled: hasAccessToAnalytics } = useHasAccess('analytics');
     const { enabled: hasAccessToPrice } = useHasAccess('price');
-    const { enabled: hasAccessToWorkshop } = useHasAccess('workshop');
+    const { show: hasAccessToWorkshop } = useHasAccess('workshop');
     const { enabled: hasAccessToAddressee } = useHasAccess('addressee');
     const { enabled: hasAccessToProduct } = useHasAccess('product');
-    const { enabled: hasAccessToSource } = useHasAccess('source');
+    const { show: hasAccessToSource } = useHasAccess('source');
 
     return (
         <Menu {...props}>

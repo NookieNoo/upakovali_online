@@ -112,6 +112,20 @@ let permissions = {
             edit: false,
             create: false,
         },
+        workshop: {
+            enabled: true,
+            list: false,
+            show: true,
+            edit: false,
+            create: false,
+        },
+        source: {
+            enabled: true,
+            list: false,
+            show: false,
+            edit: false,
+            create: false,
+        },
     },
     master: {
         order: {
@@ -151,6 +165,20 @@ let permissions = {
         price: {
             list: false,
         },
+        workshop: {
+            enabled: true,
+            list: false,
+            show: true,
+            edit: false,
+            create: false,
+        },
+        source: {
+            enabled: true,
+            list: false,
+            show: false,
+            edit: false,
+            create: false,
+        },
     },
     courier: {
         order: {
@@ -189,6 +217,20 @@ let permissions = {
         },
         price: {
             list: false,
+        },
+        workshop: {
+            enabled: true,
+            list: false,
+            show: true,
+            edit: false,
+            create: false,
+        },
+        source: {
+            enabled: true,
+            list: false,
+            show: false,
+            edit: false,
+            create: false,
         },
     },
 };
