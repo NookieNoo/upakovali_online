@@ -25,7 +25,9 @@ class ActivityGetRequest extends JsonRequest
     {
         return [
             'causer_id' => 'integer|min:1',
-            'causer_type' => 'string|min:1|in:user,parthner',
+            'subject_id' => 'integer|min:1',
+            'causer_type' => 'string|min:1|in:user,parthner,order',
+            'subject_type' => 'string|min:1|in:order',
         ];
     }
 }

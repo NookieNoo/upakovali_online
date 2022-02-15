@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { isPlainObject } from 'lodash';
 import {
     Show,
     ImageField,
@@ -11,12 +12,19 @@ import {
     Tab,
     Datagrid,
     useShowController,
+    ReferenceManyField,
+    Pagination,
 } from 'react-admin';
 import Aside from './Aside';
 import { OrderShowActions } from './includes/OrderShowActions';
+import { useHasAccess } from '@app-hooks';
+import { ExpandActivityBlock } from '@app-universal';
+
+const filter = { subject_type: 'order' };
 
 export default function OrderShow(props) {
     const { record, loaded } = useShowController(props);
+    const { list: canWatchActivity } = useHasAccess('activity');
 
     return (
         <Show
@@ -78,6 +86,30 @@ export default function OrderShow(props) {
                 <Tab label="Фото">
                     <ImageField label="Фото к заказу" source="order_photos" src="abs_path" title="Фото" />
                 </Tab>
+                {canWatchActivity && (
+                    <Tab label="Логи">
+                        <div>
+                            <ReferenceManyField
+                                label="Список действий пользователя"
+                                target="subject_id"
+                                reference="activity"
+                                filter={filter}
+                                perPage={10}
+                                pagination={<Pagination />}
+                            >
+                                <Datagrid
+                                    isRowSelectable={() => false}
+                                    isRowExpandable={(row) => isPlainObject(row.properties)}
+                                    expand={<ExpandActivityBlock />}
+                                >
+                                    <TextField label="id" source="id" />
+                                    <TextField label="Описание" source="description" />
+                                    <DateField label="Дата" source="created_at" showTime />
+                                </Datagrid>
+                            </ReferenceManyField>
+                        </div>
+                    </Tab>
+                )}
             </TabbedShowLayout>
         </Show>
     );
