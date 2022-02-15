@@ -33,9 +33,9 @@ export const CustomMenu = (props) => {
             {hasAccessToParthner && <MenuItemLink to="/parthner" primaryText="Партнеры" leftIcon={<ParthnerIcon />} />}
             {hasAccessToOrder && <MenuItemLink to="/order" primaryText="Заказы" leftIcon={<OrderIcon />} />}
             {hasAccessToUser && <MenuItemLink to="/user" primaryText="Пользователи" leftIcon={<UserIcon />} />}
-            {hasAccessToAnalytics && (
+            {/* {hasAccessToAnalytics && (
                 <MenuItemLink to="/analytics" primaryText="Аналитика" leftIcon={<AnalyticsIcon />} />
-            )}
+            )} */}
             {hasAccessToPrice && <MenuItemLink to="/price" primaryText="Прайсы" leftIcon={<PriceIcon />} />}
             {hasAccessToWorkshop && (
                 <MenuItemLink to="/workshop" primaryText="Мастерские" leftIcon={<WorkshopIcon />} />
