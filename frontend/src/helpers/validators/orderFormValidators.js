@@ -1,4 +1,5 @@
 import { required, maxLength, number, minValue } from 'react-admin';
+import dayjs from 'dayjs';
 
 const submitValidator = ({
     is_pickupable,
@@ -27,6 +28,15 @@ const submitValidator = ({
     return errors;
 };
 
+const validateIssueTime = (dateTime) => {
+    let selectedDate = dayjs(dateTime);
+    let dateMin = dayjs().add(30, 'm');
+    let dateMax = dayjs().add(5, 'd');
+    if (selectedDate.isBefore(dateMin)) return 'Не ранее, чем через 30 мин';
+    if (selectedDate.isAfter(dateMax)) return 'Не позднее, чем через 5 дней';
+    return undefined;
+};
+
 const createOrderFormValidators = {
     source_id: [required()],
     parthner_id: [],
@@ -48,7 +58,7 @@ const createOrderFormValidators = {
     delivery_point_id: [],
     delivery_address: [maxLength(255)],
     receiving_date: [required()],
-    issue_date: [required()],
+    issue_date: [required(), validateIssueTime],
     comment: [],
     courier_receiver_id: [],
     isPaid: [],
