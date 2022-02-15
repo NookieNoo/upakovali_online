@@ -167,6 +167,18 @@ class Order extends BaseModel
             })
             ->when($request->query('issue_date'), function (Builder $query, $issueDate) {
                 $query->whereDate($this->getTable() . ".issue_date", '=', $issueDate);
+            })
+            ->when($request->query('receiving_date_from'), function (Builder $query, $date) {
+                $query->whereDate($this->getTable() . ".receiving_date", '>=', $date);
+            })
+            ->when($request->query('receiving_date_to'), function (Builder $query, $date) {
+                $query->whereDate($this->getTable() . ".receiving_date", '<=', $date);
+            })
+            ->when($request->query('issue_date_from'), function (Builder $query, $date) {
+                $query->whereDate($this->getTable() . ".issue_date", '>=', $date);
+            })
+            ->when($request->query('issue_date_to'), function (Builder $query, $date) {
+                $query->whereDate($this->getTable() . ".issue_date", '<=', $date);
             });
     }
 

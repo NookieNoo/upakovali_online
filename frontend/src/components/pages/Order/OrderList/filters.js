@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TextInput, ReferenceInput, SelectInput, BooleanInput } from 'react-admin';
+import { TextInput, ReferenceInput, SelectInput, BooleanInput, DateInput } from 'react-admin';
 import { userRoles } from '@app-constants';
 
 const courierFilter = { role_id: userRoles.courier.id };
@@ -12,6 +12,10 @@ const adminFilters = [
     <ReferenceInput label="Статус" source="order_status_id" reference="order_status" alwaysOn>
         <SelectInput optionText="name" optionValue="id" />
     </ReferenceInput>,
+    <DateInput label="Дата приема (начало)" source="receiving_date_from" alwaysOn />,
+    <DateInput label="Дата приема (конец)" source="receiving_date_to" alwaysOn />,
+    <DateInput label="Дата выдачи (начало)" source="issue_date_from" alwaysOn />,
+    <DateInput label="Дата выдачи (конец)" source="issue_date_to" alwaysOn />,
     <ReferenceInput label="Партнер" source="parthner_id" reference="parthner">
         <SelectInput optionText="full_name" optionValue="id" />
     </ReferenceInput>,
@@ -44,6 +48,10 @@ const courierFilters = [
     <ReferenceInput label="Статус" source="order_status_id" reference="order_status" alwaysOn>
         <SelectInput optionText="name" optionValue="id" />
     </ReferenceInput>,
+    <DateInput label="Дата приема (начало)" source="receiving_date_from" alwaysOn />,
+    <DateInput label="Дата приема (конец)" source="receiving_date_to" alwaysOn />,
+    <DateInput label="Дата выдачи (начало)" source="issue_date_from" alwaysOn />,
+    <DateInput label="Дата выдачи (конец)" source="issue_date_to" alwaysOn />,
     <TextInput source="external_number" label="Внешний номер" />,
     <ReferenceInput label="Мастерская" source="workshop_id" reference="workshop">
         <SelectInput optionText="address" optionValue="id" />
@@ -64,6 +72,10 @@ const masterFilters = [
     <ReferenceInput label="Статус" source="order_status_id" reference="order_status" alwaysOn>
         <SelectInput optionText="name" optionValue="id" />
     </ReferenceInput>,
+    <DateInput label="Дата приема (начало)" source="receiving_date_from" alwaysOn />,
+    <DateInput label="Дата приема (конец)" source="receiving_date_to" alwaysOn />,
+    <DateInput label="Дата выдачи (начало)" source="issue_date_from" alwaysOn />,
+    <DateInput label="Дата выдачи (конец)" source="issue_date_to" alwaysOn />,
     <TextInput source="external_number" label="Внешний номер" />,
     <ReferenceInput label="Мастерская" source="workshop_id" reference="workshop">
         <SelectInput optionText="address" optionValue="id" />
