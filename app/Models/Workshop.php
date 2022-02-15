@@ -8,10 +8,15 @@ use Illuminate\Support\Facades\DB;
 
 class Workshop extends BaseModel
 {
-    public function orders()
-    {
-        return $this->hasMany(Order::class);
-    }
+   public function orders()
+   {
+       return $this->hasMany(Order::class);
+   }
+
+    // public function orders()
+    // {
+    //     return $this->morphMany(Order::class, 'pickupable');
+    // }
 
     public function scopeWithFilters($query, Request $request)
     {

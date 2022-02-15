@@ -15,7 +15,7 @@ class WorkshopSeeder extends Seeder
     public function run()
     {
         DB::table('workshops')->insert([
-            ['id' => 1, 'address' => 'Плющиха-Москва, Плющиха, 42'],
+            ['id' => 1, 'address' => 'Плющиха-Москва, Плющиха, 42', 'latitude' => '37.576367', 'longitude' => '55.741024'],
         ]);
     }
 }

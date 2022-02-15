@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Card, CardHeader, CardContent } from '@material-ui/core';
 import { useQueryWithStore, Loading, Error } from 'react-admin';
 import { YandexMapsBlock } from '@app-universal';
-import { useComponentDidUpdate } from '@app-hooks';
+import { orderStatuses } from '@app-constants';
 
 export function MapWithOrders() {
     const [workshops, setWorkshops] = useState([]);
@@ -19,11 +19,26 @@ export function MapWithOrders() {
     useEffect(() => {
         let coords = [];
         if (data) {
-            coords = data.map(({ pick_up_point }) => {
-                return {
-                    name: pick_up_point.address,
-                    geometry: [pick_up_point.longitude, pick_up_point.latitude],
-                };
+            coords = data.map(({ pick_up_point, order_status, pick_up_address_point, delivery_address_point, delivery_point, is_pickupable, is_deliverable }) => {
+                let pointData = {};
+                if (order_status.id < orderStatuses.WAS_TAKEN.id) {
+                    if (is_pickupable) {
+                        pointData.name = pick_up_address_point.address;
+                        pointData.geometry = [pick_up_address_point.latitude, pick_up_address_point.longitude];
+                    } else {
+                        pointData.name = pick_up_point.address;
+                        pointData.geometry = [pick_up_point.latitude, pick_up_point.longitude];
+                    }
+                } else {
+                    if (is_deliverable) {
+                        pointData.name = pick_up_address_point.address;
+                        pointData.geometry = [delivery_address_point.latitude, delivery_address_point.longitude];
+                    } else {
+                        pointData.name = delivery_point.address;
+                        pointData.geometry = [delivery_point.latitude, delivery_point.longitude];
+                    }
+                }
+                return pointData;
             });
         }
         setWorkshops(coords);

@@ -27,8 +27,8 @@ const initialState = {
     order_photos: [],
     is_pickupable: true,
     is_deliverable: true,
-    isPaid: false
-}
+    isPaid: false,
+};
 
 export default function OrderCreate(props) {
     return (
@@ -132,11 +132,7 @@ export default function OrderCreate(props) {
 
                     {/* Цена */}
 
-                    <BooleanInput
-                        label="Оплачено"
-                        source="isPaid"
-                        validate={createOrderFormValidators.isPaid}
-                    />
+                    <BooleanInput label="Оплачено" source="isPaid" validate={createOrderFormValidators.isPaid} />
 
                     <AutocompleteWithRef
                         label="Мастер"

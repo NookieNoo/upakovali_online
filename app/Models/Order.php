@@ -15,7 +15,7 @@ class Order extends BaseModel
     public static $supportedRelations = ['source', 'parthner', 'client', 'workshop', 'pickUpPoint',
         'deliveryPoint', 'courierReceiver', 'courierIssuer', 'master', 'receiver', 'history', 'history.status',
         'history.user', 'history.user.role', 'orderStatus', 'orderPhotos', 'gifts', 'gifts.addressee', 'gifts.service',
-        'gifts.service.price', 'gifts.service.product', 'additionalProducts'];
+        'gifts.service.price', 'gifts.service.product', 'additionalProducts', 'deliveryAddressPoint', 'pickUpAddressPoint'];
 
     public function __construct(array $attributes = [])
     {
@@ -55,9 +55,24 @@ class Order extends BaseModel
         return $this->belongsTo(Workshop::class);
     }
 
+    public function pickUpAddressPoint()
+    {
+        return $this->belongsTo(DeliveryPoint::class);
+    }
+
+//    public function pickupable()
+//    {
+//        return $this->morphTo();
+//    }
+
     public function deliveryPoint()
     {
         return $this->belongsTo(Workshop::class);
+    }
+
+    public function deliveryAddressPoint()
+    {
+        return $this->belongsTo(DeliveryPoint::class);
     }
 
     public function courierReceiver()

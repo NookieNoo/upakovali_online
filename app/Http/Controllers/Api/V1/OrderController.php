@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Helpers\Geocoder;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Order\OrderGetRequest;
 use App\Http\Requests\Order\OrderStoreRequest;
 use App\Http\Requests\Order\OrderUpdateRequest;
 use App\Http\Resources\OrderShowOneResource;
 use App\Models\AdditionalProduct;
+use App\Models\DeliveryPoint;
 use App\Models\Gift;
 use App\Models\Order;
 use App\Models\OrderHistory;
@@ -35,7 +37,7 @@ class OrderController extends Controller
             return $this->sendError('Доступ закрыт', Response::HTTP_FORBIDDEN);
         }
         return Order::withFiltersByPermission($request->user())->withFilters($request)->with('orderStatus', 'source', 'parthner',
-            'client', 'workshop', 'pickUpPoint', 'deliveryPoint', 'courierReceiver', 'courierIssuer', 'master', 'receiver')
+            'client', 'workshop', 'pickUpPoint', 'deliveryPoint', 'deliveryAddressPoint', 'pickUpAddressPoint', 'courierReceiver', 'courierIssuer', 'master', 'receiver')
             ->withOrder($request)->withPaginate($request);
     }
 
@@ -54,6 +56,31 @@ class OrderController extends Controller
             $order = DB::transaction(function () use ($request) {
                 $validatedData = $request->validated();
                 $validatedData['order_status_id'] = OrderStatusEnum::CREATED;
+
+                $geocoder = new Geocoder();
+                if ($validatedData['delivery_address']) {
+                    $coords = $geocoder->getCoordsByAddress($validatedData['delivery_address']);
+                    $deliveryPoint = new DeliveryPoint([
+                        'address' =>  $validatedData['delivery_address'],
+                        'latitude' => $coords['latitude'],
+                        'longitude' => $coords['longitude'],
+                    ]);
+                    $deliveryPoint->save();
+
+                    $validatedData['delivery_address_point_id'] = $deliveryPoint->id;
+                }
+                if ($validatedData['pick_up_address']) {
+                    $coords = $geocoder->getCoordsByAddress($validatedData['pick_up_address']);
+                    $deliveryPoint = new DeliveryPoint([
+                        'address' =>  $validatedData['pick_up_address'],
+                        'latitude' => $coords['latitude'],
+                        'longitude' => $coords['longitude'],
+                    ]);
+                    $deliveryPoint->save();
+
+                    $validatedData['pick_up_address_point_id'] = $deliveryPoint->id;
+                }
+
                 $order = Order::create($validatedData);
 
                 foreach($validatedData['gifts'] as $giftData) {

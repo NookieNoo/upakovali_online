@@ -6,6 +6,8 @@ import { AutocompleteWithRef } from '@app-universal';
 import { SelectInputWrap } from '@app-components/overriding';
 import { useFormState } from 'react-final-form';
 
+const defaultSourceSort = { field: 'id', order: 'ASC' };
+
 export default function MainFormBlock(props) {
     const { values: formState, ...rest } = useFormState();
 
@@ -19,7 +21,7 @@ export default function MainFormBlock(props) {
     console.log('rest', rest);
     return (
         <>
-            <ReferenceInput label="Источник" source="source_id" reference="source">
+            <ReferenceInput label="Источник" source="source_id" sort={defaultSourceSort} reference="source">
                 <SelectInputWrap
                     optionText="name"
                     optionValue="id"
