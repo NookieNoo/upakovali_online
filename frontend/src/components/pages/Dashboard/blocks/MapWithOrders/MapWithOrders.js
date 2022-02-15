@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardHeader, CardContent } from '@material-ui/core';
 import { useQueryWithStore, Loading, Error } from 'react-admin';
 import { YandexMapsBlock } from '@app-universal';
@@ -16,16 +16,20 @@ export function MapWithOrders() {
         },
     });
     //TODO Добавить отображение пользовательских адресов
-    useComponentDidUpdate(() => {
-        const coords = data.map(({ pick_up_point }) => {
-            return {
-                name: pick_up_point.address,
-                geometry: [pick_up_point.longitude, pick_up_point.latitude],
-            };
-        });
+    useEffect(() => {
+        let coords = [];
+        if (data) {
+            coords = data.map(({ pick_up_point }) => {
+                return {
+                    name: pick_up_point.address,
+                    geometry: [pick_up_point.longitude, pick_up_point.latitude],
+                };
+            });
+        }
         setWorkshops(coords);
     }, [data]);
 
+    console.log('workshops', workshops);
     return (
         <Card style={{ width: '100%' }}>
             <CardHeader title="Заказы на сегодня" />
