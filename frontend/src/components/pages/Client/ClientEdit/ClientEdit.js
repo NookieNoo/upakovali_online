@@ -5,7 +5,7 @@ import { editClientFormValidators } from 'helpers/validators';
 export default function ClientEdit(props) {
     return (
         <Edit {...props} mutationMode='pessimistic'>
-            <SimpleForm>
+            <SimpleForm redirect="show">
                 <TextInput label="ФИО" source="full_name" validate={editClientFormValidators.full_name} />
                 <TextInput label="Телефон" source="phone" validate={editClientFormValidators.phone} />
                 <TextInput label="Email" source="email" validate={editClientFormValidators.email} />

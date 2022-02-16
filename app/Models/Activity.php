@@ -53,11 +53,15 @@ class Activity extends \Spatie\Activitylog\Models\Activity
                 $causerTypeClass = get_class(new User());
                 if ($causerType === 'parthner') $causerTypeClass = get_class(new Parthner());
                 if ($causerType === 'order') $causerTypeClass = get_class(new Order());
+                if ($causerType === 'user') $causerTypeClass = get_class(new User());
                 $query->where($this->getTable() . ".causer_type", $causerTypeClass);
             })
             ->when($request->query('subject_type'), function (Builder $query, $subjectType) {
                 $subjectTypeClass = get_class(new Order());
-                if ($subjectType === 'order') $causerTypeClass = get_class(new Order());
+                if ($subjectType === 'order') $subjectTypeClass = get_class(new Order());
+                if ($subjectType === 'user') $subjectTypeClass = get_class(new User());
+                if ($subjectType === 'parthner') $subjectTypeClass = get_class(new Parthner());
+                if ($subjectType === 'client') $subjectTypeClass = get_class(new Client());
                 $query->where($this->getTable() . ".subject_type", $subjectTypeClass);
             });
     }

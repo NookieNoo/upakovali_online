@@ -28,7 +28,8 @@ const useStyles = makeStyles({
     },
 });
 
-const filter = { causer_type: 'user' };
+const filterByCauser = { causer_type: 'user' };
+const filterBySubject = { subject_type: 'user' };
 
 export default function UserShow(props) {
     const { record = {} } = useShowController(props);
@@ -117,13 +118,39 @@ export default function UserShow(props) {
                             </Tab>
                         )}
                         {canWatchActivity && (
-                            <Tab label="Логи">
+                            <Tab label="История изменений">
+                                <div>
+                                    <ReferenceManyField
+                                        label="Список действий пользователя"
+                                        target="subject_id"
+                                        reference="activity"
+                                        filter={filterBySubject}
+                                        perPage={10}
+                                        pagination={<Pagination />}
+                                    >
+                                        <Datagrid
+                                            isRowSelectable={() => false}
+                                            isRowExpandable={(row) => isPlainObject(row.properties)}
+                                            expand={<ExpandActivityBlock />}
+                                            classes={classes}
+                                        >
+                                            <TextField label="id" source="id" />
+                                            <TextField label="Описание" source="description" />
+                                            <TextField label="Кто" source="causer.full_name" />
+                                            <DateField label="Дата" source="created_at" showTime />
+                                        </Datagrid>
+                                    </ReferenceManyField>
+                                </div>
+                            </Tab>
+                        )}
+                        {canWatchActivity && (
+                            <Tab label="История действий">
                                 <div>
                                     <ReferenceManyField
                                         label="Список действий пользователя"
                                         target="causer_id"
                                         reference="activity"
-                                        filter={filter}
+                                        filter={filterByCauser}
                                         perPage={10}
                                         pagination={<Pagination />}
                                     >

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { isPlainObject } from 'lodash';
 import {
     Show,
     SimpleShowLayout,
@@ -8,14 +9,20 @@ import {
     Tab,
     ReferenceManyField,
     RichTextField,
-    SimpleList,
+    Pagination,
     Datagrid,
     ChipField,
     BooleanField,
+    DateField,
 } from 'react-admin';
 import { ShowSplitter } from '@app-universal';
+import { useHasAccess } from '@app-hooks';
+import { ExpandActivityBlock } from '@app-universal';
+
+const filterBySubject = { subject_type: 'client' };
 
 export default function ClientShow(props) {
+    const { list: canWatchActivity } = useHasAccess('activity');
     return (
         <Show {...props} component="div">
             <ShowSplitter
@@ -66,6 +73,31 @@ export default function ClientShow(props) {
                         {/* <Tab label="Комментарии">
                             <TextField source="prices" label="Здесь должны быть комментарии по клиенту" />
                         </Tab> */}
+                        {canWatchActivity && (
+                            <Tab label="История изменений">
+                                <div>
+                                    <ReferenceManyField
+                                        label="Список действий пользователя"
+                                        target="subject_id"
+                                        reference="activity"
+                                        filter={filterBySubject}
+                                        perPage={10}
+                                        pagination={<Pagination />}
+                                    >
+                                        <Datagrid
+                                            isRowSelectable={() => false}
+                                            isRowExpandable={(row) => isPlainObject(row.properties)}
+                                            expand={<ExpandActivityBlock />}
+                                        >
+                                            <TextField label="id" source="id" />
+                                            <TextField label="Описание" source="description" />
+                                            <TextField label="Кто" source="causer.full_name" />
+                                            <DateField label="Дата" source="created_at" showTime />
+                                        </Datagrid>
+                                    </ReferenceManyField>
+                                </div>
+                            </Tab>
+                        )}
                     </TabbedShowLayout>
                 }
             />

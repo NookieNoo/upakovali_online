@@ -22,7 +22,8 @@ import { ShowSplitter, SimpleAccordionMemo } from '@app-universal';
 import { useHasAccess } from '@app-hooks';
 import { ExpandActivityBlock } from '@app-universal';
 
-const filter = { causer_type: 'parthner' };
+const filterByCauser = { causer_type: 'parthner' };
+const filterBySubject = { subject_type: 'parthner' };
 
 export default function ParhtnerShow(props) {
     const { record } = useShowController(props);
@@ -79,13 +80,37 @@ export default function ParhtnerShow(props) {
                             ))}
                         </Tab>
                         {canWatchActivity && (
-                            <Tab label="Логи">
+                            <Tab label="История изменений">
+                                <div>
+                                    <ReferenceManyField
+                                        label="Список действий пользователя"
+                                        target="subject_id"
+                                        reference="activity"
+                                        filter={filterBySubject}
+                                        perPage={10}
+                                        pagination={<Pagination />}
+                                    >
+                                        <Datagrid
+                                            isRowSelectable={() => false}
+                                            isRowExpandable={(row) => isPlainObject(row.properties)}
+                                            expand={<ExpandActivityBlock />}
+                                        >
+                                            <TextField label="id" source="id" />
+                                            <TextField label="Описание" source="description" />
+                                            <DateField label="Дата" source="created_at" showTime />
+                                        </Datagrid>
+                                    </ReferenceManyField>
+                                </div>
+                            </Tab>
+                        )}
+                        {canWatchActivity && (
+                            <Tab label="История действий">
                                 <div>
                                     <ReferenceManyField
                                         label="Список действий пользователя"
                                         target="causer_id"
                                         reference="activity"
-                                        filter={filter}
+                                        filter={filterByCauser}
                                         perPage={10}
                                         pagination={<Pagination />}
                                     >

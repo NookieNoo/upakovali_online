@@ -27,7 +27,7 @@ class ActivityGetRequest extends JsonRequest
             'causer_id' => 'integer|min:1',
             'subject_id' => 'integer|min:1',
             'causer_type' => 'string|min:1|in:user,parthner,order',
-            'subject_type' => 'string|min:1|in:order',
+            'subject_type' => 'string|min:1|in:order,user,parthner,client',
         ];
     }
 }
