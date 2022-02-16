@@ -4,6 +4,8 @@
     "private": true,
     "dependencies": {
         "@material-ui/lab": "^4.0.0-alpha.60",
+        "@openreplay/tracker": "^3.5.2",
+        "@openreplay/tracker-assist": "^3.5.1",
         "@sentry/react": "^6.17.9",
         "@sentry/tracing": "^6.17.9",
         "@testing-library/jest-dom": "^5.11.4",

@@ -1,7 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import * as Sentry from '@sentry/react';
+import Tracker from '@openreplay/tracker';
 import { BrowserTracing } from '@sentry/tracing';
+import trackerAssist from '@openreplay/tracker-assist';
 import App from './App';
 import './styles/index.css';
 
@@ -16,6 +18,17 @@ if (process.env.NODE_ENV === 'production') {
         tracesSampleRate: 1.0,
     });
 }
+
+const tracker = new Tracker({
+    projectKey: 'NUPg4oQDCD67HywFvIOu',
+});
+tracker.start();
+tracker.setUserID('ib@mitlabs.ru');
+tracker.use(
+    trackerAssist({
+        confirmText: 'string',
+    })
+);
 
 window.devToolsExtension = window.__REDUX_DEVTOOLS_EXTENSION__;
 
