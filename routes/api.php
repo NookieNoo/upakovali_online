@@ -39,6 +39,10 @@ Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
 Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.reset');
 Route::post('/login/parthner', [AuthController::class, 'loginParthner']);
 
+Route::get('/debug-sentry', function () {
+    throw new Exception('My first Sentry error!');
+});
+
 Route::group(['middleware' => ['auth:users']], function () {
     Route::prefix('client')->group(function () {
         Route::post('', [ClientController::class, 'store']);

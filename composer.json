@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.0",
+        "ext-curl": "*",
         "ext-json": "*",
         "barryvdh/laravel-ide-helper": "^2.10",
         "bensampo/laravel-enum": "^3.4",
@@ -16,8 +17,8 @@
         "laravel/framework": "^8.54",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
-        "spatie/laravel-activitylog": "^4.3",
-        "ext-curl": "*"
+        "sentry/sentry-laravel": "^2.11",
+        "spatie/laravel-activitylog": "^4.3"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
