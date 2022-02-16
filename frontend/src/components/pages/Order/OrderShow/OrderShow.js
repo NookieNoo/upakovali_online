@@ -104,6 +104,7 @@ export default function OrderShow(props) {
                                 >
                                     <TextField label="id" source="id" />
                                     <TextField label="Описание" source="description" />
+                                    <TextField label="Кто" source="causer.full_name" />
                                     <DateField label="Дата" source="created_at" showTime />
                                 </Datagrid>
                             </ReferenceManyField>

@@ -20,6 +20,6 @@ class ActivityController extends Controller
             return $this->sendError('Доступ закрыт', Response::HTTP_FORBIDDEN);
         }
 
-        return Activity::withFilters($request)->withOrder($request)->withPaginate($request);
+        return Activity::with('causer')->withFilters($request)->withOrder($request)->withPaginate($request);
     }
 }
