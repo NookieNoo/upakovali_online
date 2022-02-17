@@ -23,13 +23,16 @@ class ParthnerFactory extends Factory
      */
     public function definition()
     {
+        $phone = $this->faker->regexify('^\+7ё[0-9]{3}й[0-9]{3}-[0-9]{4}$');
+        $phone = str_replace('ё', '(', $phone);
+        $phone = str_replace('й', ')', $phone);
         $email = $this->faker->email();
         return [
             'full_name' => $this->faker->company(),
             'manager_id' => function () {
                 return User::where(['role_id' => 2])->inRandomOrder()->first()->id;
             },
-            'phone' => $this->faker->phoneNumber(),
+            'phone' => $phone,
             'email' => $email,
             'comment' => $this->faker->sentence(),
             'parthner_hash' => Hash::make($email),

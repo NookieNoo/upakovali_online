@@ -23,10 +23,14 @@ class UserFactory extends Factory
      */
     public function definition()
     {
+        $phone = $this->faker->regexify('^\+7ё[0-9]{3}й[0-9]{3}-[0-9]{4}$');
+        $phone = str_replace('ё', '(', $phone);
+        $phone = str_replace('й', ')', $phone);
+
         return [
             'full_name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
-            'phone' => $this->faker->phoneNumber(),
+            'phone' => $phone,
             'email_verified_at' => now(),
             'password' => Hash::make('0000'), // password
             'remember_token' => Str::random(10),

@@ -5,3 +5,4 @@ export * from './inputs/SelectInput';
 export * from './inputs/AutocompleteWithRef';
 export * from './accordions/SimpleAccordion';
 export * from './fields';
+export * from './inputs';

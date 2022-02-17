@@ -23,7 +23,7 @@ class UserSeeder extends Seeder
             [
                 'full_name' => 'Тестовый админ',
                 'email' => 'admin@admin.admin',
-                'phone' => '(320) 962-3354',
+                'phone' => '+7(197)360-9340',
                 'email_verified_at' => now(),
                 'password' => Hash::make('0000'),
                 'remember_token' => Str::random(10),
@@ -35,7 +35,7 @@ class UserSeeder extends Seeder
             [
                 'full_name' => 'Тестовый менеджер',
                 'email' => 'manager@manager.manager',
-                'phone' => '(320) 962-3354',
+                'phone' => '+7(535)988-7816',
                 'email_verified_at' => now(),
                 'password' => Hash::make('0000'),
                 'remember_token' => Str::random(10),
@@ -47,7 +47,7 @@ class UserSeeder extends Seeder
             [
                 'full_name' => 'Тестовый мастер',
                 'email' => 'master@master.master',
-                'phone' => '(320) 962-3354',
+                'phone' => '+7(431)810-1408',
                 'email_verified_at' => now(),
                 'password' => Hash::make('0000'),
                 'remember_token' => Str::random(10),
@@ -59,7 +59,7 @@ class UserSeeder extends Seeder
             [
                 'full_name' => 'Тестовый курьер',
                 'email' => 'courier@courier.courier',
-                'phone' => '(320) 962-3354',
+                'phone' => '+7(591)367-4638',
                 'email_verified_at' => now(),
                 'password' => Hash::make('0000'),
                 'remember_token' => Str::random(10),

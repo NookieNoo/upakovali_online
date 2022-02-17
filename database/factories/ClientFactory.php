@@ -21,9 +21,12 @@ class ClientFactory extends Factory
      */
     public function definition()
     {
+        $phone = $this->faker->regexify('^\+7ё[0-9]{3}й[0-9]{3}-[0-9]{4}$');
+        $phone = str_replace('ё', '(', $phone);
+        $phone = str_replace('й', ')', $phone);
         return [
             'full_name' => $this->faker->name(),
-            'phone' => $this->faker->phoneNumber(),
+            'phone' => $phone,
             'email' => $this->faker->email(),
             'comment' => $this->faker->sentence(),
         ];
