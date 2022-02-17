@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Client;
 
 use App\Http\Requests\JsonRequest;
+use App\Rules\UniqueClient;
 
 class ClientStoreRequest extends JsonRequest
 {
@@ -27,7 +28,7 @@ class ClientStoreRequest extends JsonRequest
         return [
             'full_name' => 'required|string|max:255',
             'phone' => 'required|string|max:50',
-            'email' => 'required|string|email',
+            'email' => ['required', 'string', 'email', new UniqueClient($this->get('phone'), $this->get('email'))],
             'comment' => 'string'
         ];
     }

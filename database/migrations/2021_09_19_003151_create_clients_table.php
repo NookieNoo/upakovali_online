@@ -20,6 +20,8 @@ class CreateClientsTable extends Migration
             $table->string('email');
             $table->text('comment')->nullable();
             $table->timestamps();
+
+            $table->unique(['email', 'phone']);
         });
     }
 
@@ -30,6 +32,9 @@ class CreateClientsTable extends Migration
      */
     public function down()
     {
+        Schema::table('clients', function (Blueprint $table) {
+            $table->dropUnique(['email', 'phone']);
+        });
         Schema::dropIfExists('clients');
     }
 }
