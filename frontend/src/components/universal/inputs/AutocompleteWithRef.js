@@ -75,10 +75,11 @@ const AutocompleteWithRef = ({
     resettable,
     emptyValue,
     filter,
+    disabled,
     ...rest
 }) => {
     return (
-        <ReferenceInput label={label} source={source} reference={reference} filter={filter}>
+        <ReferenceInput disabled={disabled} label={label} source={source} reference={reference} filter={filter}>
             <AutocompleteInput
                 optionText={<OptionRenderer />}
                 inputText={inputText}
@@ -101,6 +102,7 @@ AutocompleteWithRef.defaultProps = {
     suggestionLimit: 10,
     resettable: true,
     emptyValue: null,
+    disabled: false
 };
 
 AutocompleteWithRef.propTypes = {
@@ -112,6 +114,7 @@ AutocompleteWithRef.propTypes = {
     suggestionLimit: PropTypes.number,
     resettable: PropTypes.bool,
     filter: PropTypes.object,
+    disabled: PropTypes.bool,
 };
 
 export { AutocompleteWithRef };

@@ -115,7 +115,14 @@ let permissions = {
         workshop: {
             enabled: true,
             list: false,
-            show: true,
+            show: false,
+            edit: false,
+            create: false,
+        },
+        addressee: {
+            enabled: true,
+            list: false,
+            show: false,
             edit: false,
             create: false,
         },

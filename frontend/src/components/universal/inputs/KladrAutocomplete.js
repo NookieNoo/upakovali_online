@@ -17,6 +17,7 @@ export default function KladrAutocomplete({
     error,
     helperText,
     id,
+    disabled,
 }) {
     const [open, setOpen] = React.useState(false);
     const filterOptions = filterOptionsCallback ? filterOptionsCallback : (x) => x;
@@ -40,6 +41,7 @@ export default function KladrAutocomplete({
             onChange={handleChange}
             value={value}
             freeSolo
+            disabled={disabled}
             renderInput={(params) => (
                 <TextField
                     {...params}
@@ -68,8 +70,10 @@ KladrAutocomplete.defaultProps = {
     getOptionLabel: (option) => option.label,
     label: 'Asynchronous',
     id: 'kladr-autocomplete',
+    disabled: false,
 };
 
 KladrAutocomplete.propTypes = {
     handleChange: PropTypes.func,
+    disabled: PropTypes.bool,
 };

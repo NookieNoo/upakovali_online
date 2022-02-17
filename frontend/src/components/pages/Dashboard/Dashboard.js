@@ -11,6 +11,7 @@ import { userRoles } from '@app-constants';
 export const Dashboard = (props) => {
     const { identity } = useGetIdentity();
     const isCourier = identity?.role.id === userRoles.courier.id;
+    const isAdmin = identity?.role.id === userRoles.admin.id;
     return (
         <div {...props}>
             <ShowSplitter
@@ -62,30 +63,34 @@ export const Dashboard = (props) => {
                                         <Card>
                                             <CardHeader title="Создать" />
                                             <CardContent>
-                                                <Button
-                                                    size="small"
-                                                    color="primary"
-                                                    component={Link}
-                                                    to={{ pathname: '/user/create' }}
-                                                >
-                                                    Пользователя
-                                                </Button>
-                                                <Button
-                                                    size="small"
-                                                    color="primary"
-                                                    component={Link}
-                                                    to={{ pathname: '/parthner/create' }}
-                                                >
-                                                    Партнера
-                                                </Button>
-                                                <Button
-                                                    size="small"
-                                                    color="primary"
-                                                    component={Link}
-                                                    to={{ pathname: '/client/create' }}
-                                                >
-                                                    Клиента
-                                                </Button>
+                                                {isAdmin && (
+                                                    <>
+                                                        <Button
+                                                            size="small"
+                                                            color="primary"
+                                                            component={Link}
+                                                            to={{ pathname: '/user/create' }}
+                                                        >
+                                                            Пользователя
+                                                        </Button>
+                                                        <Button
+                                                            size="small"
+                                                            color="primary"
+                                                            component={Link}
+                                                            to={{ pathname: '/parthner/create' }}
+                                                        >
+                                                            Партнера
+                                                        </Button>
+                                                        <Button
+                                                            size="small"
+                                                            color="primary"
+                                                            component={Link}
+                                                            to={{ pathname: '/client/create' }}
+                                                        >
+                                                            Клиента
+                                                        </Button>
+                                                    </>
+                                                )}
                                                 <Button
                                                     size="small"
                                                     color="primary"
