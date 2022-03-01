@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { isPlainObject, get as loGet } from 'lodash';
+import { isPlainObject, get as loGet, isBoolean, isNull } from 'lodash';
 import {
     Card,
     CardContent,
@@ -12,6 +12,15 @@ import {
     TableCell,
     TableRow,
 } from '@material-ui/core';
+
+const renderValue = (val) => {
+    if (isBoolean(val)) {
+        return val ? 'Да' : 'Нет';
+    } else if (isNull(val)) {
+        return '<Пусто>';
+    }
+    return val;
+};
 
 export default function ExpandActivityBlock({ id, record, resource, ...rest }) {
     const { properties, description, created_at } = record;
@@ -34,7 +43,7 @@ export default function ExpandActivityBlock({ id, record, resource, ...rest }) {
                                     <TableRow key={index}>
                                         <TableCell>{key}</TableCell>
                                         <TableCell>{loGet(properties, `old.${key}`, '<Пусто>')}</TableCell>
-                                        <TableCell>{properties.attributes[key]}</TableCell>
+                                        <TableCell>{renderValue(properties.attributes[key])}</TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>

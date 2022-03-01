@@ -1,10 +1,20 @@
 import { useState, useEffect } from 'react';
-import { TextInput, ReferenceInput, SelectInput, ArrayInput, SimpleFormIterator, NumberInput } from 'react-admin';
+import {
+    TextInput,
+    ReferenceInput,
+    SelectInput,
+    BooleanInput,
+    ArrayInput,
+    SimpleFormIterator,
+    NumberInput,
+} from 'react-admin';
 import { serviceTypes } from '@app-constants';
 import { createOrderFormValidators } from '@app-helpers';
 import { AutocompleteWithRef } from '@app-universal';
 import { SelectInputWrap } from '@app-components/overriding';
 import { useFormState } from 'react-final-form';
+import { Typography, Divider } from '@material-ui/core';
+import { PhoneInput } from '@app-universal';
 
 const defaultSourceSort = { field: 'id', order: 'ASC' };
 
@@ -35,17 +45,53 @@ export default function MainFormBlock(props) {
                 reference="parthner"
                 validate={createOrderFormValidators.parthner_id}
             />
+            <Typography>Клиент</Typography>
+            <Divider />
+            <BooleanInput label="Новый клиент?" source="is_new_client" />
+            {formState.is_new_client ? (
+                <div>
+                    <TextInput source="client.full_name" label="ФИО клиента" />
+                    <PhoneInput source="client.phone" label="Телефон" />
+                    <TextInput source="client.email" label="Email" />
+                </div>
+            ) : (
+                <AutocompleteWithRef
+                    label="Клиент"
+                    source="client_id"
+                    reference="client"
+                    validate={createOrderFormValidators.client_id}
+                />
+            )}
+            <Typography>Получатель</Typography>
+            <Divider />
+            <BooleanInput label="Клиент = Получатель?" source="is_receiver_same" />
+
+            {!formState.is_receiver_same && (
+                <div>
+                    <BooleanInput label="Новый получатель?" source="is_new_receiver" />
+                    {formState.is_new_receiver ? (
+                        <div>
+                            <TextInput source="receiver.full_name" label="ФИО получателя" />
+                            <PhoneInput source="receiver.phone" label="Телефон" />
+                            <TextInput source="receiver.email" label="Email" />
+                        </div>
+                    ) : (
+                        <AutocompleteWithRef
+                            label="Получатель"
+                            source="receiver_id"
+                            reference="client"
+                            validate={createOrderFormValidators.receiver_id}
+                        />
+                    )}
+                </div>
+            )}
+
             <TextInput
                 source="external_number"
                 label="Внешний номер"
                 validate={createOrderFormValidators.external_number}
             />
-            <AutocompleteWithRef
-                label="Клиент"
-                source="client_id"
-                reference="client"
-                validate={createOrderFormValidators.client_id}
-            />
+
             <ReferenceInput label="Мастерская" source="workshop_id" reference="workshop">
                 <SelectInput optionText="address" optionValue="id" validate={createOrderFormValidators.workshop_id} />
             </ReferenceInput>

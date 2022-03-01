@@ -9,6 +9,7 @@ use App\Http\Requests\Order\OrderStoreRequest;
 use App\Http\Requests\Order\OrderUpdateRequest;
 use App\Http\Resources\OrderShowOneResource;
 use App\Models\AdditionalProduct;
+use App\Models\Client;
 use App\Models\DeliveryPoint;
 use App\Models\Gift;
 use App\Models\Order;
@@ -56,6 +57,36 @@ class OrderController extends Controller
             $order = DB::transaction(function () use ($request) {
                 $validatedData = $request->validated();
                 $validatedData['order_status_id'] = OrderStatusEnum::CREATED;
+
+                if ($validatedData['is_new_client']) {
+                    $client = Client::where(['email' => $validatedData['client']['email'], 'phone' => $validatedData['client']['phone']])->first();
+                    if (!$client) {
+                        $client = new Client($validatedData['client']);
+                        $client->save();
+                    }
+                } else {
+                    $client = new Client();
+                    $client->id = $validatedData['client_id'];
+                }
+
+                $validatedData['client_id'] = $client->id;
+
+                if ($validatedData['is_receiver_same']) {
+                    $receiver = new Client();
+                    $receiver->id = $client->id;
+                } else {
+                    if ($validatedData['is_new_receiver']) {
+                        $receiver = Client::where(['email' => $validatedData['receiver']['email'], 'phone' => $validatedData['receiver']['phone']])->first();
+                        if (!$receiver) {
+                            $receiver = new Client($validatedData['receiver']);
+                            $receiver->save();
+                        }
+                    } else {
+                        $receiver = new Client();
+                        $receiver->id = $validatedData['receiver_id'];
+                    }
+                }
+                $validatedData['receiver_id'] = $receiver->id;
 
                 $geocoder = new Geocoder();
                 if ($validatedData['delivery_address']) {

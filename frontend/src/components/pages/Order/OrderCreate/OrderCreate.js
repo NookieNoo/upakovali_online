@@ -28,6 +28,9 @@ const initialState = {
     is_pickupable: true,
     is_deliverable: true,
     isPaid: false,
+    is_new_client: false,
+    is_receiver_same: true,
+    is_new_receiver: false,
 };
 
 export default function OrderCreate(props) {
@@ -142,12 +145,12 @@ export default function OrderCreate(props) {
                         validate={createOrderFormValidators.master_id}
                     />
 
-                    <AutocompleteWithRef
+                    {/* <AutocompleteWithRef
                         label="Получатель"
                         source="receiver_id"
                         reference="client"
                         validate={createOrderFormValidators.receiver_id}
-                    />
+                    /> */}
                 </FormTab>
 
                 <FormTab label="Файлы">
