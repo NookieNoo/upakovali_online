@@ -89,7 +89,7 @@ class OrderController extends Controller
                 $validatedData['receiver_id'] = $receiver->id;
 
                 $geocoder = new Geocoder();
-                if ($validatedData['delivery_address']) {
+                if (!empty($validatedData['delivery_address'])) {
                     $coords = $geocoder->getCoordsByAddress($validatedData['delivery_address']);
                     $deliveryPoint = new DeliveryPoint([
                         'address' =>  $validatedData['delivery_address'],
@@ -100,7 +100,7 @@ class OrderController extends Controller
 
                     $validatedData['delivery_address_point_id'] = $deliveryPoint->id;
                 }
-                if ($validatedData['pick_up_address']) {
+                if (!empty($validatedData['pick_up_address'])) {
                     $coords = $geocoder->getCoordsByAddress($validatedData['pick_up_address']);
                     $deliveryPoint = new DeliveryPoint([
                         'address' =>  $validatedData['pick_up_address'],

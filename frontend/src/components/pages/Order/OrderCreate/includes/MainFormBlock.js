@@ -15,6 +15,7 @@ import { SelectInputWrap } from '@app-components/overriding';
 import { useFormState } from 'react-final-form';
 import { Typography, Divider } from '@material-ui/core';
 import { PhoneInput } from '@app-universal';
+import { Card, CardContent, Box, Grid, Link } from '@material-ui/core';
 
 const defaultSourceSort = { field: 'id', order: 'ASC' };
 
@@ -49,11 +50,17 @@ export default function MainFormBlock(props) {
             <Divider />
             <BooleanInput label="Новый клиент?" source="is_new_client" />
             {formState.is_new_client ? (
-                <div>
-                    <TextInput source="client.full_name" label="ФИО клиента" />
-                    <PhoneInput source="client.phone" label="Телефон" />
-                    <TextInput source="client.email" label="Email" />
-                </div>
+                <Grid container justifyContent="flex-start" spacing={1}>
+                    <Grid item>
+                        <TextInput source="client.full_name" label="ФИО клиента" />
+                    </Grid>
+                    <Grid item>
+                        <PhoneInput source="client.phone" label="Телефон" />
+                    </Grid>
+                    <Grid item>
+                        <TextInput source="client.email" label="Email" />
+                    </Grid>
+                </Grid>
             ) : (
                 <AutocompleteWithRef
                     label="Клиент"
@@ -70,11 +77,17 @@ export default function MainFormBlock(props) {
                 <div>
                     <BooleanInput label="Новый получатель?" source="is_new_receiver" />
                     {formState.is_new_receiver ? (
-                        <div>
-                            <TextInput source="receiver.full_name" label="ФИО получателя" />
-                            <PhoneInput source="receiver.phone" label="Телефон" />
-                            <TextInput source="receiver.email" label="Email" />
-                        </div>
+                        <Grid container justifyContent="flex-start" spacing={1}>
+                            <Grid item>
+                                <TextInput source="receiver.full_name" label="ФИО получателя" />
+                            </Grid>
+                            <Grid item>
+                                <PhoneInput source="receiver.phone" label="Телефон" />
+                            </Grid>
+                            <Grid item>
+                                <TextInput source="receiver.email" label="Email" />
+                            </Grid>
+                        </Grid>
                     ) : (
                         <AutocompleteWithRef
                             label="Получатель"
