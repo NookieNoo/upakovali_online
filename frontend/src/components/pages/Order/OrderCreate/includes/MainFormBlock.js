@@ -99,15 +99,23 @@ export default function MainFormBlock(props) {
                 </div>
             )}
 
-            <TextInput
-                source="external_number"
-                label="Внешний номер"
-                validate={createOrderFormValidators.external_number}
-            />
+            <Divider />
 
-            <ReferenceInput label="Мастерская" source="workshop_id" reference="workshop">
-                <SelectInput optionText="address" optionValue="id" validate={createOrderFormValidators.workshop_id} />
-            </ReferenceInput>
+            <Box display={'flex'} flexDirection={'column'} width={'265px'}>
+                <ReferenceInput label="Мастерская" source="workshop_id" reference="workshop">
+                    <SelectInput
+                        optionText="address"
+                        optionValue="id"
+                        validate={createOrderFormValidators.workshop_id}
+                    />
+                </ReferenceInput>
+                <TextInput
+                    source="external_number"
+                    label="Внешний номер"
+                    validate={createOrderFormValidators.external_number}
+                />
+            </Box>
+
             {formState.parthner_id && (
                 <ArrayInput source="gifts" label="Подарки" validate={createOrderFormValidators.gifts}>
                     <SimpleFormIterator>
