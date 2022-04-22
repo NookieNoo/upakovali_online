@@ -17,18 +17,18 @@ if (process.env.NODE_ENV === 'production') {
         // We recommend adjusting this value in production
         tracesSampleRate: 1.0,
     });
-}
 
-const tracker = new Tracker({
-    projectKey: 'NUPg4oQDCD67HywFvIOu',
-});
-tracker.start();
-tracker.setUserID('ib@mitlabs.ru');
-tracker.use(
-    trackerAssist({
-        confirmText: 'string',
-    })
-);
+    const tracker = new Tracker({
+        projectKey: 'NUPg4oQDCD67HywFvIOu',
+    });
+    tracker.start();
+    tracker.setUserID('ib@mitlabs.ru');
+    tracker.use(
+        trackerAssist({
+            confirmText: 'string',
+        })
+    );
+}
 
 window.devToolsExtension = window.__REDUX_DEVTOOLS_EXTENSION__;
 
