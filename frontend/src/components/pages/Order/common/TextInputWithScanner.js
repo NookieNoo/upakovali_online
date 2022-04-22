@@ -57,15 +57,23 @@ const ModalContent = ({ onOpen, onClose, onSubmit, ...rest }) => {
 export default function TextInputWithScanner({ onSubmit, validate, source, label }) {
     return (
         <Box display={'flex'} alignSelf={'center'}>
-            <TextInput source={source} label={label} validate={validate} />
-            <DialogElement
-                maxWidth="md"
-                dialogOpenComponent={
-                    <IconButton style={{ marginTop: '10px' }}>
-                        <QrIcon />
-                    </IconButton>
-                }
-                content={(props) => <ModalContent onSubmit={onSubmit} {...props} />}
+            <TextInput
+                source={source}
+                label={label}
+                validate={validate}
+                InputProps={{
+                    endAdornment: (
+                        <DialogElement
+                            maxWidth="md"
+                            dialogOpenComponent={
+                                <IconButton>
+                                    <QrIcon />
+                                </IconButton>
+                            }
+                            content={(props) => <ModalContent onSubmit={onSubmit} {...props} />}
+                        />
+                    ),
+                }}
             />
         </Box>
     );
