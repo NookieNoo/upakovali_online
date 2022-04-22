@@ -69,7 +69,7 @@ export default function OrderShow(props) {
                     <TextField label="Точка забора товара" source="pick_up_point.address" />
                     <TextField label="Точка забора товара" source="pick_up_address" />
 
-                    <BooleanField label="Доствка" source="is_deliverable" />
+                    <BooleanField label="Доставка" source="is_deliverable" />
                     <TextField label="Точка выдачи товара" source="delivery_point.address" />
                     <TextField label="Точка выдачи товара" source="delivery_address" />
 

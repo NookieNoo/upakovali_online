@@ -12,15 +12,21 @@ import { serviceTypes } from '@app-constants';
 import { createOrderFormValidators } from '@app-helpers';
 import { AutocompleteWithRef } from '@app-universal';
 import { SelectInputWrap } from '@app-components/overriding';
-import { useFormState } from 'react-final-form';
+import { useFormState, useField } from 'react-final-form';
 import { Typography, Divider } from '@material-ui/core';
 import { PhoneInput } from '@app-universal';
 import { Card, CardContent, Box, Grid, Link } from '@material-ui/core';
+import TextInputWithScanner from '../../common/TextInputWithScanner';
 
 const defaultSourceSort = { field: 'id', order: 'ASC' };
 
 export default function MainFormBlock(props) {
     const { values: formState, ...rest } = useFormState();
+    const { input, ...rest2 } = useField('external_number');
+
+    const onChangeNumber = (props) => {
+        input.onChange(props);
+    };
 
     const [servicesFilter, setServicesFilter] = useState({ product_id: serviceTypes.PACKAGE.id });
 
@@ -109,10 +115,11 @@ export default function MainFormBlock(props) {
                         validate={createOrderFormValidators.workshop_id}
                     />
                 </ReferenceInput>
-                <TextInput
+                <TextInputWithScanner
                     source="external_number"
                     label="Внешний номер"
                     validate={createOrderFormValidators.external_number}
+                    onSubmit={onChangeNumber}
                 />
             </Box>
 
