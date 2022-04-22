@@ -54,13 +54,14 @@ const ModalContent = ({ onOpen, onClose, onSubmit, ...rest }) => {
     );
 };
 
-export default function TextInputWithScanner({ onSubmit, validate, source, label }) {
+export default function TextInputWithScanner({ onSubmit, validate, source, label, scannerInputProps }) {
     return (
         <Box display={'flex'} alignSelf={'center'}>
             <TextInput
                 source={source}
                 label={label}
                 validate={validate}
+                {...scannerInputProps}
                 InputProps={{
                     endAdornment: (
                         <DialogElement
