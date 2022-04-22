@@ -27,6 +27,7 @@ class OrderGetRequest extends JsonRequest
             'source_id' => 'integer|min:1|exists:sources,id',
             'parthner_id' => 'integer|min:1|exists:parthners,id',
             'external_number' => 'nullable|string|max:255',
+            'id' => 'nullable|integer|min:1',
             'client_id' => 'integer|min:1|exists:clients,id',
             'workshop_id' => 'integer|min:1|exists:workshops,id',
             'pick_up_point_id' => 'nullable|integer|min:1|exists:workshops,id',

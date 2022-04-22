@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { TextInput, ReferenceInput, SelectInput, BooleanInput, DateInput } from 'react-admin';
 import { userRoles } from '@app-constants';
-import { useFormState, useField } from 'react-final-form';
+import { useField } from 'react-final-form';
 import TextInputWithScanner from '../common/TextInputWithScanner';
 
 const courierFilter = { role_id: userRoles.courier.id };
@@ -18,6 +18,7 @@ const ExternalNumberFilter = ({ source, label, alwaysOn }) => {
 const adminFilters = [
     // <TextInput source="external_number" label="Внешний номер" alwaysOn />,
     <ExternalNumberFilter source="external_number" label="Внешний номер" alwaysOn />,
+    <TextInput source="id" label="ID Заказа" alwaysOn />,
     <ReferenceInput label="Источник" source="source_id" reference="source" alwaysOn>
         <SelectInput optionText="name" optionValue="id" />
     </ReferenceInput>,
@@ -54,6 +55,7 @@ const adminFilters = [
 
 const courierFilters = [
     <ExternalNumberFilter source="external_number" label="Внешний номер" alwaysOn />,
+    <TextInput source="id" label="ID Заказа" alwaysOn />,
     <ReferenceInput label="Источник" source="source_id" reference="source" alwaysOn>
         <SelectInput optionText="name" optionValue="id" />
     </ReferenceInput>,
@@ -78,6 +80,7 @@ const courierFilters = [
 
 const masterFilters = [
     <ExternalNumberFilter source="external_number" label="Внешний номер" alwaysOn />,
+    <TextInput source="id" label="ID Заказа" alwaysOn />,
     <ReferenceInput label="Источник" source="source_id" reference="source" alwaysOn>
         <SelectInput optionText="name" optionValue="id" />
     </ReferenceInput>,

@@ -141,6 +141,9 @@ class Order extends BaseModel
             ->when($request->query('parthner_id'), function (Builder $query, $parthnerId) {
                 $query->where($this->getTable() . ".parthner_id", $parthnerId);
             })
+            ->when($request->query('id'), function (Builder $query, $id) {
+                $query->where($this->getTable() . ".id", $id);
+            })
             ->when($request->query('external_number'), function (Builder $query, $extNumb) {
                 $query->where(DB::raw("LOWER(" . $this->getTable() . ".external_number)"), 'LIKE', "%" . mb_strtolower($extNumb) . "%");
             })
