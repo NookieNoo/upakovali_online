@@ -37,7 +37,7 @@ export default function OrderList(props) {
                 <TextField label="id" source="id" />
                 <TextField label="Источник" source="source.name" />
                 <TextField label="Партнер" source="parthner.full_name" />
-                <TextField label="№ заказа" source="external_number" />
+                <TextField label="Внешний №" source="external_number" />
                 <TextField label="Клиент" source="client.full_name" />
                 <TextField label="Мастерская" source="workshop.address" />
                 <BooleanField label="Забор" source="is_pickupable" />
