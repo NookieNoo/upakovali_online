@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
-import { TextInput } from 'react-admin';
+import { TextInput, useTranslate } from 'react-admin';
 import IconButton from '@material-ui/core/IconButton';
 import SvgIcon from '@material-ui/core/SvgIcon';
 import CropFreeIcon from '@material-ui/icons/CropFree';
@@ -17,6 +17,7 @@ import { QrIcon } from 'components/universal/icons';
 
 const ModalContent = ({ onOpen, onClose, onSubmit, ...rest }) => {
     const [number, setState] = useState('');
+    const translate = useTranslate();
     const handleChange = (event) => {
         setState(event.target.value);
     };
@@ -43,10 +44,10 @@ const ModalContent = ({ onOpen, onClose, onSubmit, ...rest }) => {
             </DialogContent>
             <DialogActions>
                 <Button onClick={onClose} color="primary">
-                    Cancel
+                    {translate('ra.action.cancel')}
                 </Button>
                 <Button onClick={submitCallback} color="primary">
-                    Submit
+                    {translate('ra.action.save')}
                 </Button>
             </DialogActions>
         </div>
