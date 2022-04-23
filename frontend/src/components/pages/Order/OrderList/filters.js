@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TextInput, ReferenceInput, SelectInput, BooleanInput, DateInput } from 'react-admin';
+import { TextInput, ReferenceInput, SelectInput, BooleanInput, DateInput, useTranslate } from 'react-admin';
 import { userRoles } from '@app-constants';
 import { useField } from 'react-final-form';
 import TextInputWithScanner from '../common/TextInputWithScanner';
@@ -10,6 +10,7 @@ const masterFilter = { role_id: userRoles.master.id };
 
 const ExternalNumberFilter = ({ source, label, alwaysOn }) => {
     const { input, ...rest2 } = useField('external_number');
+    const translate = useTranslate();
     const onChangeNumber = (props) => {
         input.onChange(props);
     };
@@ -20,6 +21,7 @@ const ExternalNumberFilter = ({ source, label, alwaysOn }) => {
             alwaysOn={alwaysOn}
             onSubmit={onChangeNumber}
             scannerInputProps={{ helperText: '' }}
+            scannerModalProps={{ submitKeyLabel: translate('app.action.find') }}
         />
     );
 };

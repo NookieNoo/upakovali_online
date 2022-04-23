@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
 import { TextInput, useTranslate } from 'react-admin';
 import IconButton from '@material-ui/core/IconButton';
-import SvgIcon from '@material-ui/core/SvgIcon';
-import CropFreeIcon from '@material-ui/icons/CropFree';
 import { DialogElement } from 'components/universal/modal';
 
 import DialogActions from '@material-ui/core/DialogActions';
@@ -15,7 +13,7 @@ import Button from '@material-ui/core/Button';
 import { Box } from '@material-ui/core';
 import { QrIcon } from 'components/universal/icons';
 
-const ModalContent = ({ onOpen, onClose, onSubmit, ...rest }) => {
+const ModalContent = ({ onOpen, onClose, onSubmit, submitKeyLabel, ...rest }) => {
     const [number, setState] = useState('');
     const translate = useTranslate();
     const handleChange = (event) => {
@@ -38,7 +36,7 @@ const ModalContent = ({ onOpen, onClose, onSubmit, ...rest }) => {
                     margin="dense"
                     id="name"
                     label="Внешний номер"
-                    type="email"
+                    type="text"
                     fullWidth
                 />
             </DialogContent>
@@ -47,14 +45,21 @@ const ModalContent = ({ onOpen, onClose, onSubmit, ...rest }) => {
                     {translate('ra.action.cancel')}
                 </Button>
                 <Button onClick={submitCallback} color="primary">
-                    {translate('ra.action.save')}
+                    {submitKeyLabel}
                 </Button>
             </DialogActions>
         </div>
     );
 };
 
-export default function TextInputWithScanner({ onSubmit, validate, source, label, scannerInputProps }) {
+export default function TextInputWithScanner({
+    onSubmit,
+    validate,
+    source,
+    label,
+    scannerInputProps,
+    scannerModalProps,
+}) {
     return (
         <Box display={'flex'} alignSelf={'center'}>
             <TextInput
@@ -71,7 +76,7 @@ export default function TextInputWithScanner({ onSubmit, validate, source, label
                                     <QrIcon />
                                 </IconButton>
                             }
-                            content={(props) => <ModalContent onSubmit={onSubmit} {...props} />}
+                            content={(props) => <ModalContent onSubmit={onSubmit} {...scannerModalProps} {...props} />}
                         />
                     ),
                 }}

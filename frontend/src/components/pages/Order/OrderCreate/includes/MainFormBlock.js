@@ -7,6 +7,7 @@ import {
     ArrayInput,
     SimpleFormIterator,
     NumberInput,
+    useTranslate,
 } from 'react-admin';
 import { serviceTypes } from '@app-constants';
 import { createOrderFormValidators } from '@app-helpers';
@@ -23,6 +24,7 @@ const defaultSourceSort = { field: 'id', order: 'ASC' };
 export default function MainFormBlock(props) {
     const { values: formState, ...rest } = useFormState();
     const { input, ...rest2 } = useField('external_number');
+    const translate = useTranslate();
 
     const onChangeNumber = (props) => {
         input.onChange(props);
@@ -120,6 +122,7 @@ export default function MainFormBlock(props) {
                     label="Внешний номер"
                     validate={createOrderFormValidators.external_number}
                     onSubmit={onChangeNumber}
+                    scannerModalProps={{ submitKeyLabel: translate('ra.action.save') }}
                 />
             </Box>
 
