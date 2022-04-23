@@ -12,12 +12,13 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import { Box } from '@material-ui/core';
 import { QrIcon } from 'components/universal/icons';
+import { replacer } from './functions';
 
 const ModalContent = ({ onOpen, onClose, onSubmit, submitKeyLabel, ...rest }) => {
     const [number, setState] = useState('');
     const translate = useTranslate();
     const handleChange = (event) => {
-        setState(event.target.value);
+        setState(replacer(event.target.value));
     };
     const submitCallback = () => {
         onSubmit(number);
@@ -32,6 +33,7 @@ const ModalContent = ({ onOpen, onClose, onSubmit, submitKeyLabel, ...rest }) =>
             </DialogContentText> */}
                 <TextField
                     onChange={handleChange}
+                    value={number}
                     autoFocus
                     margin="dense"
                     id="name"
