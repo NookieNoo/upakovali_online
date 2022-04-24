@@ -4,6 +4,7 @@ import * as Sentry from '@sentry/react';
 import Tracker from '@openreplay/tracker';
 import { BrowserTracing } from '@sentry/tracing';
 import trackerAssist from '@openreplay/tracker-assist';
+import 'fix-date';
 import App from './App';
 import './styles/index.css';
 

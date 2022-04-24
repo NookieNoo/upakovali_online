@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Source;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -14,10 +15,9 @@ class SourceSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('sources')->insert([
-            ['id' => 1, 'name' => 'Пешеход'],
-            ['id' => 2, 'name' => 'Сайт'],
-            ['id' => 3, 'name' => 'API'],
-        ]);
+        $items = ['Пешеход', 'Сайт', 'API'];
+        foreach ($items as $item) {
+            Source::create(['name' => $item]);
+        }
     }
 }

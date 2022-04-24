@@ -1,6 +1,7 @@
 <?php
 namespace Database\Seeders;
 
+use App\Models\Role;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -13,12 +14,15 @@ class RoleSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('roles')->insert([
-            ['id' => 1, 'name' => 'admin', 'visible_name' => 'Администратор'],
-            ['id' => 2, 'name' => 'manager', 'visible_name' => 'Менеджер'],
-            ['id' => 3, 'name' => 'master', 'visible_name' => 'Мастер'],
-            ['id' => 4, 'name' => 'courier', 'visible_name' => 'Курьер'],
-            ['id' => 5, 'name' => 'parthner', 'visible_name' => 'Партнер'],
-        ]);
+        $items = [
+            ['name' => 'admin', 'visible_name' => 'Администратор'],
+            ['name' => 'manager', 'visible_name' => 'Менеджер'],
+            ['name' => 'master', 'visible_name' => 'Мастер'],
+            ['name' => 'courier', 'visible_name' => 'Курьер'],
+            ['name' => 'parthner', 'visible_name' => 'Партнер'],
+        ];
+        foreach ($items as $item) {
+            Role::create($item);
+        }
     }
 }

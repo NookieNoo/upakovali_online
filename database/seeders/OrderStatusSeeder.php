@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\OrderStatus;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -14,18 +15,9 @@ class OrderStatusSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('order_statuses')->insert([
-            ['id' => 1, 'name' => 'Создан'],
-            ['id' => 2, 'name' => 'Курьер назначен'],
-            ['id' => 3, 'name' => 'Забрали'],
-            ['id' => 4, 'name' => 'Приняли'],
-            ['id' => 5, 'name' => 'В работе'],
-            ['id' => 6, 'name' => 'Упаковали'],
-            ['id' => 7, 'name' => 'Выдали'],
-            ['id' => 8, 'name' => 'Курьер выдает'],
-            ['id' => 9, 'name' => 'Доставили'],
-            ['id' => 10, 'name' => 'Оплатили'],
-            ['id' => 11, 'name' => 'Отмена'],
-        ]);
+        $items = ['Создан', 'Курьер назначен', 'Забрали', 'Приняли', 'В работе', 'Упаковали', 'Выдали', 'Курьер выдает', 'Доставили', 'Оплатили', 'Отмена'];
+        foreach ($items as $item) {
+            OrderStatus::create(['name' => $item]);
+        }
     }
 }

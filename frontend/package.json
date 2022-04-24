@@ -15,6 +15,7 @@
         "autosuggest-highlight": "^3.2.0",
         "dayjs": "^1.10.7",
         "fetch-jsonp": "^1.2.1",
+        "fix-date": "^1.1.6",
         "prop-types": "^15.7.2",
         "ra-access-control-lists": "^0.1.1",
         "ra-auth-acl": "^0.1.1",
