@@ -31,8 +31,8 @@ class CreateOrdersTable extends Migration
             $table->unsignedInteger('delivery_point_id')->nullable()->comment('Точка выдачи товара');
             $table->unsignedInteger('delivery_address_point_id')->nullable();
             $table->string('delivery_address')->nullable();
-            $table->timestamp('receiving_date');
-            $table->timestamp('issue_date');
+            $table->timestampTz('receiving_date');
+            $table->timestampTz('issue_date');
             $table->text('comment')->nullable();
             $table->unsignedInteger('courier_receiver_id')->nullable()->comment('Курьер принимающий');
             $table->unsignedInteger('courier_issuer_id')->nullable()->comment('Курьер выдающий');
