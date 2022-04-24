@@ -23,7 +23,8 @@ const defaultSourceSort = { field: 'id', order: 'ASC' };
 
 export default function MainFormBlock(props) {
     const { values: formState, ...rest } = useFormState();
-    const { input, ...rest2 } = useField('external_number');
+    const { input } = useField('external_number');
+    const { input: giftsInput, ...rest2 } = useField('gifts');
     const translate = useTranslate();
 
     const onChangeNumber = (props) => {
@@ -34,10 +35,16 @@ export default function MainFormBlock(props) {
 
     useEffect(() => {
         setServicesFilter((pr) => ({ ...pr, parthner_id: formState.parthner_id }));
+        if (!formState.parthner_id) {
+            giftsInput.onChange(undefined);
+        } else {
+            if (giftsInput.value) {
+                giftsInput.onChange(giftsInput.value.map(({ service_id, ...rest }) => rest));
+            }
+        }
     }, [formState.parthner_id]);
 
     console.log('formState', formState);
-    console.log('rest', rest);
     return (
         <>
             <ReferenceInput label="Источник" source="source_id" sort={defaultSourceSort} reference="source">
@@ -126,50 +133,54 @@ export default function MainFormBlock(props) {
                 />
             </Box>
 
-            {formState.parthner_id && (
-                <ArrayInput source="gifts" label="Подарки" validate={createOrderFormValidators.gifts}>
-                    <SimpleFormIterator>
-                        <NumberInput
-                            source="weight"
-                            label="Вес (кг)"
-                            validate={createOrderFormValidators['gifts.weight']}
+            <ArrayInput
+                source="gifts"
+                label="Подарки"
+                disabled={!!!formState.parthner_id}
+                validate={createOrderFormValidators.gifts}
+            >
+                <SimpleFormIterator>
+                    <NumberInput
+                        source="weight"
+                        label="Вес (кг)"
+                        validate={createOrderFormValidators['gifts.weight']}
+                    />
+                    <NumberInput
+                        source="length"
+                        label="Длина (см)"
+                        min={1}
+                        validate={createOrderFormValidators['gifts.length']}
+                    />
+                    <NumberInput
+                        source="width"
+                        label="Ширина (см)"
+                        min={1}
+                        validate={createOrderFormValidators['gifts.width']}
+                    />
+                    <NumberInput
+                        source="height"
+                        label="Высота (см)"
+                        min={1}
+                        validate={createOrderFormValidators['gifts.height']}
+                    />
+                    <ReferenceInput label="Кому" source="addressee_id" reference="addressee">
+                        <SelectInput
+                            optionText="name"
+                            optionValue="id"
+                            validate={createOrderFormValidators['gifts.addressee_id']}
                         />
-                        <NumberInput
-                            source="length"
-                            label="Длина (см)"
-                            min={1}
-                            validate={createOrderFormValidators['gifts.length']}
+                    </ReferenceInput>
+                    <ReferenceInput label="Сервис" source="service_id" reference="service" filter={servicesFilter}>
+                        <SelectInput
+                            // optionText="name"
+                            optionText={(it) => `${it.name} (${it.price.name})`}
+                            optionValue="id"
+                            validate={createOrderFormValidators['gifts.service_id']}
                         />
-                        <NumberInput
-                            source="width"
-                            label="Ширина (см)"
-                            min={1}
-                            validate={createOrderFormValidators['gifts.width']}
-                        />
-                        <NumberInput
-                            source="height"
-                            label="Высота (см)"
-                            min={1}
-                            validate={createOrderFormValidators['gifts.height']}
-                        />
-                        <ReferenceInput label="Кому" source="addressee_id" reference="addressee">
-                            <SelectInput
-                                optionText="name"
-                                optionValue="id"
-                                validate={createOrderFormValidators['gifts.addressee_id']}
-                            />
-                        </ReferenceInput>
-                        <ReferenceInput label="Сервис" source="service_id" reference="service" filter={servicesFilter}>
-                            <SelectInput
-                                // optionText="name"
-                                optionText={(it) => `${it.name} (${it.price.name})`}
-                                optionValue="id"
-                                validate={createOrderFormValidators['gifts.service_id']}
-                            />
-                        </ReferenceInput>
-                    </SimpleFormIterator>
-                </ArrayInput>
-            )}
+                    </ReferenceInput>
+                </SimpleFormIterator>
+            </ArrayInput>
+
             <ArrayInput
                 source="additional_products"
                 label="Дополнительные товары"
