@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Workshop;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -14,8 +15,6 @@ class WorkshopSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('workshops')->insert([
-            ['id' => 1, 'address' => 'Плющиха-Москва, Плющиха, 42', 'latitude' => '37.576367', 'longitude' => '55.741024'],
-        ]);
+        Workshop::create(['address' => 'Плющиха-Москва, Плющиха, 42', 'latitude' => '37.576367', 'longitude' => '55.741024']);
     }
 }
