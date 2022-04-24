@@ -122,7 +122,7 @@ export default function OrderEdit(props) {
                                 filter={deliveryOrPickingFilter}
                             >
                                 <SelectInput
-                                    optionText="name"
+                                    optionText={(it) => `${it.name} (${it.price.name})`}
                                     optionValue="id"
                                     validate={editOrderFormValidators['gifts.service_id']}
                                 />
