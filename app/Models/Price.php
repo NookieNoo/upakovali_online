@@ -11,7 +11,8 @@ class Price extends BaseModel
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $additionalHidden = ['parthner_id'];
+        // $additionalHidden = ['parthner_id'];
+        $additionalHidden = [];
         $this->hidden = array_merge($this->hidden, $additionalHidden);
     }
 

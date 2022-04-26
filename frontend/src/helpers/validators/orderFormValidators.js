@@ -1,5 +1,6 @@
-import { required, maxLength, number, minValue } from 'react-admin';
+import { required, maxLength, number, minValue, email } from 'react-admin';
 import dayjs from 'dayjs';
+import { validatePhone } from './functions/validatePhone';
 
 const submitValidator = ({
     is_pickupable,
@@ -42,6 +43,9 @@ const createOrderFormValidators = {
     parthner_id: [],
     external_number: [maxLength(255)],
     client_id: [required()],
+    'client.full_name': [required(), maxLength(255)],
+    'client.phone': [required(), maxLength(50), validatePhone],
+    'client.email': [required(), maxLength(255), email()],
     workshop_id: [required()],
     gifts: [required()],
     'gifts.weight': [required(), number(), minValue(0.1)],
@@ -64,6 +68,9 @@ const createOrderFormValidators = {
     isPaid: [],
     master_id: [],
     receiver_id: [required()],
+    'receiver.full_name': [required(), maxLength(255)],
+    'receiver.phone': [required(), maxLength(50), validatePhone],
+    'receiver.email': [required(), maxLength(255), email()],
     submit: submitValidator,
 };
 

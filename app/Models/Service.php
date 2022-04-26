@@ -36,6 +36,9 @@ class Service extends BaseModel
                         ->select(Service::getTableName() . '.*');
                 }
                 $query->where(Price::getTableName() . ".parthner_id", $parthnerId);
-        });
+            })
+            ->when($request->query('ids'), function (Builder $query, $ids) {
+                $query->whereIn($this->getTable() . ".id", $ids);
+            });
     }
 }

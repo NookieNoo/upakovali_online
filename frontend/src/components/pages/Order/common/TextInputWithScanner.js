@@ -61,6 +61,7 @@ export default function TextInputWithScanner({
     label,
     scannerInputProps,
     scannerModalProps,
+    disabled,
 }) {
     return (
         <Box display={'flex'} alignSelf={'center'}>
@@ -68,13 +69,14 @@ export default function TextInputWithScanner({
                 source={source}
                 label={label}
                 validate={validate}
+                disabled={disabled}
                 {...scannerInputProps}
                 InputProps={{
                     endAdornment: (
                         <DialogElement
                             maxWidth="md"
                             dialogOpenComponent={
-                                <IconButton>
+                                <IconButton disabled={disabled}>
                                     <QrIcon />
                                 </IconButton>
                             }
