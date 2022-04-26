@@ -16,7 +16,6 @@ import { userRoles, serviceTypes } from '@app-constants';
 import { KladrAutocompleteBlock, AutocompleteWithRef, PhoneInput } from '@app-universal';
 import { SelectInputWrap } from '@app-components/overriding';
 import TextInputWithScanner from '../../TextInputWithScanner';
-import { useComponentDidUpdate } from '@app-hooks';
 
 const defaultSourceSort = { field: 'id', order: 'ASC' };
 const masterFilter = { role_id: userRoles.master.id };
@@ -42,19 +41,13 @@ export default function MainTab({ validators, canEditForm, isEdit, isCreate }) {
         console.log('CHANGE PARTHNER_ID', formState.parthner_id);
         setServicesFilter((pr) => ({ ...pr, parthner_id: formState.parthner_id }));
         if (isCreate) {
-            if (!formState.parthner_id) {
-                giftsInput.onChange(undefined);
-            } else {
-                if (giftsInput.value) {
-                    giftsInput.onChange(giftsInput.value.map(({ service_id, ...rest }) => rest));
-                }
+            if (giftsInput.value && giftsInput.value[0] !== undefined) {
+                giftsInput.onChange(giftsInput.value.map(({ service_id, ...rest }) => rest));
             }
         }
     }, [formState.parthner_id]);
 
     console.log('formState', formState);
-    console.log('rest', rest);
-    // console.log('isEdit', isEdit);
     return (
         <>
             <Box display={'flex'} flexDirection={'column'} width={'265px'}>
@@ -89,13 +82,21 @@ export default function MainTab({ validators, canEditForm, isEdit, isCreate }) {
                     {formState.is_new_client ? (
                         <Grid container justifyContent="flex-start" spacing={1}>
                             <Grid item>
-                                <TextInput source="client.full_name" label="ФИО клиента" validate={validators['client.full_name']}/>
+                                <TextInput
+                                    source="client.full_name"
+                                    label="ФИО клиента"
+                                    validate={validators['client.full_name']}
+                                />
                             </Grid>
                             <Grid item>
-                                <PhoneInput source="client.phone" label="Телефон" validate={validators['client.phone']}/>
+                                <PhoneInput
+                                    source="client.phone"
+                                    label="Телефон"
+                                    validate={validators['client.phone']}
+                                />
                             </Grid>
                             <Grid item>
-                                <TextInput source="client.email" label="Email" validate={validators['client.email']}/>
+                                <TextInput source="client.email" label="Email" validate={validators['client.email']} />
                             </Grid>
                         </Grid>
                     ) : (
@@ -183,7 +184,7 @@ export default function MainTab({ validators, canEditForm, isEdit, isCreate }) {
                 />
             </Box>
 
-            <ArrayInput source="gifts" label="Подарки" validate={validators.gifts} disabled={!!!formState.parthner_id}>
+            <ArrayInput source="gifts" label="Подарки" validate={validators.gifts}>
                 <SimpleFormIterator>
                     <NumberInput source="weight" label="Вес (кг)" validate={validators['gifts.weight']} />
                     <NumberInput source="length" label="Длина (см)" min={1} validate={validators['gifts.length']} />
@@ -198,6 +199,7 @@ export default function MainTab({ validators, canEditForm, isEdit, isCreate }) {
                         reference="service"
                         filter={servicesFilter}
                         enableGetChoices={enableGetChoices}
+                        disabled={!!!formState.parthner_id}
                     >
                         <SelectInput
                             // optionText="name"

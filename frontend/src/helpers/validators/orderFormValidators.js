@@ -40,7 +40,7 @@ const validateIssueTime = (dateTime) => {
 
 const createOrderFormValidators = {
     source_id: [required()],
-    parthner_id: [],
+    parthner_id: [required()],
     external_number: [maxLength(255)],
     client_id: [required()],
     'client.full_name': [required(), maxLength(255)],
