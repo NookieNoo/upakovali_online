@@ -12,7 +12,7 @@ export function MapWithOrders() {
         payload: {
             pagination: { page: 1, perPage: 1000 },
             sort: { field: 'id', sort: 'ASC' },
-            filter: { issue_date: new Date().toISOString().slice(0, 10) },
+            filter: { order_date: new Date().toISOString().slice(0, 10) },
         },
     });
     //TODO Добавить отображение пользовательских адресов

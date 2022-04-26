@@ -168,8 +168,10 @@ class Order extends BaseModel
             ->when($request->query('receiver_id'), function (Builder $query, $receiverId) {
                 $query->where($this->getTable() . ".receiver_id", $receiverId);
             })
-            ->when($request->query('issue_date'), function (Builder $query, $issueDate) {
-                $query->whereDate($this->getTable() . ".issue_date", '=', $issueDate);
+            ->when($request->query('order_date'), function (Builder $query, $orderDate) {
+                $query
+                    ->whereDate($this->getTable() . ".issue_date", '=', $orderDate)
+                    ->orWhereDate($this->getTable() . ".receiving_date", '=', $orderDate);
             })
             ->when($request->query('receiving_date_from'), function (Builder $query, $date) {
                 $query->whereDate($this->getTable() . ".receiving_date", '>=', $date);

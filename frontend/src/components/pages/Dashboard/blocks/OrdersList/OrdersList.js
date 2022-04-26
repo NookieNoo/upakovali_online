@@ -29,7 +29,7 @@ const postRowStyle = (record, index) => ({
 });
 
 const filterOrders = {
-    issue_date: new Date().toISOString().slice(0, 10),
+    order_date: new Date().toISOString().slice(0, 10),
 };
 
 const defaultColumns = [

@@ -15,6 +15,6 @@ class WorkshopSeeder extends Seeder
      */
     public function run()
     {
-        Workshop::create(['address' => 'Плющиха-Москва, Плющиха, 42', 'latitude' => '37.576367', 'longitude' => '55.741024']);
+        Workshop::create(['address' => 'Плющиха-Москва, Плющиха, 42', 'latitude' => '55.741024', 'longitude' => '37.576367']);
     }
 }
