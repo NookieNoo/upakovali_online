@@ -21,12 +21,11 @@ export const dataProvider = {
         };
         const url = `${baseApiUrl}/${resource}?${stringify(query)}`;
 
-        return httpClient(url)
-            .then(({ headers, json }) => ({
-                data: json.data,
-                meta: json.meta,
-                total: json.meta.total,
-            }));
+        return httpClient(url).then(({ headers, json }) => ({
+            data: json.data,
+            meta: json.meta,
+            total: json.meta.total,
+        }));
     },
     getOne: (resource, params) =>
         httpClient(`${baseApiUrl}/${resource}/${params.id}`).then(({ json }) => {
