@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Addressee;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -14,11 +15,9 @@ class AddresseeSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('addressees')->insert([
-            ['id' => 1, 'name' => 'Женщина'],
-            ['id' => 2, 'name' => 'Мужчина'],
-            ['id' => 3, 'name' => 'Девочка'],
-            ['id' => 4, 'name' => 'Мальчик'],
-        ]);
+        $items = ['Женщина', 'Мужчина', 'Девочка', 'Мальчик'];
+        foreach ($items as $item) {
+            Addressee::create(['name' => $item]);
+        }
     }
 }
