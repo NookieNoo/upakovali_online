@@ -16,7 +16,7 @@ import { serviceTypes } from '@app-constants';
 export default function PriceEdit(props) {
     return (
         <Edit {...props} mutationMode="pessimistic">
-            <SimpleForm redirect="show">
+            <SimpleForm validate={editPriceFormValidators.submit} redirect="show">
                 <TextInput label="Название" source="name" validate={editPriceFormValidators.name} />
                 <DateInput label="Действует с" source="start" validate={editPriceFormValidators.start} />
                 <DateInput label="Действует до" source="end" validate={editPriceFormValidators.end} />

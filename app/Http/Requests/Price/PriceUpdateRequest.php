@@ -26,7 +26,7 @@ class PriceUpdateRequest extends JsonRequest
         return [
             'name' => 'required|string|max:255',
             'parthner_id' => 'required|integer|min:1|exists:parthners,id',
-            'start' => 'required|date',
+            'start' => 'required|date|before_or_equal:end',
             'end' => 'required|date',
             'services' => 'required|array',
             'services.*.name' => 'required||string|max:255',
