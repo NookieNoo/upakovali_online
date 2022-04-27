@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { omit } from 'lodash';
 import {
     TextInput,
     ReferenceInput,
@@ -46,8 +47,8 @@ export default function MainTab({ validators, canEditForm, isEdit, isCreate }) {
         console.log('CHANGE PARTHNER_ID', formState.parthner_id);
         setServicesFilter((pr) => ({ ...pr, parthner_id: formState.parthner_id }));
         if (isCreate) {
-            if (giftsInput.value && giftsInput.value[0] !== undefined) {
-                giftsInput.onChange(giftsInput.value.map(({ service_id, ...rest }) => rest));
+            if (giftsInput.value) {
+                giftsInput.onChange(giftsInput.value.map((it) => omit(it, 'service_id')));
             }
         }
     }, [formState.parthner_id]);
