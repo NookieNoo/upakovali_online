@@ -85,12 +85,14 @@ export default function DeliveryTab({ validators, canEditForm, isEdit, isCreate 
                     label="Время приема"
                     disabled={isEdit ? !canEditForm : false}
                     validate={validators.receiving_date}
+                    inputProps={{ autocomplete: 'off' }}
                 />
                 <DateTimeInput
                     source="issue_date"
                     label="Время выдачи"
                     disabled={isEdit ? !canEditForm : false}
                     validate={validators.issue_date}
+                    inputProps={{ autocomplete: 'off' }}
                 />
 
                 {/* <AutocompleteWithRef
