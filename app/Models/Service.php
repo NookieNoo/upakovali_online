@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\DB;
 
 class Service extends BaseModel
 {
+    protected $casts = [
+        'sum' => 'float',
+    ];
+
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);

@@ -4,6 +4,10 @@ namespace App\Models;
 
 class AdditionalProduct extends BaseModel
 {
+    protected $casts = [
+        'price' => 'float',
+    ];
+
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);

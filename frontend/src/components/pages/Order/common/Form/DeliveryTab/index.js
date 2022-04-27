@@ -3,13 +3,18 @@ import PropTypes from 'prop-types';
 import { TextInput, ReferenceInput, SelectInput, BooleanInput, DateTimeInput, FormDataConsumer } from 'react-admin';
 import { Typography, Divider, Box, Grid, Link } from '@material-ui/core';
 import { useFormState } from 'react-final-form';
+import { useSelector } from 'react-redux';
+import { getServicesListTotal } from 'store/selectors';
 import { userRoles, serviceTypes } from '@app-constants';
 import { KladrAutocompleteBlock, AutocompleteWithRef, PhoneInput } from '@app-universal';
+import TotalBlock from '../includes/TotalBlock';
 
 const courierFilter = { role_id: userRoles.courier.id };
 
 export default function DeliveryTab({ validators, canEditForm, isEdit, isCreate }) {
     const { values: formState, ...rest } = useFormState();
+    const giftsTotal = useSelector(getServicesListTotal(formState.gifts?.map((it) => it?.service_id) || []));
+    const additionalTotal = formState.additional_products?.reduce((pr, cur) => pr + cur?.price || 0, 0);
     return (
         <>
             <BooleanInput
@@ -184,6 +189,7 @@ export default function DeliveryTab({ validators, canEditForm, isEdit, isCreate 
                     validate={validators.comment}
                 />
             </Box>
+            <TotalBlock giftsTotal={giftsTotal} additionalTotal={additionalTotal} />
         </>
     );
 }

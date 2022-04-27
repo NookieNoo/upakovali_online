@@ -12,10 +12,13 @@ import {
 } from 'react-admin';
 import { Card, CardContent, Box, Grid, Link, Typography, Divider } from '@material-ui/core';
 import { useFormState, useField } from 'react-final-form';
+import { useSelector } from 'react-redux';
+import { getServicesListTotal } from 'store/selectors';
 import { userRoles, serviceTypes } from '@app-constants';
 import { KladrAutocompleteBlock, AutocompleteWithRef, PhoneInput } from '@app-universal';
 import { SelectInputWrap } from '@app-components/overriding';
 import TextInputWithScanner from '../../TextInputWithScanner';
+import TotalBlock from '../includes/TotalBlock';
 
 const defaultSourceSort = { field: 'id', order: 'ASC' };
 const masterFilter = { role_id: userRoles.master.id };
@@ -30,6 +33,8 @@ export default function MainTab({ validators, canEditForm, isEdit, isCreate }) {
     const { input } = useField('external_number');
     const { input: giftsInput, ...rest2 } = useField('gifts');
     const translate = useTranslate();
+    const giftsTotal = useSelector(getServicesListTotal(formState.gifts?.map((it) => it?.service_id) || []));
+    const additionalTotal = formState.additional_products?.reduce((pr, cur) => pr + cur?.price || 0, 0);
 
     const onChangeNumber = (props) => {
         input.onChange(props);
@@ -203,7 +208,7 @@ export default function MainTab({ validators, canEditForm, isEdit, isCreate }) {
                     >
                         <SelectInput
                             // optionText="name"
-                            optionText={(it) => `${it.name} (${it.price.name}) ${it.price.parthner_id}`}
+                            optionText={(it) => `${it.sum} ${it.name} (${it.price.name}) ${it.price.parthner_id}`}
                             optionValue="id"
                             validate={validators['gifts.service_id']}
                         />
@@ -226,6 +231,7 @@ export default function MainTab({ validators, canEditForm, isEdit, isCreate }) {
                     />
                 </SimpleFormIterator>
             </ArrayInput>
+            <TotalBlock giftsTotal={giftsTotal} additionalTotal={additionalTotal} />
         </>
     );
 }
