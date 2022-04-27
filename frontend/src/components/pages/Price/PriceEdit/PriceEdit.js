@@ -18,8 +18,18 @@ export default function PriceEdit(props) {
         <Edit {...props} mutationMode="pessimistic">
             <SimpleForm validate={editPriceFormValidators.submit} redirect="show">
                 <TextInput label="Название" source="name" validate={editPriceFormValidators.name} />
-                <DateInput label="Действует с" source="start" validate={editPriceFormValidators.start} />
-                <DateInput label="Действует до" source="end" validate={editPriceFormValidators.end} />
+                <DateInput
+                    label="Действует с"
+                    source="start"
+                    validate={editPriceFormValidators.start}
+                    inputProps={{ autocomplete: 'new-password' }}
+                />
+                <DateInput
+                    label="Действует до"
+                    source="end"
+                    validate={editPriceFormValidators.end}
+                    inputProps={{ autocomplete: 'new-password' }}
+                />
                 <AutocompleteWithRef
                     label="Партнер"
                     source="parthner_id"

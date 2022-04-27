@@ -18,8 +18,8 @@ export default function PriceCreate(props) {
         <Create {...props} title="Создание прайса">
             <SimpleForm validate={createPriceFormValidators.submit} redirect="show">
                 <TextInput label="Название" source="name" validate={createPriceFormValidators.name} />
-                <DateInput label="Действует с" source="start" validate={createPriceFormValidators.start} />
-                <DateInput label="Действует до" source="end" validate={createPriceFormValidators.end} />
+                <DateInput label="Действует с" source="start" inputProps={{ autocomplete: 'new-password' }} validate={createPriceFormValidators.start} />
+                <DateInput label="Действует до" source="end" inputProps={{ autocomplete: 'new-password' }} validate={createPriceFormValidators.end} />
                 <AutocompleteWithRef
                     label="Партнер"
                     source="parthner_id"
