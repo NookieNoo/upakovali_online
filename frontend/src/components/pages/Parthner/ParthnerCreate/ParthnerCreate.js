@@ -11,7 +11,7 @@ export default function ParthnerCreate(props) {
     return (
         <Create {...props} title="Создание партнера">
             <SimpleForm redirect="show">
-                <TextInput label="ФИО" source="full_name" validate={createParthnerFormValidators.full_name} />
+                <TextInput label="Название" source="full_name" validate={createParthnerFormValidators.full_name} />
                 <TextInput label="Email" source="email" validate={createParthnerFormValidators.email} />
                 <PhoneInput label="Телефон" source="phone" validate={createParthnerFormValidators.phone} />
                 <TextInput label="Комментарий" source="comment" validate={createParthnerFormValidators.comment} />

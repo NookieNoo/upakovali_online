@@ -11,7 +11,7 @@ export default function ParthnerEdit(props) {
     return (
         <Edit {...props} mutationMode="pessimistic">
             <SimpleForm redirect="show">
-                <TextInput label="ФИО" source="full_name" validate={editParthnerFormValidators.full_name} />
+                <TextInput label="Название" source="full_name" validate={editParthnerFormValidators.full_name} />
                 <TextInput label="Email" source="email" validate={editParthnerFormValidators.email} />
                 <PhoneInput label="Телефон" source="phone" validate={editParthnerFormValidators.phone} />
                 <TextInput label="Комментарий" source="comment" validate={editParthnerFormValidators.comment} />

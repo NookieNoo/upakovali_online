@@ -24,9 +24,9 @@ class Parthner
     /**
      * @OA\Property(
      *     title="Full name",
-     *     description="ФИО",
+     *     description="Название",
      *     format="string",
-     *     example="Любимов Алексей Валерьевич"
+     *     example="ПАО ТехГараж"
      * )
      *
      * @var string

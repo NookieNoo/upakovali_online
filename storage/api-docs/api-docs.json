@@ -378,10 +378,10 @@
                     },
                     "full_name": {
                         "title": "Full name",
-                        "description": "ФИО",
+                        "description": "Название",
                         "type": "string",
                         "format": "string",
-                        "example": "Любимов Алексей Валерьевич"
+                        "example": "ПАО ТехГараж"
                     },
                     "manager": {
                         "$ref": "#/components/schemas/User"

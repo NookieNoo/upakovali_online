@@ -35,7 +35,7 @@ export default function ParhtnerShow(props) {
             <ShowSplitter
                 leftSide={
                     <SimpleShowLayout>
-                        <TextField label="ФИО" source="full_name" />
+                        <TextField label="Название" source="full_name" />
                         <EmailField label="Email" source="email" />
                         <TextField label="Телефон" source="phone" />
                         <TextField label="Менеджер" source="manager.full_name" />
