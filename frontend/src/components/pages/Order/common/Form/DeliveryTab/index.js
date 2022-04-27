@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import { getServicesListTotal } from 'store/selectors';
 import { userRoles, serviceTypes } from '@app-constants';
 import { KladrAutocompleteBlock, AutocompleteWithRef, PhoneInput } from '@app-universal';
-import TotalBlock from '../includes/TotalBlock';
+import TotalBlock from '../common/TotalBlock';
 
 const courierFilter = { role_id: userRoles.courier.id };
 

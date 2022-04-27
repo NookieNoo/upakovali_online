@@ -19,7 +19,8 @@ import { userRoles, serviceTypes } from '@app-constants';
 import { KladrAutocompleteBlock, AutocompleteWithRef, PhoneInput } from '@app-universal';
 import { SelectInputWrap } from '@app-components/overriding';
 import TextInputWithScanner from '../../TextInputWithScanner';
-import TotalBlock from '../includes/TotalBlock';
+import TotalBlock from '../common/TotalBlock';
+import ServiceOptionRenderer from './includes/ServiceOptionRenderer';
 
 const defaultSourceSort = { field: 'id', order: 'ASC' };
 const masterFilter = { role_id: userRoles.master.id };
@@ -208,8 +209,7 @@ export default function MainTab({ validators, canEditForm, isEdit, isCreate }) {
                         disabled={!!!formState.parthner_id}
                     >
                         <SelectInput
-                            // optionText="name"
-                            optionText={(it) => `${it.sum} ${it.name} (${it.price.name}) ${it.price.parthner_id}`}
+                            optionText={ServiceOptionRenderer}
                             optionValue="id"
                             validate={validators['gifts.service_id']}
                         />
