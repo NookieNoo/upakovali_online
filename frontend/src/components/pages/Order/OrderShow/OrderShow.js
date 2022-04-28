@@ -14,11 +14,15 @@ import {
     useShowController,
     ReferenceManyField,
     Pagination,
+    FunctionField,
 } from 'react-admin';
 import Aside from './Aside';
 import { OrderShowActions } from './includes/OrderShowActions';
 import { useHasAccess } from '@app-hooks';
 import { ExpandActivityBlock } from '@app-universal';
+import { formatMoney } from '@app-helpers';
+
+const renderTotal = it => formatMoney(it.total);
 
 const filter = { subject_type: 'order' };
 
@@ -54,7 +58,7 @@ export default function OrderShow(props) {
                             <TextField source="service.product.name" label="Тип услуги" />
                         </Datagrid>
                     </ArrayField>
-                    <TextField label="Итоговая стоимость" source="total" />
+                    <FunctionField label="Итоговая стоимость" render={renderTotal} />
                     <ArrayField source="additional_products" fieldKey="id" label="Дополнительные товары">
                         <Datagrid>
                             <TextField source="id" />

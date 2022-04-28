@@ -1,17 +1,17 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import { Typography } from '@material-ui/core';
+import { formatMoney } from '@app-helpers';
 
 export default function TotalBlock({ deliveryTotal, pickupTotal, giftsTotal, additionalTotal }) {
-    // const total = giftsTotal + additionalTotal + deliveryTotal + pickupTotal;
-    const total = giftsTotal + additionalTotal;
-    console.log('giftsTOTAL', giftsTotal);
+    const total = giftsTotal + additionalTotal + deliveryTotal + pickupTotal;
     return (
         <>
             <Typography variant="h6" gutterBottom>
                 Итого:
             </Typography>
-            Подарки ({giftsTotal}) + Допы ({additionalTotal}) + Доставка (??) + Забор (??) = {total}
+            Подарки ({giftsTotal}) + Допы ({additionalTotal}) + Доставка ({deliveryTotal}) + Забор ({pickupTotal}) ={' '}
+            {formatMoney(total)}
         </>
     );
 }

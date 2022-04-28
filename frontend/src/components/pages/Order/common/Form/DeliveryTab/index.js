@@ -1,6 +1,14 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { TextInput, ReferenceInput, SelectInput, BooleanInput, DateTimeInput, FormDataConsumer } from 'react-admin';
+import {
+    TextInput,
+    ReferenceInput,
+    SelectInput,
+    BooleanInput,
+    DateTimeInput,
+    FormDataConsumer,
+    NumberInput,
+} from 'react-admin';
 import { Typography, Divider, Box, Grid, Link } from '@material-ui/core';
 import { useFormState } from 'react-final-form';
 import { useSelector } from 'react-redux';
@@ -26,12 +34,21 @@ export default function DeliveryTab({ validators, canEditForm, isEdit, isCreate 
             <FormDataConsumer>
                 {({ formData, ...rest }) =>
                     formData.is_pickupable ? (
-                        <KladrAutocompleteBlock
-                            source="pick_up_address"
-                            label="Адрес забора товара"
-                            disabled={isEdit ? !canEditForm : false}
-                            validate={validators.pick_up_address}
-                        />
+                        <>
+                            <KladrAutocompleteBlock
+                                source="pick_up_address"
+                                label="Адрес забора товара"
+                                disabled={isEdit ? !canEditForm : false}
+                                validate={validators.pick_up_address}
+                            />
+                            <NumberInput
+                                source="pick_up_price"
+                                label="Стоимость забора"
+                                min={1}
+                                validate={validators.pick_up_price}
+                                disabled={isEdit}
+                            />
+                        </>
                     ) : (
                         <ReferenceInput
                             label="Точка забора товара"
@@ -55,12 +72,21 @@ export default function DeliveryTab({ validators, canEditForm, isEdit, isCreate 
             <FormDataConsumer>
                 {({ formData, ...rest }) =>
                     formData.is_deliverable ? (
-                        <KladrAutocompleteBlock
-                            source="delivery_address"
-                            label="Адрес выдачи товара"
-                            disabled={isEdit ? !canEditForm : false}
-                            validate={validators.delivery_address}
-                        />
+                        <>
+                            <KladrAutocompleteBlock
+                                source="delivery_address"
+                                label="Адрес доставки товара"
+                                disabled={isEdit ? !canEditForm : false}
+                                validate={validators.delivery_address}
+                            />
+                            <NumberInput
+                                source="delivery_price"
+                                label="Стоимость доставки"
+                                min={1}
+                                validate={validators.delivery_price}
+                                disabled={isEdit}
+                            />
+                        </>
                     ) : (
                         <ReferenceInput
                             label="Точка выдачи товара"
@@ -191,7 +217,12 @@ export default function DeliveryTab({ validators, canEditForm, isEdit, isCreate 
                     validate={validators.comment}
                 />
             </Box>
-            <TotalBlock giftsTotal={giftsTotal} additionalTotal={additionalTotal} />
+            <TotalBlock
+                giftsTotal={giftsTotal}
+                additionalTotal={additionalTotal}
+                deliveryTotal={formState.is_deliverable ? formState.delivery_price : 0}
+                pickupTotal={formState.is_pickupable ? formState.pick_up_price : 0}
+            />
         </>
     );
 }

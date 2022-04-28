@@ -12,6 +12,11 @@ class Order extends BaseModel
 {
     use LogsActivity;
 
+    protected $casts = [
+        'pick_up_price' => 'float',
+        'delivery_price' => 'float',
+    ];
+
     public static $supportedRelations = ['source', 'parthner', 'client', 'workshop', 'pickUpPoint',
         'deliveryPoint', 'courierReceiver', 'courierIssuer', 'master', 'receiver', 'history', 'history.status',
         'history.user', 'history.user.role', 'orderStatus', 'orderPhotos', 'gifts', 'gifts.addressee', 'gifts.service',
@@ -127,6 +132,8 @@ class Order extends BaseModel
         foreach ($gifts as $gift) {
             $total += $gift->service->sum;
         }
+        if ($this->pick_up_price) $total += $this->pick_up_price;
+        if ($this->delivery_price) $total += $this->delivery_price;
         return $total;
     }
 

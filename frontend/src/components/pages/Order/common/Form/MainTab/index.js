@@ -232,7 +232,12 @@ export default function MainTab({ validators, canEditForm, isEdit, isCreate }) {
                     />
                 </SimpleFormIterator>
             </ArrayInput>
-            <TotalBlock giftsTotal={giftsTotal} additionalTotal={additionalTotal} />
+            <TotalBlock
+                giftsTotal={giftsTotal}
+                additionalTotal={additionalTotal}
+                deliveryTotal={formState.is_deliverable ? formState.delivery_price : 0}
+                pickupTotal={formState.is_pickupable ? formState.pick_up_price : 0}
+            />
         </>
     );
 }

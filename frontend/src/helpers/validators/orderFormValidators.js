@@ -38,6 +38,12 @@ const validateIssueTime = (dateTime) => {
     return undefined;
 };
 
+const decimalAccuracy = (number) => {
+    const accuracy = number.toString().match(/\.(\d+)/)?.[1].length;
+    if (accuracy && accuracy > 2) return 'Не больше 2 знаков после запятой';
+    return undefined;
+};
+
 const createOrderFormValidators = {
     source_id: [required()],
     parthner_id: [required()],
@@ -59,8 +65,10 @@ const createOrderFormValidators = {
     'additional_products.price': [number(), minValue(0.1)],
     pick_up_point_id: [],
     pick_up_address: [maxLength(255)],
+    pick_up_price: [required(), number(), minValue(1), decimalAccuracy],
     delivery_point_id: [],
     delivery_address: [maxLength(255)],
+    delivery_price: [required(), number(), minValue(1), decimalAccuracy],
     receiving_date: [required()],
     issue_date: [required(), validateIssueTime],
     comment: [],
