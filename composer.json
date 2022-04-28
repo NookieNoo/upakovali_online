@@ -8,6 +8,7 @@
         "php": "^8.0",
         "ext-curl": "*",
         "ext-json": "*",
+        "arcanedev/log-viewer": "~8.2",
         "barryvdh/laravel-ide-helper": "^2.10",
         "bensampo/laravel-enum": "^3.4",
         "darkaonline/l5-swagger": "^8.0",
