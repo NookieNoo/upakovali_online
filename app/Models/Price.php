@@ -6,6 +6,35 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * App\Models\Price
+ *
+ * @property int $id
+ * @property string $name
+ * @property int $parthner_id
+ * @property string $start
+ * @property string $end
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Parthner $parthner
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Service[] $services
+ * @property-read int|null $services_count
+ * @method static \Database\Factories\PriceFactory factory(...$parameters)
+ * @method static Builder|Price newModelQuery()
+ * @method static Builder|Price newQuery()
+ * @method static Builder|Price query()
+ * @method static Builder|Price whereCreatedAt($value)
+ * @method static Builder|Price whereEnd($value)
+ * @method static Builder|Price whereId($value)
+ * @method static Builder|Price whereName($value)
+ * @method static Builder|Price whereParthnerId($value)
+ * @method static Builder|Price whereStart($value)
+ * @method static Builder|Price whereUpdatedAt($value)
+ * @method static Builder|Price withFilters(\Illuminate\Http\Request $request)
+ * @method static \Illuminate\Database\Eloquent\Builder|BaseModel withOrder(\Illuminate\Http\Request $request)
+ * @method static \Illuminate\Database\Eloquent\Builder|BaseModel withPaginate(\Illuminate\Http\Request $request)
+ * @mixin \Eloquent
+ */
 class Price extends BaseModel
 {
     public function __construct(array $attributes = [])

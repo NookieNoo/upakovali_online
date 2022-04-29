@@ -8,6 +8,50 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
+/**
+ * App\Models\Activity
+ *
+ * @property int $id
+ * @property string|null $log_name
+ * @property string $description
+ * @property string|null $subject_type
+ * @property int|null $subject_id
+ * @property string|null $causer_type
+ * @property int|null $causer_id
+ * @property \Illuminate\Support\Collection|null $properties
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string|null $event
+ * @property string|null $batch_uuid
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $causer
+ * @property-read \Illuminate\Support\Collection $changes
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $subject
+ * @method static Builder|Activity causedBy(\Illuminate\Database\Eloquent\Model $causer)
+ * @method static Builder|Activity forBatch(string $batchUuid)
+ * @method static Builder|Activity forEvent(string $event)
+ * @method static Builder|Activity forSubject(\Illuminate\Database\Eloquent\Model $subject)
+ * @method static Builder|Activity hasBatch()
+ * @method static Builder|Activity inLog(...$logNames)
+ * @method static Builder|Activity newModelQuery()
+ * @method static Builder|Activity newQuery()
+ * @method static Builder|Activity query()
+ * @method static Builder|Activity whereBatchUuid($value)
+ * @method static Builder|Activity whereCauserId($value)
+ * @method static Builder|Activity whereCauserType($value)
+ * @method static Builder|Activity whereCreatedAt($value)
+ * @method static Builder|Activity whereDescription($value)
+ * @method static Builder|Activity whereEvent($value)
+ * @method static Builder|Activity whereId($value)
+ * @method static Builder|Activity whereLogName($value)
+ * @method static Builder|Activity whereProperties($value)
+ * @method static Builder|Activity whereSubjectId($value)
+ * @method static Builder|Activity whereSubjectType($value)
+ * @method static Builder|Activity whereUpdatedAt($value)
+ * @method static Builder|Activity withFilters(\Illuminate\Http\Request $request)
+ * @method static Builder|Activity withOrder(\Illuminate\Http\Request $request)
+ * @method static Builder|Activity withPaginate(\Illuminate\Http\Request $request)
+ * @mixin \Eloquent
+ */
 class Activity extends \Spatie\Activitylog\Models\Activity
 {
     use HasFactory;

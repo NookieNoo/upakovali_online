@@ -2,6 +2,38 @@
 
 namespace App\Models;
 
+/**
+ * App\Models\Gift
+ *
+ * @property int $id
+ * @property int $order_id
+ * @property int $service_id
+ * @property string $weight
+ * @property int $length
+ * @property int $width
+ * @property int $height
+ * @property int $addressee_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Addressee $addressee
+ * @property-read \App\Models\Service $service
+ * @method static \Illuminate\Database\Eloquent\Builder|Gift newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Gift newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Gift query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Gift whereAddresseeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Gift whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Gift whereHeight($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Gift whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Gift whereLength($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Gift whereOrderId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Gift whereServiceId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Gift whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Gift whereWeight($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Gift whereWidth($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|BaseModel withOrder(\Illuminate\Http\Request $request)
+ * @method static \Illuminate\Database\Eloquent\Builder|BaseModel withPaginate(\Illuminate\Http\Request $request)
+ * @mixin \Eloquent
+ */
 class Gift extends BaseModel
 {
     public function __construct(array $attributes = [])

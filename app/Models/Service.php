@@ -6,6 +6,34 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * App\Models\Service
+ *
+ * @property int $id
+ * @property int $price_id
+ * @property string $name
+ * @property int $product_id
+ * @property float $sum
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Price $price
+ * @property-read \App\Models\Product $product
+ * @method static \Database\Factories\ServiceFactory factory(...$parameters)
+ * @method static Builder|Service newModelQuery()
+ * @method static Builder|Service newQuery()
+ * @method static Builder|Service query()
+ * @method static Builder|Service whereCreatedAt($value)
+ * @method static Builder|Service whereId($value)
+ * @method static Builder|Service whereName($value)
+ * @method static Builder|Service wherePriceId($value)
+ * @method static Builder|Service whereProductId($value)
+ * @method static Builder|Service whereSum($value)
+ * @method static Builder|Service whereUpdatedAt($value)
+ * @method static Builder|Service withFilters(\Illuminate\Http\Request $request)
+ * @method static \Illuminate\Database\Eloquent\Builder|BaseModel withOrder(\Illuminate\Http\Request $request)
+ * @method static \Illuminate\Database\Eloquent\Builder|BaseModel withPaginate(\Illuminate\Http\Request $request)
+ * @mixin \Eloquent
+ */
 class Service extends BaseModel
 {
     protected $casts = [

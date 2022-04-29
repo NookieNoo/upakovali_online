@@ -2,6 +2,28 @@
 
 namespace App\Models;
 
+/**
+ * App\Models\AdditionalProduct
+ *
+ * @property int $id
+ * @property string $name
+ * @property float $price
+ * @property int $order_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|AdditionalProduct newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|AdditionalProduct newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|AdditionalProduct query()
+ * @method static \Illuminate\Database\Eloquent\Builder|AdditionalProduct whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AdditionalProduct whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AdditionalProduct whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AdditionalProduct whereOrderId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AdditionalProduct wherePrice($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AdditionalProduct whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|BaseModel withOrder(\Illuminate\Http\Request $request)
+ * @method static \Illuminate\Database\Eloquent\Builder|BaseModel withPaginate(\Illuminate\Http\Request $request)
+ * @mixin \Eloquent
+ */
 class AdditionalProduct extends BaseModel
 {
     protected $casts = [

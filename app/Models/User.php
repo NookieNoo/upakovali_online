@@ -16,6 +16,56 @@ use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Models\Activity;
 use Spatie\Activitylog\Traits\LogsActivity;
 
+/**
+ * App\Models\User
+ *
+ * @property int $id
+ * @property string $full_name
+ * @property string $email
+ * @property string|null $phone
+ * @property \Illuminate\Support\Carbon|null $email_verified_at
+ * @property string $password
+ * @property int|null $role_id
+ * @property bool $is_active
+ * @property string|null $remember_token
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|Activity[] $activities
+ * @property-read int|null $activities_count
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @property-read int|null $notifications_count
+ * @property-read \App\Models\OrderHistory|null $orderHistory
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Order[] $ordersLikeCourierIssuer
+ * @property-read int|null $orders_like_courier_issuer_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Order[] $ordersLikeCourierReceiver
+ * @property-read int|null $orders_like_courier_receiver_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Order[] $ordersLikeMaster
+ * @property-read int|null $orders_like_master_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Parthner[] $parthners
+ * @property-read int|null $parthners_count
+ * @property-read \App\Models\Role|null $role
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Sanctum\PersonalAccessToken[] $tokens
+ * @property-read int|null $tokens_count
+ * @method static \Database\Factories\UserFactory factory(...$parameters)
+ * @method static Builder|User newModelQuery()
+ * @method static Builder|User newQuery()
+ * @method static Builder|User query()
+ * @method static Builder|User whereCreatedAt($value)
+ * @method static Builder|User whereEmail($value)
+ * @method static Builder|User whereEmailVerifiedAt($value)
+ * @method static Builder|User whereFullName($value)
+ * @method static Builder|User whereId($value)
+ * @method static Builder|User whereIsActive($value)
+ * @method static Builder|User wherePassword($value)
+ * @method static Builder|User wherePhone($value)
+ * @method static Builder|User whereRememberToken($value)
+ * @method static Builder|User whereRoleId($value)
+ * @method static Builder|User whereUpdatedAt($value)
+ * @method static Builder|User withFilters(\Illuminate\Http\Request $request)
+ * @method static Builder|User withOrder(\Illuminate\Http\Request $request)
+ * @method static Builder|User withPaginate(\Illuminate\Http\Request $request)
+ * @mixin \Eloquent
+ */
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, LogsActivity;
