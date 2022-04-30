@@ -33,10 +33,15 @@ services:
             - "9000:9000"
         volumes:
             - .:/var/www/html
+            - ./infrastructure/php/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
         networks:
             - laravel
         depends_on:
             - postgres
+        environment:
+            PHP_IDE_CONFIG: "serverName=Docker"
+        extra_hosts:
+            - host.docker.internal:host-gateway
 
     postgres:
         image: postgres:13.4
