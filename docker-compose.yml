@@ -66,3 +66,12 @@ services:
         working_dir: /var/www/html
         networks:
             - laravel
+
+    mailhog:
+        # do not use in production!
+        image: mailhog/mailhog:latest
+        environment:
+            - MH_STORAGE=maildir
+        ports:
+            - "29025:8025"
+
