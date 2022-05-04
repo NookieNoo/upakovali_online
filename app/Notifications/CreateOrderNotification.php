@@ -2,6 +2,8 @@
 
 namespace App\Notifications;
 
+use App\Mail\ExampleMail;
+use App\Models\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -11,14 +13,16 @@ class CreateOrderNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
+    private Order $order;
+
     /**
      * Create a new notification instance.
      *
      * @return void
-     */ 
-    public function __construct()
+     */
+    public function __construct(Order $order)
     {
-        //
+        $this->order = $order;
     }
 
     /**
@@ -41,9 +45,8 @@ class CreateOrderNotification extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+            ->subject('Заказ успешно создан')
+            ->view('mails.order.created', ['order' => $this->order]);
     }
 
     /**

@@ -74,7 +74,6 @@ services:
             - MH_STORAGE=maildir
         ports:
             - "29025:8025"
-            - "29026:1025"
         networks:
             - laravel
 

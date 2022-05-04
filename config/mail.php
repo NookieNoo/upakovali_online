@@ -116,5 +116,6 @@ return [
     ],
 
     'reset_link_url' => env('FRONTEND_DOMAIN'),
+    'send_reports_to' => env('SEND_REPORTS_TO'),
 
 ];
