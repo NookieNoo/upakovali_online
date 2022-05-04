@@ -27,8 +27,8 @@ services:
 
     php:
         build:
-            context: ./infrastructure/php
-            dockerfile: Dockerfile
+            context: .
+            dockerfile: infrastructure/Dockerfile
         ports:
             - "9000:9000"
         volumes:
@@ -74,4 +74,15 @@ services:
             - MH_STORAGE=maildir
         ports:
             - "29025:8025"
+            - "29026:1025"
 
+#    workers:
+#        build:
+#            context: .
+#            dockerfile: infrastructure/Dockerfile
+#            # target: infrastructure/workers
+#            target: workers
+#        volumes:
+#            - .:/var/www/html
+#        depends_on:
+#            - postgres
