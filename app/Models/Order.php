@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Facades\DB;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
@@ -318,5 +319,22 @@ class Order extends BaseModel
                 }
                 return $logName;
             });
+    }
+
+    /**
+     * Получить содержимое почтового уведомления.
+     *
+     * @param  mixed  $notifiable
+     * @return \Illuminate\Notifications\Messages\MailMessage
+     */
+    public function toMail($notifiable)
+    {
+        $url = url('/invoice/'.$this->invoice->id);
+
+        return (new MailMessage)
+            ->greeting('Hello!')
+            ->line('One of your invoices has been paid!')
+            ->action('View Invoice', $url)
+            ->line('Thank you for using our application!');
     }
 }

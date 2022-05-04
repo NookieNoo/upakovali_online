@@ -28,7 +28,7 @@ services:
     php:
         build:
             context: .
-            dockerfile: infrastructure/Dockerfile
+            dockerfile: infrastructure/php/Dockerfile
         ports:
             - "9000:9000"
         volumes:
@@ -75,14 +75,19 @@ services:
         ports:
             - "29025:8025"
             - "29026:1025"
+        networks:
+            - laravel
 
-#    workers:
-#        build:
-#            context: .
-#            dockerfile: infrastructure/Dockerfile
-#            # target: infrastructure/workers
-#            target: workers
-#        volumes:
-#            - .:/var/www/html
-#        depends_on:
-#            - postgres
+    workers:
+        build:
+            context: .
+         #    dockerfile: infrastructure/Dockerfile
+            # target: infrastructure/workers
+            dockerfile: infrastructure/workers/Dockerfile
+         #    target: workers
+        volumes:
+            - .:/var/www/html
+        networks:
+            - laravel
+        depends_on:
+            - postgres

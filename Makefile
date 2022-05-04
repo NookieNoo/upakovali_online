@@ -11,6 +11,8 @@ export reset=`tput sgr0`
 PROJECT_NAME = upakovali_online
 PHP_CONTAINER_NAME = ${PROJECT_NAME}_php_1
 DB_CONTAINER_NAME = ${PROJECT_NAME}_postgres_1
+NGINX_CONTAINER_NAME = ${PROJECT_NAME}_nginx_1
+WORKERS_CONTAINER_NAME = ${PROJECT_NAME}_workers_1
 
 about:
 	@echo -e "${cyan}Привет!)${reset} Это мэйкфайл для удобной работы с командами ${cyan};)${reset}  \
@@ -41,31 +43,37 @@ rebuild:
 
 migrate:
 	@echo  "Выполняем ${yellow}миграции${reset}..."
-	docker exec -it $(PHP_CONTAINER_NAME) bash -c "php artisan migrate"
+	docker exec -it $(PHP_CONTAINER_NAME) sh -c "php artisan migrate"
 
 migrate.fresh:
 	@echo  "Выполняем ${yellow}миграции${reset}..."
-	docker exec -it $(PHP_CONTAINER_NAME) bash -c "php artisan migrate:fresh --seed"
+	docker exec -it $(PHP_CONTAINER_NAME) sh -c "php artisan migrate:fresh --seed"
 
 cache.clear:
-	docker exec -it $(PHP_CONTAINER_NAME) bash -c "php artisan cache:clear"
+	docker exec -it $(PHP_CONTAINER_NAME) sh -c "php artisan cache:clear"
 
 docs:
 	@echo  "Обновленяем файл манифеста документации для ${yellow}swagger${reset}..."
-	docker exec -it $(PHP_CONTAINER_NAME) bash -c "php artisan l5-swagger:generate"
+	docker exec -it $(PHP_CONTAINER_NAME) sh -c "php artisan l5-swagger:generate"
 
 app.show_local_urls:
 	@echo  "Локальное приложение ${cyan}upakovali online${reset}: http://localhost:29080"
 	@echo  "Локальный ${cyan}Swagger${reset}: http://localhost:29123"
 
 db.shell:
-	docker exec -it $(DB_CONTAINER_NAME) bash
+	docker exec -it $(DB_CONTAINER_NAME) sh
 
 db.query:
-	docker exec -it $(DB_CONTAINER_NAME) bash -c "psql --user upakovali_online_user --password upakovali_online_db"
+	docker exec -it $(DB_CONTAINER_NAME) sh -c "psql --user upakovali_online_user --password upakovali_online_db"
 
 php.shell:
-	docker exec -it $(PHP_CONTAINER_NAME) bash
+	docker exec -it $(PHP_CONTAINER_NAME) /bin/sh
+
+workers.shell:
+	docker exec -it $(WORKERS_CONTAINER_NAME) /bin/sh
+
+nginx.shell:
+	docker exec -it $(NGINX_CONTAINER_NAME) /bin/sh
 
 php.tinker:
 	docker exec -it $(PHP_CONTAINER_NAME) php artisan tinker

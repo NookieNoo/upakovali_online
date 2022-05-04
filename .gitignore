@@ -15,3 +15,5 @@ yarn-error.log
 /.vscode
 !/frontend/.env
 /public/order_images/*
+supervisord.log
+supervisord.pid
