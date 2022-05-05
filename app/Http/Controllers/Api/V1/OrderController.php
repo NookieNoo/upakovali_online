@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Helpers\Geocoder;
+use App\Actions\Order\OrderCreateAction;
+use App\Events\Order\OrderStatusUpdated;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Order\OrderGetRequest;
 use App\Http\Requests\Order\OrderStoreRequest;
 use App\Http\Requests\Order\OrderUpdateRequest;
+use App\Http\Requests\Order\OrderUpdateStatusRequest;
 use App\Http\Resources\OrderShowOneResource;
 use App\Models\AdditionalProduct;
 use App\Models\Client;
@@ -48,102 +50,13 @@ class OrderController extends Controller
      * @param  OrderStoreRequest  $request
      * @return JsonResponse
      */
-    public function store(OrderStoreRequest $request)
+    public function store(OrderStoreRequest $request, OrderCreateAction $orderCreateAction)
     {
         if ($request->user()->cannot('create', Order::class)) {
             return $this->sendError('Доступ закрыт', Response::HTTP_FORBIDDEN);
         }
         try {
-            $order = DB::transaction(function () use ($request) {
-                $validatedData = $request->validated();
-                $validatedData['order_status_id'] = OrderStatusEnum::CREATED;
-
-                if ($validatedData['is_new_client']) {
-                    $client = Client::where(['email' => $validatedData['client']['email'], 'phone' => $validatedData['client']['phone']])->first();
-                    if (!$client) {
-                        $client = new Client($validatedData['client']);
-                        $client->save();
-                    }
-                } else {
-                    $client = new Client();
-                    $client->id = $validatedData['client_id'];
-                }
-
-                $validatedData['client_id'] = $client->id;
-
-                if ($validatedData['is_receiver_same']) {
-                    $receiver = new Client();
-                    $receiver->id = $client->id;
-                } else {
-                    if ($validatedData['is_new_receiver']) {
-                        $receiver = Client::where(['email' => $validatedData['receiver']['email'], 'phone' => $validatedData['receiver']['phone']])->first();
-                        if (!$receiver) {
-                            $receiver = new Client($validatedData['receiver']);
-                            $receiver->save();
-                        }
-                    } else {
-                        $receiver = new Client();
-                        $receiver->id = $validatedData['receiver_id'];
-                    }
-                }
-                $validatedData['receiver_id'] = $receiver->id;
-
-                $geocoder = new Geocoder();
-                if (!empty($validatedData['delivery_address'])) {
-                    $coords = $geocoder->getCoordsByAddress($validatedData['delivery_address']);
-                    $deliveryPoint = new DeliveryPoint([
-                        'address' =>  $validatedData['delivery_address'],
-                        'latitude' => $coords['latitude'],
-                        'longitude' => $coords['longitude'],
-                    ]);
-                    $deliveryPoint->save();
-
-                    $validatedData['delivery_address_point_id'] = $deliveryPoint->id;
-                }
-                if (!empty($validatedData['pick_up_address'])) {
-                    $coords = $geocoder->getCoordsByAddress($validatedData['pick_up_address']);
-                    $deliveryPoint = new DeliveryPoint([
-                        'address' =>  $validatedData['pick_up_address'],
-                        'latitude' => $coords['latitude'],
-                        'longitude' => $coords['longitude'],
-                    ]);
-                    $deliveryPoint->save();
-
-                    $validatedData['pick_up_address_point_id'] = $deliveryPoint->id;
-                }
-
-                $order = Order::create($validatedData);
-
-                foreach($validatedData['gifts'] as $giftData) {
-                    $gift = Gift::create(array_merge($giftData, ['order_id' => $order->id]));
-                }
-
-                if (!empty($validatedData['additional_products'])) {
-                    foreach($validatedData['additional_products'] as $productData) {
-                        $product = AdditionalProduct::create(array_merge($productData, ['order_id' => $order->id]));
-                    }
-                }
-
-                $orderHistory = OrderHistory::create([
-                    'order_id' => $order->id,
-                    'status_id' => OrderStatusEnum::CREATED,
-                    'causer_id' => $request->user()->id,
-                    'causer_type' => get_class($request->user()),
-                    'date' => Carbon::now(),
-                ]);
-
-                foreach($validatedData['order_photos'] as $photo) {
-                    $base64str = preg_replace('/^data:image\/\w+;base64,/', '', $photo['src']);
-                    Storage::disk('order_images')->put($order->id . '/' . $photo['title'], base64_decode($base64str));
-
-                    $orderPhoto = OrderPhoto::create([
-                        'order_id' => $order->id,
-                        'path' => '/' . basename(Storage::disk('order_images')->getAdapter()->getPathPrefix()) . '/' . $order->id . '/' . $photo['title'],
-                    ]);
-                }
-
-                return $order;
-            });
+            $order = $orderCreateAction->handle($request->validated(), $request->user());
         } catch (\Exception $e) {
             return $this->sendError('Не удалось создать заказ', Response::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
         }
@@ -245,11 +158,11 @@ class OrderController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  OrderUpdateStatusRequest  $request
      * @param  int  $id
      * @return JsonResponse
      */
-    public function updateStatus(Request $request, $id)
+    public function updateStatus(OrderUpdateStatusRequest $request, $id)
     {
         try {
             $order = Order::findOrFail($id);
@@ -278,6 +191,8 @@ class OrderController extends Controller
             return $this->sendError('Не удалось изменить статус заказа', Response::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
         }
 
+        //TODO убрать dispatch bз контроллера
+        $this->dispatcher->dispatch(new OrderStatusUpdated($order));
         return $this->send(Response::HTTP_OK, 'Статус обновлен');
     }
 
