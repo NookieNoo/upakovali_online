@@ -13,7 +13,6 @@ use App\Models\Order;
 use App\Models\OrderHistory;
 use App\Models\OrderPhoto;
 use App\Models\User;
-use App\Notifications\CreateOrderNotification;
 use App\Services\ImageUploader;
 use Carbon\Carbon;
 use Illuminate\Contracts\Events\Dispatcher;

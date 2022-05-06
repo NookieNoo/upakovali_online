@@ -3,10 +3,7 @@
 namespace App\Listeners\Order;
 
 use App\Events\Order\OrderUpdated;
-use App\Notifications\CreateOrderNotification;
 use App\Notifications\Order\UpdateOrderNotification;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Notification;
 
 class OrderUpdatedListener

@@ -3,9 +3,7 @@
 namespace App\Listeners\Order;
 
 use App\Events\Order\OrderCreated;
-use App\Notifications\CreateOrderNotification;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
+use App\Notifications\Order\CreateOrderNotification;
 use Illuminate\Support\Facades\Notification;
 
 class OrderCreatedListener

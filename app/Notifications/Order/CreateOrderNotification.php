@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Notifications;
+namespace App\Notifications\Order;
 
-use App\Mail\ExampleMail;
 use App\Models\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use function config;
 
 class CreateOrderNotification extends Notification implements ShouldQueue
 {
