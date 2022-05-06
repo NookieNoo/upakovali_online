@@ -3,6 +3,7 @@
 namespace App\Actions\Order;
 
 use App\Events\Order\OrderUpdated;
+use App\Models\Activity;
 use App\Models\AdditionalProduct;
 use App\Models\Gift;
 use App\Models\Order;
@@ -14,6 +15,7 @@ use Carbon\Carbon;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Spatie\Activitylog\Facades\LogBatch;
 
 class OrderUpdateAction
 {
@@ -26,6 +28,7 @@ class OrderUpdateAction
 
     public function handle(Order $order, array $orderData, User $user)
     {
+        LogBatch::startBatch();
         $order = DB::transaction(function () use ($order, $orderData, $user) {
             $validatedData = $orderData;
 
@@ -70,8 +73,13 @@ class OrderUpdateAction
 
             return $order;
         });
+        $batchUuid = LogBatch::getUuid();
+        LogBatch::endBatch();
 
-        $this->dispatcher->dispatch(new OrderUpdated($order));
+//        $lastActivity = Activity::where(['subject_type' => get_class($order), 'subject_id' => $order->id])->latest()->first();
+//        $acts = $order->activities;
+
+        $this->dispatcher->dispatch(new OrderUpdated($order, $batchUuid));
 
         return $order;
     }

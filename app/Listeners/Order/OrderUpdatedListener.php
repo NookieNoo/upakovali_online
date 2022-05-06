@@ -27,6 +27,6 @@ class OrderUpdatedListener
     public function handle(OrderUpdated $event)
     {
         Notification::route('mail', config('mail.send_reports_to'))
-            ->notify(new UpdateOrderNotification($event->getOrder()));
+            ->notify(new UpdateOrderNotification($event->getOrder(), $event->getBatchUuid()));
     }
 }

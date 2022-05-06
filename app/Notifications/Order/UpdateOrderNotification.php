@@ -2,6 +2,7 @@
 
 namespace App\Notifications\Order;
 
+use App\Models\Activity;
 use App\Models\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -13,15 +14,17 @@ class UpdateOrderNotification extends Notification implements ShouldQueue
     use Queueable;
 
     private Order $order;
+    private string $batchUuid;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(Order $order)
+    public function __construct(Order $order,  string $batchUuid)
     {
         $this->order = $order;
+        $this->batchUuid = $batchUuid;
     }
 
     /**
@@ -44,11 +47,20 @@ class UpdateOrderNotification extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         $frontendDomain = config('main.frontend_domain');
+//        $batchActivities = Activity::forBatch('78ca1211-a7a9-433f-b82d-7e8a3ed7146f')->get();
+        $batchActivities = Activity::forBatch($this->batchUuid)->get();
+        $changedModels = $batchActivities->map(function ($item, $key) {
+            return [
+                'old' => $item->properties['old'],
+                'new' => $item->properties['attributes'],
+            ];
+        });
         return (new MailMessage)
             ->subject('Заказ успешно обновлен')
             ->view('mails.order.updated', [
                 'order' => $this->order,
-                'link' => "$frontendDomain/order/" . $this->order->id
+                'link' => "$frontendDomain/order/" . $this->order->id,
+                'changedModels' => $changedModels,
             ]);
     }
 

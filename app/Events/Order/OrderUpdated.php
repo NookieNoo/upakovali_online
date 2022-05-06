@@ -17,6 +17,7 @@ class OrderUpdated
 
     public function __construct(
         private Order $order,
+        private string $batchUuid,
     )
     {
     }
@@ -24,6 +25,11 @@ class OrderUpdated
     public function getOrder(): Order
     {
         return $this->order;
+    }
+
+    public function getBatchUuid(): string
+    {
+        return $this->batchUuid;
     }
 
     /**
