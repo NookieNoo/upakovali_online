@@ -44,6 +44,7 @@ return [
         'order_images' => [
             'driver' => 'local',
             'root'   => public_path() . '/order_images',
+            'url' => env('APP_URL') . '/order_images',
         ],
 
         's3' => [

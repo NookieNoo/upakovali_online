@@ -29,7 +29,7 @@ class OrderCreateAction
     {
     }
 
-    public function handle($orderData, User $user)
+    public function handle(array $orderData, User $user)
     {
         $order = DB::transaction(function () use ($orderData, $user) {
             $validatedData = $orderData;

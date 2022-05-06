@@ -4,8 +4,10 @@ namespace App\Providers;
 
 use App\Events\Order\OrderCreated;
 use App\Events\Order\OrderStatusUpdated;
+use App\Events\Order\OrderUpdated;
 use App\Listeners\Order\OrderCreatedListener;
 use App\Listeners\Order\OrderStatusUpdatedListener;
+use App\Listeners\Order\OrderUpdatedListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -24,6 +26,7 @@ class EventServiceProvider extends ServiceProvider
         ],
         OrderStatusUpdated::class => [OrderStatusUpdatedListener::class],
         OrderCreated::class => [OrderCreatedListener::class],
+        OrderUpdated::class => [OrderUpdatedListener::class],
     ];
 
     /**

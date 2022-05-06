@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Actions\Order\OrderCreateAction;
+use App\Actions\Order\OrderUpdateAction;
 use App\Events\Order\OrderStatusUpdated;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Order\OrderGetRequest;
@@ -10,22 +11,14 @@ use App\Http\Requests\Order\OrderStoreRequest;
 use App\Http\Requests\Order\OrderUpdateRequest;
 use App\Http\Requests\Order\OrderUpdateStatusRequest;
 use App\Http\Resources\OrderShowOneResource;
-use App\Models\AdditionalProduct;
-use App\Models\Client;
-use App\Models\DeliveryPoint;
-use App\Models\Gift;
 use App\Models\Order;
 use App\Models\OrderHistory;
-use App\Models\OrderPhoto;
-use App\Models\OrderStatus;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
-use App\Enums\OrderStatus as OrderStatusEnum;
-use Illuminate\Support\Facades\Storage;
 
 class OrderController extends Controller
 {
@@ -95,7 +88,7 @@ class OrderController extends Controller
      * @param  int  $id
      * @return JsonResponse
      */
-    public function update(OrderUpdateRequest $request, $id)
+    public function update(OrderUpdateRequest $request, $id, OrderUpdateAction $orderUpdateAction)
     {
         try {
             $order = Order::findOrFail($id);
@@ -107,47 +100,7 @@ class OrderController extends Controller
         }
 
         try {
-            $order = DB::transaction(function () use ($request, $order) {
-                $validatedData = $request->validated();
-
-                if ($order->order_status_id !== $validatedData['order_status_id']) {
-                    $orderHistory = OrderHistory::create([
-                        'order_id' => $order->id,
-                        'status_id' => $validatedData['order_status_id'],
-                        'causer_id' => $request->user()->id,
-                        'causer_type' => get_class($request->user()),
-                        'date' => Carbon::now(),
-                    ]);
-                }
-
-                $order->update($validatedData);
-
-                $order->gifts()->delete();
-                foreach($validatedData['gifts'] as $giftData) {
-                    $gift = Gift::create(array_merge($giftData, ['order_id' => $order->id]));
-                }
-
-                $order->additionalProducts()->delete();
-                foreach($validatedData['additional_products'] as $productData) {
-                    $product = AdditionalProduct::create(array_merge($productData, ['order_id' => $order->id]));
-                }
-
-                if (empty($validatedData['order_photos'])) $order->orderPhotos()->delete();
-
-                foreach($validatedData['order_photos'] as $photo) {
-                    if (!empty($photo['id'])) continue;
-
-                    $base64str = preg_replace('/^data:image\/\w+;base64,/', '', $photo['src']);
-                    Storage::disk('order_images')->put($order->id . '/' . $photo['title'], base64_decode($base64str));
-
-                    $orderPhoto = OrderPhoto::create([
-                        'order_id' => $order->id,
-                        'path' => '/' . basename(Storage::disk('order_images')->getAdapter()->getPathPrefix()) . '/' . $order->id . '/' . $photo['title'],
-                    ]);
-                }
-
-                return $order;
-            });
+            $order = $orderUpdateAction->handle($order, $request->validated(), $request->user());
         } catch (\Exception $e) {
             return $this->sendError('Не удалось обновить заказ', Response::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
         }
