@@ -2,7 +2,6 @@
 
 namespace App\Actions\Order;
 
-// use App\DTO\Order\OrderCreateDto;
 use App\Enums\OrderStatus as OrderStatusEnum;
 use App\Events\Order\OrderCreated;
 use App\Helpers\Geocoder;
@@ -29,7 +28,7 @@ class OrderCreateAction
     )
     {
     }
-//    public function handle(OrderCreateDto $orderDto)
+
     public function handle($orderData, User $user)
     {
         $order = DB::transaction(function () use ($orderData, $user) {
