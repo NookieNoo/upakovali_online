@@ -8,6 +8,8 @@
 </head>
 <body>
 <h1>Успешно создан заказ!</h1>
-<p>Заказ №{{ $order->id }}</p>
+<a href="{{$link}}">
+    <p>Заказ №{{ $order->id }}</p>
+</a>
 </body>
 </html>

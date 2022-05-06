@@ -44,9 +44,13 @@ class CreateOrderNotification extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
+        $frontendDomain = config('main.frontend_domain');
         return (new MailMessage)
             ->subject('Заказ успешно создан')
-            ->view('mails.order.created', ['order' => $this->order]);
+            ->view('mails.order.created', [
+                'order' => $this->order,
+                'link' => "$frontendDomain/order/" . $this->order->id
+            ]);
     }
 
     /**
