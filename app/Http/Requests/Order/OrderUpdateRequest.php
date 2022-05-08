@@ -45,6 +45,7 @@ class OrderUpdateRequest extends JsonRequest
             'master_id' => 'nullable|integer|min:1|exists:users,id,role_id,3',
             'receiver_id' => 'required|integer|min:1|exists:clients,id',
             'gifts' => 'array',
+            'gifts.*.id' => 'nullable|integer|min:1|exists:gifts,id',
             'gifts.*.weight' => 'required|numeric|min:0.1',
             'gifts.*.length' => 'required|int|min:1',
             'gifts.*.width' => 'required|int|min:1',

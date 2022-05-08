@@ -2,6 +2,10 @@
 
 namespace App\Models;
 
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\Contracts\Activity;
+
 /**
  * App\Models\Gift
  *
@@ -36,6 +40,8 @@ namespace App\Models;
  */
 class Gift extends BaseModel
 {
+    use LogsActivity;
+
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
@@ -51,5 +57,20 @@ class Gift extends BaseModel
     public function service()
     {
         return $this->belongsTo(Service::class);
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logUnguarded()
+            ->logOnlyDirty()
+            ->setDescriptionForEvent(function ($eventName) {
+                return match ($eventName) {
+                    "updated" => "Редактирование подарка №{$this->id}",
+                    "created" => "Создание подарка №{$this->id}",
+                    "deleted" => "Удаление подарка №{$this->id}",
+                    default => "Другое действие с подарком №{$this->id}",
+                };
+            });
     }
 }

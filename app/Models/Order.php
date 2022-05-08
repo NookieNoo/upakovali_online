@@ -304,37 +304,12 @@ class Order extends BaseModel
             ->logUnguarded()
             ->logOnlyDirty()
             ->setDescriptionForEvent(function ($eventName) {
-                switch ($eventName) {
-                    case "updated":
-                        $logName = "Редактирование заказа №{$this->id}";
-                        break;
-                    case "created":
-                        $logName = "Создание заказа №{$this->id}";
-                        break;
-                    case "deleted":
-                        $logName = "Удаление заказа №{$this->id}";
-                        break;
-                    default:
-                        $logName = "Другое действие с заказом №{$this->id}";
-                }
-                return $logName;
+                return match ($eventName) {
+                    "updated" => "Редактирование заказа №{$this->id}",
+                    "created" => "Создание заказа №{$this->id}",
+                    "deleted" => "Удаление заказа №{$this->id}",
+                    default => "Другое действие с заказом №{$this->id}",
+                };
             });
-    }
-
-    /**
-     * Получить содержимое почтового уведомления.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
-     */
-    public function toMail($notifiable)
-    {
-        $url = url('/invoice/'.$this->invoice->id);
-
-        return (new MailMessage)
-            ->greeting('Hello!')
-            ->line('One of your invoices has been paid!')
-            ->action('View Invoice', $url)
-            ->line('Thank you for using our application!');
     }
 }

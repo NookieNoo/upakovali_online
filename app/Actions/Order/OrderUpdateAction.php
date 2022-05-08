@@ -13,6 +13,7 @@ use App\Models\User;
 use App\Services\ImageUploader;
 use Carbon\Carbon;
 use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Activitylog\Facades\LogBatch;
@@ -44,10 +45,21 @@ class OrderUpdateAction
 
             $order->update($validatedData);
 
-            $order->gifts()->delete(); //FIXME update instead of create
+
+            $order->load('gifts');
+            $giftIds = Arr::whereNotNull(Arr::pluck($validatedData['gifts'], 'id'));
+            $oldIds = $order->gifts->pluck('id')->toArray();
+            $idsToDelete = array_diff($oldIds, $giftIds);
+
+            Gift::destroy($idsToDelete);
             foreach ($validatedData['gifts'] as $giftData) {
-                $gift = Gift::create(array_merge($giftData, ['order_id' => $order->id]));
+                if (isset($giftData['id'])) {
+                    $order->gifts->find($giftData['id'])->fill($giftData)->save();
+                } else {
+                    $order->gifts()->create($giftData);
+                }
             }
+
 
             if (!empty($validatedData['additional_products'])) {
                 $order->additionalProducts()->delete();
