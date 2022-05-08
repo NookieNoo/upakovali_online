@@ -3,6 +3,8 @@
 namespace App\Notifications\Order;
 
 use App\Models\Activity;
+use App\Models\AdditionalProduct;
+use App\Models\Gift;
 use App\Models\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -49,18 +51,17 @@ class UpdateOrderNotification extends Notification implements ShouldQueue
         $frontendDomain = config('main.frontend_domain');
 //        $batchActivities = Activity::forBatch('78ca1211-a7a9-433f-b82d-7e8a3ed7146f')->get();
         $batchActivities = Activity::forBatch($this->batchUuid)->get();
-        $changedModels = $batchActivities->map(function ($item, $key) {
-            return [
-                'old' => $item->properties['old'],
-                'new' => $item->properties['attributes'],
-            ];
-        });
+        $orderChanges = $batchActivities->filter(fn($item) => $item->subject_type === Order::class);
+        $giftChanges = $batchActivities->filter(fn($item) => $item->subject_type === Gift::class);
+        $additionalProductsChanges = $batchActivities->filter(fn($item) => $item->subject_type === AdditionalProduct::class);
         return (new MailMessage)
             ->subject('Заказ успешно обновлен')
             ->view('mails.order.updated', [
                 'order' => $this->order,
                 'link' => "$frontendDomain/order/" . $this->order->id,
-                'changedModels' => $changedModels,
+                'orderChanges' => $orderChanges,
+                'giftChanges' => $giftChanges,
+                'additionalProductsChanges' => $additionalProductsChanges,
             ]);
     }
 

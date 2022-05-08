@@ -12,21 +12,71 @@
     <p>Заказ №{{ $order->id }}</p>
 </a>
 <p>Затронутые поля:</p>
-<table>
-    <tr>
-        <th>Название поля</th>
-        <th>Было</th>
-        <th>Стало</th>
-    </tr>
-</table>
-@foreach($changedModels as $changedModel)
-    @foreach($changedModel['new'] as $key => $value)
+@if($orderChanges->isNotEmpty())
+    <table>
         <tr>
-            <td>{{$key}}</td>
-            <td>{{$changedModel['old'][$key]}}</td>
-            <td>{{$value}}</td>
+            <th>Название поля</th>
+            <th>Было</th>
+            <th>Стало</th>
         </tr>
+        @foreach($orderChanges[0]->properties['attributes'] as $key => $value)
+            <tr>
+                <td>{{$key}}</td>
+                <td>{{$orderChanges[0]->properties['old'][$key]}}</td>
+                <td>{{$value}}</td>
+            </tr>
+        @endforeach
+    </table>
+@else
+    <p>Нет изменений по заказу</p>
+@endif
+
+Подарки:
+@if($giftChanges->isNotEmpty())
+    @foreach($giftChanges as $giftChange)
+        <p>{{$giftChange->description}}</p>
+        @if($giftChange->event === 'deleted')
+            @continue
+        @endif
+        <table>
+            <tr>
+                <th>Название поля</th>
+                <th>Было</th>
+                <th>Стало</th>
+            </tr>
+            @if($giftChange->event === 'created')
+                @foreach($giftChange->properties['attributes'] as $key => $value)
+                    <tr>
+                        <td>{{$key}}</td>
+                        <td>(Пусто)</td>
+                        <td>{{$value}}</td>
+                    </tr>
+                @endforeach
+            @elseif($giftChange->event === 'updated')
+                @foreach($giftChange->properties['attributes'] as $key => $value)
+                    <tr>
+                        <td>{{$key}}</td>
+                        <td>{{$giftChange->properties['old'][$key]}}</td>
+                        <td>{{$value}}</td>
+                    </tr>
+                @endforeach
+            @endif
+        </table>
     @endforeach
-@endforeach
+@else
+    <p>Нет изменений по подаркам</p>
+@endif
+
+{{--<table border="1">--}}
+{{--    @if($additionalProductsChanges->isNotEmpty())--}}
+{{--        @foreach($additionalProductsChanges['attributes'] as $key => $value)--}}
+{{--            <tr>--}}
+{{--                <td>{{$key}}</td>--}}
+{{--                <td>{{$additionalProductsChanges[$loop->index]['old'][$key]}}</td>--}}
+{{--                <td>{{$value}}</td>--}}
+{{--            </tr>--}}
+{{--        @endforeach--}}
+{{--    @endif--}}
+{{--</table>--}}
 </body>
 </html>
