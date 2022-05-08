@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
+
 /**
  * App\Models\AdditionalProduct
  *
@@ -26,6 +29,8 @@ namespace App\Models;
  */
 class AdditionalProduct extends BaseModel
 {
+    use LogsActivity;
+
     protected $casts = [
         'price' => 'float',
     ];
@@ -35,5 +40,20 @@ class AdditionalProduct extends BaseModel
         parent::__construct($attributes);
         $additionalHidden = ['order_id'];
         $this->hidden = array_merge($this->hidden, $additionalHidden);
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logUnguarded()
+            ->logOnlyDirty()
+            ->setDescriptionForEvent(function ($eventName) {
+                return match ($eventName) {
+                    "updated" => "Редактирование доп.товара №{$this->id}",
+                    "created" => "Создание доп.товара №{$this->id}",
+                    "deleted" => "Удаление доп.товара №{$this->id}",
+                    default => "Другое действие с доп.товаром №{$this->id}",
+                };
+            });
     }
 }

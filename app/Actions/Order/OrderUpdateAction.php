@@ -61,15 +61,24 @@ class OrderUpdateAction
             }
 
 
+            $order->load('additionalProducts');
+            $addProductsIds = Arr::whereNotNull(Arr::pluck($validatedData['additional_products'] ?? [], 'id'));
+            $oldProductsIds = $order->additionalProducts->pluck('id')->toArray();
+            $idsProductsToDelete = array_diff($oldProductsIds, $addProductsIds);
+
+            AdditionalProduct::destroy($idsProductsToDelete);
             if (!empty($validatedData['additional_products'])) {
-                $order->additionalProducts()->delete();
-                foreach ($validatedData['additional_products'] as $productData) {
-                    $product = AdditionalProduct::create(array_merge($productData, ['order_id' => $order->id]));
+                foreach ($validatedData['additional_products'] as $additionalProductData) {
+                    if (isset($additionalProductData['id'])) {
+                        $order->additionalProducts->find($additionalProductData['id'])->fill($additionalProductData)->save();
+                    } else {
+                        $order->additionalProducts()->create($additionalProductData);
+                    }
                 }
             }
 
-            if (empty($validatedData['order_photos'])) $order->orderPhotos()->delete();
 
+            if (empty($validatedData['order_photos'])) $order->orderPhotos()->delete();
             foreach ($validatedData['order_photos'] as $photo) {
                 if (!empty($photo['id'])) continue;
                 $base64str = preg_replace('/^data:image\/\w+;base64,/', '', $photo['src']);
@@ -88,11 +97,7 @@ class OrderUpdateAction
         $batchUuid = LogBatch::getUuid();
         LogBatch::endBatch();
 
-//        $lastActivity = Activity::where(['subject_type' => get_class($order), 'subject_id' => $order->id])->latest()->first();
-//        $acts = $order->activities;
-
         $this->dispatcher->dispatch(new OrderUpdated($order, $batchUuid));
-
         return $order;
     }
 

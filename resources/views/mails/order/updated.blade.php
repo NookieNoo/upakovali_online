@@ -31,7 +31,8 @@
     <p>Нет изменений по заказу</p>
 @endif
 
-Подарки:
+<br/>
+<b>Подарки:</b>
 @if($giftChanges->isNotEmpty())
     @foreach($giftChanges as $giftChange)
         <p>{{$giftChange->description}}</p>
@@ -67,16 +68,41 @@
     <p>Нет изменений по подаркам</p>
 @endif
 
-{{--<table border="1">--}}
-{{--    @if($additionalProductsChanges->isNotEmpty())--}}
-{{--        @foreach($additionalProductsChanges['attributes'] as $key => $value)--}}
-{{--            <tr>--}}
-{{--                <td>{{$key}}</td>--}}
-{{--                <td>{{$additionalProductsChanges[$loop->index]['old'][$key]}}</td>--}}
-{{--                <td>{{$value}}</td>--}}
-{{--            </tr>--}}
-{{--        @endforeach--}}
-{{--    @endif--}}
-{{--</table>--}}
+<br />
+<b>Доп. товары:</b>
+@if($additionalProductsChanges->isNotEmpty())
+    @foreach($additionalProductsChanges as $additionalProductChange)
+        <p>{{$additionalProductChange->description}}</p>
+        @if($additionalProductChange->event === 'deleted')
+            @continue
+        @endif
+        <table>
+            <tr>
+                <th>Название поля</th>
+                <th>Было</th>
+                <th>Стало</th>
+            </tr>
+            @if($additionalProductChange->event === 'created')
+                @foreach($additionalProductChange->properties['attributes'] as $key => $value)
+                    <tr>
+                        <td>{{$key}}</td>
+                        <td>(Пусто)</td>
+                        <td>{{$value}}</td>
+                    </tr>
+                @endforeach
+            @elseif($additionalProductChange->event === 'updated')
+                @foreach($additionalProductChange->properties['attributes'] as $key => $value)
+                    <tr>
+                        <td>{{$key}}</td>
+                        <td>{{$additionalProductChange->properties['old'][$key]}}</td>
+                        <td>{{$value}}</td>
+                    </tr>
+                @endforeach
+            @endif
+        </table>
+    @endforeach
+@else
+    <p>Нет изменений по доп.товарам</p>
+@endif
 </body>
 </html>

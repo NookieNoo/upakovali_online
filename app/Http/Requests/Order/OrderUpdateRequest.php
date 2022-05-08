@@ -45,7 +45,7 @@ class OrderUpdateRequest extends JsonRequest
             'master_id' => 'nullable|integer|min:1|exists:users,id,role_id,3',
             'receiver_id' => 'required|integer|min:1|exists:clients,id',
             'gifts' => 'array',
-            'gifts.*.id' => 'nullable|integer|min:1|exists:gifts,id',
+            'gifts.*.id' => 'nullable|integer|min:1|exists:gifts,id', //TODO Валидация на принадлежность заказу
             'gifts.*.weight' => 'required|numeric|min:0.1',
             'gifts.*.length' => 'required|int|min:1',
             'gifts.*.width' => 'required|int|min:1',
@@ -53,8 +53,9 @@ class OrderUpdateRequest extends JsonRequest
             'gifts.*.addressee_id' => 'required|integer|min:1|exists:addressees,id',
             'gifts.*.service_id' => 'required|integer|min:1|exists:services,id',
             'additional_products' => 'array',
-            'additional_products.*.price' => 'numeric|min:0.1',
-            'additional_products.*.name' => 'string|max:255',
+            'additional_products.*.id' => 'nullable|integer|min:1|exists:additional_products,id', //TODO Валидация на принадлежность заказу
+            'additional_products.*.price' => 'required|numeric|min:0.1',
+            'additional_products.*.name' => 'required|string|max:255',
             'order_photos' => 'array',
         ];
     }
