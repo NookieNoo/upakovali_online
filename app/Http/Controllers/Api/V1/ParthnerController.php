@@ -16,6 +16,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class ParthnerController extends Controller
 {
@@ -43,9 +44,10 @@ class ParthnerController extends Controller
         if ($request->user()->cannot('create', Parthner::class)) {
             return $this->sendError('Доступ закрыт', Response::HTTP_FORBIDDEN);
         }
+        $password = Str::random(15);
         try {
             $validated = $request->validated();
-            $validated['parthner_hash'] = Hash::make($validated['email']);
+            $validated['password'] = Hash::make($password);
             $parthner = Parthner::create($validated);
         } catch (\Exception $e) {
             return $this->sendError('Не удалось создать партнера', Response::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());

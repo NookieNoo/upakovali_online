@@ -14,6 +14,7 @@ export default function ParthnerEdit(props) {
                 <TextInput label="Название" source="full_name" validate={editParthnerFormValidators.full_name} />
                 <TextInput label="Email" source="email" validate={editParthnerFormValidators.email} />
                 <PhoneInput label="Телефон" source="phone" validate={editParthnerFormValidators.phone} />
+                <TextInput label="Url для уведомлений" source="notification_url" validate={editParthnerFormValidators.notification_url} />
                 <TextInput label="Комментарий" source="comment" validate={editParthnerFormValidators.comment} />
                 <AutocompleteWithRef
                     label="Менеджер"

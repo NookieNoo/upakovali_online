@@ -35,7 +35,8 @@ class ParthnerFactory extends Factory
             'phone' => $phone,
             'email' => $email,
             'comment' => $this->faker->sentence(),
-            'parthner_hash' => Hash::make($email),
+            'password' => Hash::make('0000'), // password
+            'notification_url' => $this->faker->url,
         ];
     }
 }

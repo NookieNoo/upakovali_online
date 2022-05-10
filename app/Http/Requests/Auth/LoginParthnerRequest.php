@@ -24,7 +24,8 @@ class LoginParthnerRequest extends JsonRequest
     public function rules()
     {
         return [
-            'parthner_hash' => 'required'
+            'email' => 'required|string|email',
+            'password' => 'required|string|min:4|max:255'
         ];
     }
 }

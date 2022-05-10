@@ -20,7 +20,8 @@ class CreateParthnersTable extends Migration
             $table->string('phone');
             $table->text('email');
             $table->text('comment')->nullable();
-            $table->string('parthner_hash');
+            $table->string('password');
+            $table->text('notification_url');
             $table->unsignedInteger('role_id')->default(\App\Enums\UserType::PARTHNER);
             $table->timestampsTz();
         });

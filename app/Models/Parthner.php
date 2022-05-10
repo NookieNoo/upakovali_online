@@ -56,22 +56,24 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel withOrder(\Illuminate\Http\Request $request)
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel withPaginate(\Illuminate\Http\Request $request)
  * @mixin \Eloquent
+ * @property string $password
+ * @method static Builder|Parthner wherePassword($value)
  */
 class Parthner extends BaseModel implements
     AuthenticatableContract,
     AuthorizableContract
 {
     use LogsActivity, HasApiTokens, Authenticatable, Authorizable;
+
+    protected $hidden = [
+        'password',
+    ];
+
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
         $additionalHidden = ['manager_id'];
-        //@FIXME Скрывать parthner_hash всем, кроме админов
-        // $additionalHidden = ['manager_id', 'parthner_hash'];
         $this->hidden = array_merge($this->hidden, $additionalHidden);
-
-        $additionalGuarded = ['parthner_hash'];
-        $this->guarded = array_merge($this->guarded, $additionalGuarded);
     }
 
     public function manager()
