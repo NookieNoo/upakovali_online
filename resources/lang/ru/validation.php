@@ -122,7 +122,7 @@ return [
     'timezone' => 'The :attribute must be a valid timezone.',
     'unique' => 'Поле :attribute должно быть уникальным значением.',
     'uploaded' => 'The :attribute failed to upload.',
-    'url' => 'The :attribute must be a valid URL.',
+    'url' => 'Поле :attribute должно быть валидным URL.',
     'uuid' => 'The :attribute must be a valid UUID.',
 
     /*

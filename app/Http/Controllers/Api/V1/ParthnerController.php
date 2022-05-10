@@ -7,6 +7,7 @@ use App\Http\Requests\Parthner\ParthnerGetRequest;
 use App\Http\Requests\Parthner\ParthnerStoreRequest;
 use App\Http\Requests\Parthner\ParthnerUpdateRequest;
 use App\Models\Parthner;
+use App\Notifications\Parthner\PasswordCreatedNotification;
 use http\Exception\RuntimeException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -52,6 +53,8 @@ class ParthnerController extends Controller
         } catch (\Exception $e) {
             return $this->sendError('Не удалось создать партнера', Response::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
         }
+
+        $parthner->notify(new PasswordCreatedNotification($password, $parthner->email));
 
         return $this->send(
             Response::HTTP_CREATED,

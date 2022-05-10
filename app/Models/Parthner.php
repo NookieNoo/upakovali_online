@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Notifications\Notifiable;
 
 
 /**
@@ -63,7 +64,7 @@ class Parthner extends BaseModel implements
     AuthenticatableContract,
     AuthorizableContract
 {
-    use LogsActivity, HasApiTokens, Authenticatable, Authorizable;
+    use LogsActivity, HasApiTokens, Authenticatable, Authorizable, Notifiable;
 
     protected $hidden = [
         'password',
