@@ -77,8 +77,8 @@ export default function OrderShow(props) {
                     <TextField label="Точка выдачи товара" source="delivery_point.address" />
                     <TextField label="Точка выдачи товара" source="delivery_address" />
 
-                    <DateField label="Время приема" source="receiving_date" />
-                    <DateField label="Время выдачи" source="issue_date" />
+                    <DateField label="Время приема" source="receiving_date" showTime />
+                    <DateField label="Время выдачи" source="issue_date" showTime />
 
                     <TextField label="Курьер принимающий" source="courier_receiver.full_name" />
                     <TextField label="Курьер выдающий" source="courier_issuer.full_name" />
