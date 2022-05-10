@@ -16,7 +16,7 @@ class CreateAddresseesTable extends Migration
         Schema::create('addressees', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->timestamps();
+            $table->timestampsTz();
         });
     }
 

@@ -33,8 +33,8 @@ class CreateOrdersTable extends Migration
             $table->unsignedInteger('delivery_address_point_id')->nullable();
             $table->string('delivery_address')->nullable();
             $table->string('delivery_price')->comment('Стоимость доставки товара')->nullable();
-            $table->timestamp('receiving_date');
-            $table->timestamp('issue_date');
+            $table->timestampTz('receiving_date');
+            $table->timestampTz('issue_date');
             $table->text('comment')->nullable();
             $table->unsignedInteger('courier_receiver_id')->nullable()->comment('Курьер принимающий');
             $table->unsignedInteger('courier_issuer_id')->nullable()->comment('Курьер выдающий');
@@ -43,7 +43,7 @@ class CreateOrdersTable extends Migration
             $table->unsignedInteger('master_id')->nullable();
             $table->unsignedInteger('receiver_id');
 
-            $table->timestamps();
+            $table->timestampsTz();
         });
 
         Schema::table('orders', function (Blueprint $table) {

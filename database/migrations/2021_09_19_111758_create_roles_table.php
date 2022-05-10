@@ -17,7 +17,7 @@ class CreateRolesTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('visible_name');
-            $table->timestamps();
+            $table->timestampsTz();
         });
 
         Schema::table('users', function (Blueprint $table) {

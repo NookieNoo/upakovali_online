@@ -21,6 +21,8 @@ use Illuminate\Support\Str;
 class BaseModel extends Model
 {
     use HasFactory;
+
+    protected $dateFormat = 'Y-m-d H:i:s P';
     protected $hidden = ['created_at', 'updated_at'];
     protected $guarded = ['id', 'created_at', 'updated_at'];
 

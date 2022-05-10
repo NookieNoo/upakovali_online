@@ -18,7 +18,7 @@ class CreateAdditionalProduct extends Migration
             $table->string('name');
             $table->unsignedDecimal('price');
             $table->unsignedInteger('order_id');
-            $table->timestamps();
+            $table->timestampsTz();
         });
 
         Schema::table('additional_products', function (Blueprint $table) {

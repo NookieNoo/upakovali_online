@@ -18,9 +18,9 @@ class CreatePrice extends Migration
             $table->string('name');
 //            $table->decimal('price');
             $table->unsignedInteger('parthner_id');
-            $table->timestamp('start');
-            $table->timestamp('end');
-            $table->timestamps();
+            $table->timestampTz('start');
+            $table->timestampTz('end');
+            $table->timestampsTz();
         });
 
         Schema::table('prices', function (Blueprint $table) {

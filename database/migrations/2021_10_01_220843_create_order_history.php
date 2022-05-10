@@ -19,8 +19,8 @@ class CreateOrderHistory extends Migration
             $table->unsignedInteger('status_id');
             $table->unsignedInteger('causer_id');
             $table->string('causer_type');
-            $table->timestamp('date');
-            $table->timestamps();
+            $table->timestampTz('date');
+            $table->timestampsTz();
         });
 
         Schema::table('order_history', function (Blueprint $table) {

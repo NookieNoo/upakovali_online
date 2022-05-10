@@ -18,7 +18,7 @@ class CreateUserDeliveryPoints extends Migration
             $table->string('address');
             $table->string('longitude')->nullable();
             $table->string('latitude')->nullable();
-            $table->timestamps();
+            $table->timestampsTz();
         });
     }
 

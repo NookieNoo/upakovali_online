@@ -19,7 +19,7 @@ class CreateService extends Migration
             $table->string('name');
             $table->unsignedInteger('product_id');
             $table->unsignedDecimal('sum');
-            $table->timestamps();
+            $table->timestampsTz();
         });
 
         Schema::table('services', function (Blueprint $table) {

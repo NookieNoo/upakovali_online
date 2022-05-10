@@ -24,7 +24,7 @@ class CreateGift extends Migration
             $table->unsignedInteger('height');
             $table->unsignedInteger('addressee_id');
 
-            $table->timestamps();
+            $table->timestampsTz();
         });
 
         Schema::table('gifts', function (Blueprint $table) {

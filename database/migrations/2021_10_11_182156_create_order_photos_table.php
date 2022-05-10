@@ -17,7 +17,7 @@ class CreateOrderPhotosTable extends Migration
             $table->id();
             $table->text('path');
             $table->unsignedInteger('order_id');
-            $table->timestamps();
+            $table->timestampsTz();
         });
 
         Schema::table('order_photos', function (Blueprint $table) {
