@@ -2,24 +2,24 @@
 
 namespace App\Rules;
 
-use App\Models\Client;
+use App\Models\Parthner;
 use Illuminate\Contracts\Validation\Rule;
 
-class UniqueClient implements Rule
+class UniquePartner implements Rule
 {
     protected string $phone;
     protected string $email;
-    protected ?int $editClientId;
+    protected ?int $editPartnerId;
     /**
      * Create a new rule instance.
      *
      * @return void
      */
-    public function __construct(string $phone, string $email, ?int $editClientId = null)
+    public function __construct(string $phone, string $email, ?int $editPartnerId = null)
     {
         $this->phone = $phone;
         $this->email = $email;
-        $this->editClientId = $editClientId;
+        $this->editPartnerId = $editPartnerId;
     }
 
     /**
@@ -31,12 +31,12 @@ class UniqueClient implements Rule
      */
     public function passes($attribute, $value)
     {
-        if ($this->editClientId) {
-            return !Client::where(['email' => $this->email, 'phone' => $this->phone])
-                ->where('id', '<>', $this->editClientId)
+        if ($this->editPartnerId) {
+            return !Parthner::where(['email' => $this->email, 'phone' => $this->phone])
+                ->where('id', '<>', $this->editPartnerId)
                 ->exists();
         }
-        return !Client::where(['email' => $this->email, 'phone' => $this->phone])->exists();
+        return !Parthner::where(['email' => $this->email, 'phone' => $this->phone])->exists();
     }
 
     /**
@@ -46,6 +46,6 @@ class UniqueClient implements Rule
      */
     public function message()
     {
-        return 'Клиент с таким email и телефоном уже существует';
+        return 'Партнер с таким email и телефоном уже существует';
     }
 }
