@@ -7,6 +7,7 @@ use App\Enums\OrderStatus as OrderStatusEnum;
 use App\Enums\SourceType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Activity\ActivityGetRequest;
+use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\OuterApi\CancelOrderRequest;
 use App\Http\Requests\OuterApi\CreateOrderRequest;
 use App\Http\Requests\OuterApi\GetServiceDataRequest;
@@ -16,6 +17,7 @@ use App\Models\Activity;
 use App\Models\Client;
 use App\Models\Order;
 use App\Models\OrderHistory;
+use App\Models\User;
 use App\Models\Workshop;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -23,6 +25,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class OuterApiController extends Controller
 {
