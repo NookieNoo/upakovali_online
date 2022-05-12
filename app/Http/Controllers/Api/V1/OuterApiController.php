@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Enums\OrderStatus;
 use App\Enums\OrderStatus as OrderStatusEnum;
 use App\Enums\SourceType;
+use App\Events\Order\OrderStatusUpdatedByApi;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Activity\ActivityGetRequest;
 use App\Http\Requests\Auth\LoginRequest;
@@ -235,33 +236,21 @@ class OuterApiController extends Controller
     {
         $validatedData = $request->validated();
         $external_number = $validatedData['external_number'];
-        $newOrderStatus = (int)$validatedData['order_status_id'];
-        try {
-            $order = Order::where([
-                'parthner_id' => $request->user()->id,
-                'external_number' => $external_number
-            ])->firstOrFail();
-            //@TODO Добавить policy
-//            if ($request->user()->cannot('updateStatus', $order, Order::class)) {
-//                return $this->sendError('Доступ закрыт', Response::HTTP_FORBIDDEN);
-//            }
-        } catch (ModelNotFoundException $e) {
-            return $this->sendError('Заказ не найден.', Response::HTTP_NOT_FOUND);
-        }
+        $newOrderStatus = $validatedData['order_status_id'];
+
+        $order = Order::where([
+            'parthner_id' => $request->user()->id,
+            'external_number' => $external_number
+        ])->first();
 
         try {
             DB::transaction(function () use ($order, $request, $newOrderStatus) {
-
-                if ($order->order_status_id !== $newOrderStatus) {
-                    $orderHistory = new OrderHistory([
-                        'order_id' => $order->id,
-                        'status_id' => $newOrderStatus,
-                        'causer_id' => $request->user()->id,
-                        'causer_type' => get_class($request->user()),
-                        'date' => Carbon::now(),
-                    ]);
-                    $orderHistory->save();
-                }
+                $order->history()->create([
+                    'status_id' => $newOrderStatus,
+                    'causer_id' => $request->user()->id,
+                    'causer_type' => get_class($request->user()),
+                    'date' => Carbon::now()
+                ]);
 
                 $order->order_status_id = $newOrderStatus;
                 $order->save();
@@ -269,6 +258,8 @@ class OuterApiController extends Controller
         } catch (\Exception $e) {
             return $this->sendError('Не удалось изменить статус заказа', Response::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
         }
+
+        $this->dispatcher->dispatch(new OrderStatusUpdatedByApi($order, $request->user()));
 
         return $this->send(Response::HTTP_OK, 'Статус заказа изменен');
     }

@@ -116,4 +116,5 @@ return [
     ],
 
     'send_reports_to' => env('SEND_REPORTS_TO'),
+    'send_api_reports_to' => env('SEND_API_REPORTS_TO'),
 ];
