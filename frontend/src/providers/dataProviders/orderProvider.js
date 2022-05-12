@@ -1,9 +1,11 @@
 import { httpClient } from '@app-http';
 import { baseApiUrl } from '@app-helpers';
 import { convertFileToBase64 } from '@app-helpers';
+import { VIRTUAL_PARTNER_ID } from '@app-constants';
 
 const orderProvider = {
     create: (resource, params) => {
+        if (params.parthner_id === VIRTUAL_PARTNER_ID) delete params.parthner_id;
         const newPictures = params.data.order_photos.filter((p) => p.rawFile instanceof File);
         const formerPictures = params.data.order_photos.filter((p) => !(p.rawFile instanceof File));
         return Promise.all(newPictures.map(convertFileToBase64))
@@ -30,6 +32,7 @@ const orderProvider = {
     },
     update: (resource, params) => {
         console.log('params', params);
+        if (params.parthner_id === VIRTUAL_PARTNER_ID) delete params.parthner_id;
 
         const newPictures = params.data.order_photos.filter((p) => p.rawFile instanceof File);
         const formerPictures = params.data.order_photos.filter((p) => !(p.rawFile instanceof File));

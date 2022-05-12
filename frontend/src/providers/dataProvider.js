@@ -33,7 +33,7 @@ export const dataProvider = {
             if (resource === 'parthner') {
                 json.data.manager_id = json.data.manager.id;
             } else if (resource === 'price') {
-                json.data.parthner_id = json.data.parthner.id;
+                json.data.parthner_id = json.data.parthner?.id;
                 json.data.services.forEach((it) => {
                     it.product_id = it.product.id;
                 });

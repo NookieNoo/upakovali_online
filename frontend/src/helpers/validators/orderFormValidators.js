@@ -47,7 +47,7 @@ const decimalAccuracy = (number) => {
 const createOrderFormValidators = {
     source_id: [required()],
     parthner_id: [required()],
-    external_number: [maxLength(255)],
+    external_number: [required(), maxLength(255)],
     client_id: [required()],
     'client.full_name': [required(), maxLength(255)],
     'client.phone': [required(), maxLength(50), validatePhone],
@@ -86,7 +86,7 @@ const editOrderFormValidators = {
     source_id: [required()],
     order_status_id: [required()],
     parthner_id: [],
-    external_number: [maxLength(255)],
+    external_number: [required(), maxLength(255)],
     client_id: [required()],
     workshop_id: [required()],
     gifts: [required()],

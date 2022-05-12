@@ -26,7 +26,6 @@ class PriceStoreRequest extends JsonRequest
         return [
             'name' => 'required|string|max:255',
             'parthner_id' => 'required|integer|min:1|exists:parthners,id',
-            'start' => 'required|date|date_format:Y-m-d',
             'start' => 'required|date|date_format:Y-m-d|before_or_equal:end',
             'end' => 'required|date|date_format:Y-m-d',
             'services' => 'required|array',

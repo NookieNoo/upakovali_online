@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Order;
 
+use App\Enums\SourceType;
 use App\Http\Requests\JsonRequest;
+use App\Rules\UniqueExternalNumberByPartner;
 
 class OrderStoreRequest extends JsonRequest
 {
@@ -23,10 +25,13 @@ class OrderStoreRequest extends JsonRequest
      */
     public function rules()
     {
+        $apiSourceId = SourceType::API;
         return [
             'source_id' => 'required|integer|min:1|exists:sources,id',
-            'parthner_id' => 'nullable|integer|min:1|exists:parthners,id',
-            'external_number' => 'nullable|string|max:255',
+            'parthner_id' => "exclude_unless:source_id,{$apiSourceId}|required|integer|min:1|exists:parthners,id",
+            'external_number' => [
+                "exclude_unless:source_id,{$apiSourceId}", "required", "string", "max:255", new UniqueExternalNumberByPartner($this->get('external_number'), $this->get('parthner_id'))
+            ],
             'is_new_client' => 'required|boolean',
             'client_id' => 'exclude_unless:is_new_client,false|required|integer|min:1|exists:clients,id',
             'client' => 'exclude_unless:is_new_client,true|required|array',
@@ -55,7 +60,7 @@ class OrderStoreRequest extends JsonRequest
             'receiver.full_name' => 'exclude_if:is_receiver_same,true|exclude_if:is_new_receiver,false|required|string|max:255',
             'receiver.phone' => 'exclude_if:is_receiver_same,true|exclude_if:is_new_receiver,false|required|string|max:50',
             'receiver.email' => 'exclude_if:is_receiver_same,true|exclude_if:is_new_receiver,false|required|string|email',
-            'gifts' => 'array',
+            'gifts' => 'required|array',
             'gifts.*.weight' => 'required|numeric|min:0.1',
             'gifts.*.length' => 'required|int|min:1',
             'gifts.*.width' => 'required|int|min:1',

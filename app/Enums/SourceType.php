@@ -11,7 +11,7 @@ use BenSampo\Enum\Enum;
  */
 final class SourceType extends Enum
 {
-    const WALKING =   1;
-    const SITE =   2;
+    const WALKING = 1;
+    const SITE = 2;
     const API = 3;
 }

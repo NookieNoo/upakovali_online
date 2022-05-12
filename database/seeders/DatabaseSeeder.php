@@ -24,7 +24,9 @@ class DatabaseSeeder extends Seeder
             AddresseeSeeder::class,
             OrderStatusSeeder::class,
             UserSeeder::class,
-            ProductSeeder::class
+            ProductSeeder::class,
+            PriceSeeder::class,
+            ServiceSeeder::class
         ]);
         Client::factory(20)->create();
 //        Parthner::factory(20)->create();

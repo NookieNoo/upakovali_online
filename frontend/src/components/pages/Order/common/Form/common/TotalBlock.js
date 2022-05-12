@@ -10,8 +10,8 @@ export default function TotalBlock({ deliveryTotal, pickupTotal, giftsTotal, add
             <Typography variant="h6" gutterBottom>
                 Итого:
             </Typography>
-            Подарки ({giftsTotal}) + Допы ({additionalTotal}) + Доставка ({deliveryTotal}) + Забор ({pickupTotal}) ={' '}
-            {formatMoney(total)}
+            Подарки ({formatMoney(giftsTotal)}) + Допы ({formatMoney(additionalTotal)}) + Доставка (
+            {formatMoney(deliveryTotal)}) + Забор ({formatMoney(pickupTotal)}) = {formatMoney(total)}
         </>
     );
 }

@@ -17,7 +17,7 @@ class CreatePrice extends Migration
             $table->id();
             $table->string('name');
 //            $table->decimal('price');
-            $table->unsignedInteger('parthner_id');
+            $table->unsignedInteger('parthner_id')->nullable();
             $table->timestampTz('start');
             $table->timestampTz('end');
             $table->timestampsTz();

@@ -22,13 +22,13 @@ export default function PriceEdit(props) {
                     label="Действует с"
                     source="start"
                     validate={editPriceFormValidators.start}
-                    inputProps={{ autocomplete: 'new-password' }}
+                    inputProps={{ autoComplete: 'new-password' }}
                 />
                 <DateInput
                     label="Действует до"
                     source="end"
                     validate={editPriceFormValidators.end}
-                    inputProps={{ autocomplete: 'new-password' }}
+                    inputProps={{ autoComplete: 'new-password' }}
                 />
                 <AutocompleteWithRef
                     label="Партнер"

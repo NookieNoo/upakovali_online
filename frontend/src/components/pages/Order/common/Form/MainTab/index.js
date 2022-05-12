@@ -15,12 +15,13 @@ import { Card, CardContent, Box, Grid, Link, Typography, Divider } from '@materi
 import { useFormState, useField } from 'react-final-form';
 import { useSelector } from 'react-redux';
 import { getServicesListTotal } from 'store/selectors';
-import { userRoles, serviceTypes } from '@app-constants';
+import { userRoles, serviceTypes, sourceTypes } from '@app-constants';
 import { KladrAutocompleteBlock, AutocompleteWithRef, PhoneInput } from '@app-universal';
 import { SelectInputWrap } from '@app-components/overriding';
 import TextInputWithScanner from '../../TextInputWithScanner';
 import TotalBlock from '../common/TotalBlock';
 import ServiceOptionRenderer from './includes/ServiceOptionRenderer';
+import { VIRTUAL_PARTNER_ID } from '@app-constants';
 
 const defaultSourceSort = { field: 'id', order: 'ASC' };
 const masterFilter = { role_id: userRoles.master.id };
@@ -31,28 +32,38 @@ const enableGetChoices = (arg) => {
 };
 
 export default function MainTab({ validators, canEditForm, isEdit, isCreate }) {
+    const translate = useTranslate();
     const { values: formState, ...rest } = useFormState();
     const { input } = useField('external_number');
     const { input: giftsInput, ...rest2 } = useField('gifts');
-    const translate = useTranslate();
+    const { input: partnerInput } = useField('parthner_id');
     const giftsTotal = useSelector(getServicesListTotal(formState.gifts?.map((it) => it?.service_id) || []));
     const additionalTotal = formState.additional_products?.reduce((pr, cur) => pr + cur?.price || 0, 0);
+    const isFromApi = formState.source_id === sourceTypes.API.value;
 
     const onChangeNumber = (props) => {
         input.onChange(props);
     };
 
-    const [servicesFilter, setServicesFilter] = useState({ product_id: serviceTypes.PACKAGE.id });
+    const [servicesFilter, setServicesFilter] = useState({
+        product_id: serviceTypes.PACKAGE.id,
+        parthner_id: formState.parthner_id,
+    });
 
     useEffect(() => {
-        console.log('CHANGE PARTHNER_ID', formState.parthner_id);
-        setServicesFilter((pr) => ({ ...pr, parthner_id: formState.parthner_id }));
+        // console.log('CHANGE PARTHNER_ID', formState.parthner_id);
+        if (!isFromApi) {
+            setServicesFilter((pr) => ({ ...pr, parthner_id: VIRTUAL_PARTNER_ID }));
+            partnerInput.onChange(undefined);
+        } else {
+            setServicesFilter((pr) => ({ ...pr, parthner_id: formState.parthner_id }));
+        }
         if (isCreate) {
             if (giftsInput.value) {
                 giftsInput.onChange(giftsInput.value.map((it) => omit(it, 'service_id')));
             }
         }
-    }, [formState.parthner_id]);
+    }, [formState.parthner_id, isFromApi]);
 
     console.log('formState', formState);
     return (
@@ -73,13 +84,15 @@ export default function MainTab({ validators, canEditForm, isEdit, isCreate }) {
                     </ReferenceInput>
                 )}
             </Box>
-            <AutocompleteWithRef
-                label="Партнер"
-                source="parthner_id"
-                reference="parthner"
-                disabled={isEdit}
-                validate={validators.parthner_id}
-            />
+            {isFromApi && (
+                <AutocompleteWithRef
+                    label="Партнер"
+                    source="parthner_id"
+                    reference="parthner"
+                    disabled={isEdit}
+                    validate={validators.parthner_id}
+                />
+            )}
 
             <Typography>Клиент</Typography>
             <Divider />
@@ -126,58 +139,19 @@ export default function MainTab({ validators, canEditForm, isEdit, isCreate }) {
                 />
             )}
 
-            {/* <Typography>Получатель</Typography>
-            <Divider />
-
-            {isCreate ? (
-                <>
-                    <BooleanInput label="Клиент = Получатель?" source="is_receiver_same" />
-                    {!formState.is_receiver_same && (
-                        <>
-                            <BooleanInput label="Новый получатель?" source="is_new_receiver" />
-                            {formState.is_new_receiver ? (
-                                <Grid container justifyContent="flex-start" spacing={1}>
-                                    <Grid item>
-                                        <TextInput source="receiver.full_name" label="ФИО получателя" />
-                                    </Grid>
-                                    <Grid item>
-                                        <PhoneInput source="receiver.phone" label="Телефон" />
-                                    </Grid>
-                                    <Grid item>
-                                        <TextInput source="receiver.email" label="Email" />
-                                    </Grid>
-                                </Grid>
-                            ) : (
-                                <AutocompleteWithRef
-                                    label="Получатель"
-                                    source="receiver_id"
-                                    reference="client"
-                                    validate={validators.receiver_id}
-                                />
-                            )}
-                        </>
-                    )}
-                </>
-            ) : (
-                <AutocompleteWithRef
-                    label="Получатель"
-                    source="receiver_id"
-                    reference="client"
-                    validate={validators.receiver_id}
-                />
-            )} */}
-
             <Divider />
 
             <Box display={'flex'} flexDirection={'column'} width={'265px'}>
-                <TextInputWithScanner
-                    source="external_number"
-                    label="Внешний номер"
-                    disabled={isEdit}
-                    validate={validators.external_number}
-                    onSubmit={onChangeNumber}
-                    scannerModalProps={{ submitKeyLabel: translate('ra.action.save') }}
-                />
+                {isFromApi && (
+                    <TextInputWithScanner
+                        source="external_number"
+                        label="Внешний номер"
+                        // disabled={isEdit}
+                        validate={validators.external_number}
+                        onSubmit={onChangeNumber}
+                        scannerModalProps={{ submitKeyLabel: translate('ra.action.save') }}
+                    />
+                )}
                 <ReferenceInput label="Мастерская" source="workshop_id" reference="workshop" disabled={isEdit}>
                     <SelectInput optionText="address" optionValue="id" validate={validators.workshop_id} />
                 </ReferenceInput>
@@ -204,9 +178,9 @@ export default function MainTab({ validators, canEditForm, isEdit, isCreate }) {
                         label="Сервис"
                         source="service_id"
                         reference="service"
+                        // enableGetChoices={enableGetChoices}
                         filter={servicesFilter}
-                        enableGetChoices={enableGetChoices}
-                        disabled={!!!formState.parthner_id}
+                        disabled={isFromApi ? !!!formState.parthner_id : false}
                     >
                         <SelectInput
                             optionText={ServiceOptionRenderer}

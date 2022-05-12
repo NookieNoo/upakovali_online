@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Order;
 
+use App\Enums\SourceType;
 use App\Http\Requests\JsonRequest;
+use App\Rules\UniqueExternalNumberByPartner;
 
 class OrderUpdateRequest extends JsonRequest
 {
@@ -23,11 +25,15 @@ class OrderUpdateRequest extends JsonRequest
      */
     public function rules()
     {
+        $apiSourceId = SourceType::API;
         return [
             'order_status_id' => 'required|integer|min:1|exists:order_statuses,id',
             'source_id' => 'required|integer|min:1|exists:sources,id',
-            'parthner_id' => 'nullable|integer|min:1|exists:parthners,id',
-            'external_number' => 'nullable|string|max:255',
+            'parthner_id' => "exclude_unless:source_id,{$apiSourceId}|required|integer|min:1|exists:parthners,id",
+            'external_number' => [
+                "exclude_unless:source_id,{$apiSourceId}", "required", "string", "max:255",
+                new UniqueExternalNumberByPartner($this->get('external_number'), $this->get('parthner_id'), $this->route('id'))
+            ],
             'client_id' => 'required|integer|min:1|exists:clients,id',
             'workshop_id' => 'required|integer|min:1|exists:workshops,id',
             'is_pickupable' => 'nullable|boolean',
@@ -44,7 +50,7 @@ class OrderUpdateRequest extends JsonRequest
             'isPaid' => 'nullable|boolean',
             'master_id' => 'nullable|integer|min:1|exists:users,id,role_id,3',
             'receiver_id' => 'required|integer|min:1|exists:clients,id',
-            'gifts' => 'array',
+            'gifts' => 'required|array',
             'gifts.*.id' => 'nullable|integer|min:1|exists:gifts,id', //TODO Валидация на принадлежность заказу
             'gifts.*.weight' => 'required|numeric|min:0.1',
             'gifts.*.length' => 'required|int|min:1',

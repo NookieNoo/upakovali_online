@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\SourceType;
 use App\Models\Addressee;
 use App\Models\Client;
 use App\Models\Order;
@@ -30,11 +31,12 @@ class OrderFactory extends Factory
     {
         $isDeliverable = $this->faker->boolean();
         $isPickupable = $this->faker->boolean();
+        $source_id = Source::inRandomOrder()->first()->id;
         return [
             'order_status_id' => fn() => OrderStatus::inRandomOrder()->first()->id,
-            'source_id' => fn() => Source::inRandomOrder()->first()->id,
-            'parthner_id' => fn() => Parthner::inRandomOrder()->first()->id,
-            'external_number' => $this->faker->uuid(),
+            'source_id' => $source_id,
+            'parthner_id' => $source_id === SourceType::API ? Parthner::inRandomOrder()->first()->id : null,
+            'external_number' => $source_id === SourceType::API ? $this->faker->uuid() : null,
             'client_id' => fn() => Client::inRandomOrder()->first()->id,
             'workshop_id' => fn() => Workshop::inRandomOrder()->first()->id,
             'is_pickupable' => $isPickupable,

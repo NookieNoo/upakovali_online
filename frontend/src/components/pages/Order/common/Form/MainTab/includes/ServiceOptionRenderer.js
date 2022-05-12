@@ -4,6 +4,8 @@ import dayjs from 'dayjs';
 import { Box } from '@material-ui/core';
 
 const formatDate = (date) => dayjs(date).format('DD-MM-YYYY');
+const formatPriceName = (str) => str.slice(0, 25) + '...';
+
 const ServiceOptionRenderer = ({ id, name, sum, price }) => {
     return (
         <Box key={id} width="100%">
@@ -13,7 +15,7 @@ const ServiceOptionRenderer = ({ id, name, sum, price }) => {
                     <div>{sum}</div>
                 </Box>
                 <Box display="flex" justifyContent="space-between" fontSize="0.7rem">
-                    <div>{price.name}</div>
+                    <div>{formatPriceName(price.name)}</div>
                     <Box display="flex" flexDirection="column" style={{ lineHeight: 1 }}>
                         <div>{formatDate(price.start)}</div>
                         <div>{formatDate(price.end)}</div>

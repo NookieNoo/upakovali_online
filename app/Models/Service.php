@@ -67,7 +67,8 @@ class Service extends BaseModel
                     $query->join(Price::getTableName(), Service::getTableName() . '.price_id', '=', Price::getTableName() . '.id')
                         ->select(Service::getTableName() . '.*');
                 }
-                $query->where(Price::getTableName() . ".parthner_id", $parthnerId);
+                if ($parthnerId === '-1') $query->whereNull(Price::getTableName() . ".parthner_id");
+                else $query->where(Price::getTableName() . ".parthner_id", $parthnerId);
             })
             ->when($request->query('ids'), function (Builder $query, $ids) {
                 $query->whereIn($this->getTable() . ".id", $ids);
