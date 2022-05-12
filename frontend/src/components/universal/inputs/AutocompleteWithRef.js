@@ -102,7 +102,7 @@ AutocompleteWithRef.defaultProps = {
     suggestionLimit: 10,
     resettable: true,
     emptyValue: null,
-    disabled: false
+    disabled: false,
 };
 
 AutocompleteWithRef.propTypes = {
