@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
+use App\Events\Order\OrderCancelledByApi;
 use App\Events\Order\OrderCreated;
 use App\Events\Order\OrderStatusUpdated;
 use App\Events\Order\OrderStatusUpdatedByApi;
 use App\Events\Order\OrderUpdated;
+use App\Listeners\Order\OrderCancelledByApiListener;
 use App\Listeners\Order\OrderCreatedListener;
 use App\Listeners\Order\OrderStatusUpdatedByApiListener;
 use App\Listeners\Order\OrderStatusUpdatedListener;
@@ -30,6 +32,7 @@ class EventServiceProvider extends ServiceProvider
         OrderCreated::class => [OrderCreatedListener::class],
         OrderUpdated::class => [OrderUpdatedListener::class],
         OrderStatusUpdatedByApi::class => [OrderStatusUpdatedByApiListener::class],
+        OrderCancelledByApi::class => [OrderCancelledByApiListener::class],
     ];
 
     /**

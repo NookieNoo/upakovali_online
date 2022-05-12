@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Enums\OrderStatus;
 use App\Enums\OrderStatus as OrderStatusEnum;
 use App\Enums\SourceType;
+use App\Events\Order\OrderCancelledByApi;
 use App\Events\Order\OrderStatusUpdatedByApi;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Activity\ActivityGetRequest;
@@ -296,32 +297,19 @@ class OuterApiController extends Controller
     public function cancelOrder(CancelOrderRequest $request)
     {
         $validatedData = $request->validated();
-        try {
-            $order = Order::where([
-                'parthner_id' => $request->user()->id,
-                'external_number' => $validatedData['external_number']
-            ])->firstOrFail();
-            //@TODO Добавить policy
-//            if ($request->user()->cannot('updateStatus', $order, Order::class)) {
-//                return $this->sendError('Доступ закрыт', Response::HTTP_FORBIDDEN);
-//            }
-        } catch (ModelNotFoundException $e) {
-            return $this->sendError('Заказ не найден.', Response::HTTP_NOT_FOUND);
-        }
+        $order = Order::where([
+            'parthner_id' => $request->user()->id,
+            'external_number' => $validatedData['external_number']
+        ])->first();
 
         try {
             DB::transaction(function () use ($order, $request) {
-
-                if ($order->order_status_id !== OrderStatus::CANCELED) {
-                    $orderHistory = new OrderHistory([
-                        'order_id' => $order->id,
-                        'status_id' => $order->order_status_id,
-                        'causer_id' => $request->user()->id,
-                        'causer_type' => get_class($request->user()),
-                        'date' => Carbon::now(),
-                    ]);
-                    $orderHistory->save();
-                }
+                $order->history()->create([
+                    'status_id' => OrderStatus::CANCELED,
+                    'causer_id' => $request->user()->id,
+                    'causer_type' => get_class($request->user()),
+                    'date' => Carbon::now()
+                ]);
 
                 $order->order_status_id = OrderStatus::CANCELED;
                 $order->save();
@@ -329,6 +317,8 @@ class OuterApiController extends Controller
         } catch (\Exception $e) {
             return $this->sendError('Не удалось отменить заказ', Response::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
         }
+
+        $this->dispatcher->dispatch(new OrderCancelledByApi($order, $request->user()));
 
         return $this->send(Response::HTTP_OK, 'Заказ отменен');
     }
