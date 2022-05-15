@@ -11,6 +11,7 @@ use App\Models\OrderHistory;
 use App\Models\OrderPhoto;
 use App\Models\User;
 use App\Services\ImageUploader;
+use App\Services\Order\OrderCheckerService;
 use Carbon\Carbon;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Support\Arr;
@@ -21,29 +22,34 @@ use Spatie\Activitylog\Facades\LogBatch;
 class OrderUpdateAction
 {
     public function __construct(
-        private Dispatcher    $dispatcher,
-        private ImageUploader $imageUploader,
+        private Dispatcher          $dispatcher,
+        private ImageUploader       $imageUploader,
+        private OrderCheckerService $orderCheckerService,
     )
     {
     }
 
     public function handle(Order $order, array $orderData, User $user)
     {
+        $order->fill($orderData);
+        $this->orderCheckerService->checkCanUpdateOrder($order, $user);
+
         LogBatch::startBatch();
         $order = DB::transaction(function () use ($order, $orderData, $user) {
             $validatedData = $orderData;
 
-            if ($order->order_status_id !== $validatedData['order_status_id']) {
+            if ($order->isDirty('order_status_id')) {
                 $orderHistory = OrderHistory::create([
                     'order_id' => $order->id,
-                    'status_id' => $validatedData['order_status_id'],
+                    'status_id' => $order->order_status_id,
                     'causer_id' => $user->id,
                     'causer_type' => get_class($user),
                     'date' => Carbon::now(),
                 ]);
             }
 
-            $order->update($validatedData);
+            $order->save();
+//            $order->update($validatedData);
 
 
             $order->load('gifts');

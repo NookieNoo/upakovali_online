@@ -37,6 +37,10 @@ class OrderCreateAction
             $client = Client::create($orderDto->client->toArray());
         }
 
+        //todo добавить проверку адреса заказа через яндекс
+        //todo создание гифтов, допов
+        //todo добавить проверку прайсов
+
         $order = DB::transaction(function () use ($client, $orderDto, $partner) {
             $order = Order::create(array_merge($orderDto->toArray(), [
                 'client_id' => $client->id,

@@ -13,6 +13,7 @@ use App\Http\Requests\Order\OrderUpdateStatusRequest;
 use App\Http\Resources\OrderShowOneResource;
 use App\Models\Order;
 use App\Models\OrderHistory;
+use App\Services\Order\Exceptioin\OrderCheckerServiceException;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
@@ -101,6 +102,8 @@ class OrderController extends Controller
 
         try {
             $order = $orderUpdateAction->handle($order, $request->validated(), $request->user());
+        } catch (OrderCheckerServiceException $e) {
+            return $this->sendError($e->getMessage(), Response::HTTP_CONFLICT, $e->getMessage());
         } catch (\Exception $e) {
             return $this->sendError('Не удалось обновить заказ', Response::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
         }

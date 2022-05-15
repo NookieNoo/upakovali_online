@@ -63,6 +63,7 @@ class CreateOrderRequest extends JsonRequest
             //gifts
             //additional
             //prices
+            //photos
         ];
     }
 
