@@ -91,12 +91,12 @@ class OrderCreateAction
             $order = Order::create($validatedData);
 
             foreach ($validatedData['gifts'] as $giftData) {
-                $gift = Gift::create(array_merge($giftData, ['order_id' => $order->id]));
+                $order->gifts()->create($giftData);
             }
 
             if (!empty($validatedData['additional_products'])) {
                 foreach ($validatedData['additional_products'] as $productData) {
-                    $product = AdditionalProduct::create(array_merge($productData, ['order_id' => $order->id]));
+                    $order->additionalProducts()->create($productData);
                 }
             }
 

@@ -19,6 +19,7 @@
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "sentry/sentry-laravel": "^2.11",
+        "spatie/data-transfer-object": "^3.7",
         "spatie/laravel-activitylog": "^4.3"
     },
     "require-dev": {

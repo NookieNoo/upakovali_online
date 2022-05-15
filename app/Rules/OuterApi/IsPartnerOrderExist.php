@@ -11,10 +11,12 @@ class IsPartnerOrderExist implements Rule, DataAwareRule
 
     protected array $data = [];
     protected int $partnerId;
+    protected ?string $customMsg;
 
-    public function __construct(int $partnerId)
+    public function __construct(int $partnerId, ?string $customMsg = null)
     {
         $this->partnerId = $partnerId;
+        $this->customMsg = $customMsg;
     }
 
     /**
@@ -26,7 +28,7 @@ class IsPartnerOrderExist implements Rule, DataAwareRule
      */
     public function passes($attribute, $value)
     {
-        return Order::where(['external_number' => $this->data['external_number'], 'parthner_id' => $this->partnerId])->exists();
+        return !Order::where(['external_number' => $this->data['external_number'], 'parthner_id' => $this->partnerId])->exists();
     }
 
     /**
@@ -36,6 +38,7 @@ class IsPartnerOrderExist implements Rule, DataAwareRule
      */
     public function message()
     {
+        if ($this->customMsg) return $this->customMsg;
         return 'Не найден заказ с таким external_number';
     }
 

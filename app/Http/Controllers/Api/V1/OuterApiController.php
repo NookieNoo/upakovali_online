@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Actions\PublicApi\OrderCreateAction;
 use App\Enums\OrderStatus;
 use App\Enums\OrderStatus as OrderStatusEnum;
 use App\Enums\SourceType;
@@ -86,54 +87,10 @@ class OuterApiController extends Controller
      *
      * @return JsonResponse
      */
-    public function createOrder(CreateOrderRequest $request)
+    public function createOrder(CreateOrderRequest $request, OrderCreateAction $orderCreateAction)
     {
-        $validatedData = $request->validated();
-        $validatedData['source_id'] = SourceType::API;
-        $validatedData['parthner_id'] = $request->user()->id;
-        $validatedData['isPaid'] = false;
-        $validatedData['order_status_id'] = OrderStatusEnum::CREATED;
-
-
-        //@FIXME вынести в правило
-        $isIncorrectNumber = Order::where([
-            'external_number' => $validatedData['external_number'],
-            'parthner_id' => $request->user()->id
-        ])->exists();
-
-        if ($isIncorrectNumber) {
-            return $this->sendError('Заказ с таким external_number уже существует', Response::HTTP_BAD_REQUEST);
-        }
-
-        $client = Client::where([
-            'email' => $validatedData['client']['email'],
-            'phone' => $validatedData['client']['phone']
-        ])->first();
-
         try {
-            DB::transaction(function () use ($client, $validatedData, $request) {
-                if (!$client) {
-                    $client = Client::create([
-                        'full_name' => $validatedData['client']['full_name'],
-                        'phone' => $validatedData['client']['phone'],
-                        'email' => $validatedData['client']['email'],
-                    ]);
-                }
-
-                $order = Order::create(array_merge($validatedData, [
-                    'client_id' => $client->id,
-                    'receiver_id' => $client->id, //TODO Узнать, правильно ли?
-                ]));
-
-                $orderHistory = OrderHistory::create([
-                    'order_id' => $order->id,
-                    'status_id' => OrderStatusEnum::CREATED,
-                    'causer_id' => $request->user()->id,
-                    'causer_type' => get_class($request->user()),
-                    'date' => Carbon::now(),
-                ]);
-
-            });
+            $orderCreateAction->handle($request->getDto(), $request->user());
         } catch (\Exception $e) {
             return $this->sendError('Не удалось создать заказ', Response::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
         }
