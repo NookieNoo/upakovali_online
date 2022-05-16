@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\SourceType;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -216,6 +217,11 @@ class Order extends BaseModel
     public function scopeWithAllRelations($query)
     {
         $query->with(self::$supportedRelations);
+    }
+
+    public function isFromApi()
+    {
+        return $this->source_id === SourceType::API;
     }
 
     public function getTotalAttribute()
