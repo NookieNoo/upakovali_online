@@ -16,6 +16,7 @@ use App\Http\Requests\OuterApi\CreateOrderRequest;
 use App\Http\Requests\OuterApi\GetServiceDataRequest;
 use App\Http\Requests\OuterApi\SetOrderStatusRequest;
 use App\Http\Requests\OuterApi\UpdateOrderRequest;
+use App\Http\Resources\OrderShowOneResource;
 use App\Models\Activity;
 use App\Models\Client;
 use App\Models\Order;
@@ -158,6 +159,16 @@ class OuterApiController extends Controller
         }
 
         return $this->send(Response::HTTP_OK, 'Заказ обновлен');
+    }
+
+    public function getOrderById(Request $request, $id)
+    {
+        $order = Order::withAllRelations()->where(['parthner_id' => $request->user()->id, 'external_number' => $id])->first();
+        if (!$order) return $this->sendError('Не найден заказ с таким номером', Response::HTTP_NOT_FOUND);
+
+        //FIXME FIX RESOURCE
+//        return $this->send(Response::HTTP_OK, null, new OrderShowOneResource($order));
+        return $this->send(Response::HTTP_OK, null, $order);
     }
 
     /**

@@ -143,6 +143,7 @@ Route::group(['middleware' => ['auth:parthners']], function () {
         Route::patch('/setStatus', [OuterApiController::class, 'setStatus']);
         Route::post('/order/setStatus', [OuterApiController::class, 'setStatus']);
         Route::post('/order/cancelOrder', [OuterApiController::class, 'cancelOrder']);
+        Route::get('/order/{id}', [OuterApiController::class, 'getOrderById']);
         Route::patch('/cancelOrder', [OuterApiController::class, 'cancelOrder']);
         Route::get('/workshops', [OuterApiController::class, 'getWorkshops']);
         //get order by id
