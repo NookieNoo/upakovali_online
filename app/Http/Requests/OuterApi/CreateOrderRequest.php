@@ -73,7 +73,7 @@ class CreateOrderRequest extends JsonRequest
             'gifts.*.service_id' => ['required', 'integer', 'min:1', new IsServiceIdBelongsToPartner($this->user()->id, ServiceTypes::PACKAGE)],
 
             'additional_products' => 'array',
-            'additional_products.*.price' => 'required|numeric|min:0.1', //decimal 2
+            'additional_products.*.price' => 'required|numeric|min:0.1', //TODO decimal 2
             'additional_products.*.name' => 'required|string|max:255',
 
             //TODO photos

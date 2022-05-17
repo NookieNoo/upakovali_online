@@ -58,7 +58,7 @@ class Api
     /**
      * @param array $options Curl options
      * @return $this
-     * @throws Exception
+     * @throws GeoException
      * @throws Exception\CurlError
      * @throws Exception\ServerError
      */
@@ -87,7 +87,7 @@ class Api
         $data = json_decode($data, true);
         if (empty($data)) {
             $msg = sprintf('Can\'t load data by url: %s', $apiUrl);
-            throw new \App\Helpers\Geo\Exception($msg);
+            throw new \App\Helpers\Geo\GeoException($msg);
         }
 //        var_dump($data);
 

@@ -39,4 +39,6 @@ class OrderCreateByApiDto extends DataTransferObject
     public ?int $parthner_id;
     public ?bool $is_pickupable;
     public ?bool $is_deliverable;
+    public ?int $pick_up_address_point_id;
+    public ?int $delivery_address_point_id;
 }
