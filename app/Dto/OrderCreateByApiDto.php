@@ -18,6 +18,7 @@ class OrderCreateByApiDto extends DataTransferObject
     public int $workshop_id;
     public ?string $pick_up_point_id;
     public ?string $pick_up_address;
+    public ?string $pick_up_price;
     public ?string $delivery_point_id;
     public ?string $delivery_address;
     public string $receiving_date;
