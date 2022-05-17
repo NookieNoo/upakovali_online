@@ -146,6 +146,8 @@ Route::group(['middleware' => ['auth:parthners']], function () {
         Route::patch('/cancelOrder', [OuterApiController::class, 'cancelOrder']);
         Route::get('/workshops', [OuterApiController::class, 'getWorkshops']);
         //get order by id
+        //get addressees
+        //get services
 //        Route::get('/sources', [OuterApiController::class, 'getWorkshops']);
     });
 });

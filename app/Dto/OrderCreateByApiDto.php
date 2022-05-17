@@ -2,10 +2,14 @@
 
 namespace App\Dto;
 
+use App\Dto\includes\AdditionalProduct;
 use App\Dto\includes\Client;
 use App\Dto\includes\Courier;
+use App\Dto\includes\Gift;
 use App\Dto\includes\Receiver;
 use Spatie\DataTransferObject\DataTransferObject;
+use Spatie\DataTransferObject\Casters\ArrayCaster;
+use Spatie\DataTransferObject\Attributes\CastWith;
 
 class OrderCreateByApiDto extends DataTransferObject
 {
@@ -21,6 +25,13 @@ class OrderCreateByApiDto extends DataTransferObject
     public ?string $comment;
     public Courier $courier;
     public Receiver $receiver;
+
+    #[CastWith(ArrayCaster::class, Gift::class)]
+    public array $gifts;
+
+    #[CastWith(ArrayCaster::class, AdditionalProduct::class)]
+    public array $additional_products;
+
     public ?int $source_id;
     public ?bool $is_paid;
     public ?int $order_status_id;

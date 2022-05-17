@@ -14,6 +14,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Support\Facades\DB;
+use Spatie\Activitylog\Facades\LogBatch;
 
 class OrderCreateAction
 {
@@ -38,14 +39,22 @@ class OrderCreateAction
         }
 
         //todo добавить проверку адреса заказа через яндекс
-        //todo создание гифтов, допов
         //todo добавить проверку прайсов
 
+        LogBatch::startBatch();
         $order = DB::transaction(function () use ($client, $orderDto, $partner) {
             $order = Order::create(array_merge($orderDto->toArray(), [
                 'client_id' => $client->id,
                 'receiver_id' => $client->id, //TODO Узнать, правильно ли?
             ]));
+
+            foreach ($orderDto->gifts as $giftData) {
+                $order->gifts()->create($giftData->toArray());
+            }
+
+            foreach ($orderDto->additional_products as $productData) {
+                $order->additionalProducts()->create($productData->toArray());
+            }
 
             $order->history()->create([
                 'order_id' => $order->id,
@@ -57,6 +66,8 @@ class OrderCreateAction
 
             return $order;
         });
+        $batchUuid = LogBatch::getUuid();
+        LogBatch::endBatch();
 
         $this->dispatcher->dispatch(new OrderCreatedByApi($order, $partner));
 

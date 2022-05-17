@@ -60,6 +60,18 @@ class CreateOrderRequest extends JsonRequest
             'receiver.phone' => ['required', 'string', 'max:50', "regex:$phoneRegex"],
             'receiver.email' => 'string|email',
 
+            'gifts' => 'required|array',
+            'gifts.*.weight' => 'required|numeric|min:0.1',
+            'gifts.*.length' => 'required|int|min:1',
+            'gifts.*.width' => 'required|int|min:1',
+            'gifts.*.height' => 'required|int|min:1',
+            'gifts.*.addressee_id' => 'required|integer|min:1|exists:addressees,id',
+            'gifts.*.service_id' => 'required|integer|min:1|exists:services,id', //@TODO filter by partner
+
+            'additional_products' => 'array',
+            'additional_products.*.price' => 'required|numeric|min:0.1', //decimal 2
+            'additional_products.*.name' => 'required|string|max:255',
+
             //gifts
             //additional
             //prices
