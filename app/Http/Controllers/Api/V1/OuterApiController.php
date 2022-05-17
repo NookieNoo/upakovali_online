@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Actions\PublicApi\OrderCreateAction;
+use App\Actions\PublicApi\OrderUpdateAction;
 use App\Enums\OrderStatus;
 use App\Enums\OrderStatus as OrderStatusEnum;
 use App\Enums\SourceType;
@@ -133,29 +134,19 @@ class OuterApiController extends Controller
      *
      * @return JsonResponse
      */
-    public function updateOrder(UpdateOrderRequest $request)
+    public function updateOrder(UpdateOrderRequest $request, $externalNumber, OrderUpdateAction $orderUpdateAction)
     {
-        $validatedData = $request->validated();
-        $external_number = $validatedData['external_number'];
         try {
             $order = Order::where([
                 'parthner_id' => $request->user()->id,
-                'external_number' => $external_number
+                'external_number' => $externalNumber
             ])->firstOrFail();
-            //@TODO Добавить policy
-//            if ($request->user()->cannot('updateStatus', $order, Order::class)) {
-//                return $this->sendError('Доступ закрыт', Response::HTTP_FORBIDDEN);
-//            }
         } catch (ModelNotFoundException $e) {
             return $this->sendError('Заказ не найден.', Response::HTTP_NOT_FOUND);
         }
 
         try {
-            DB::transaction(function () use ($order, $validatedData) {
-                $order->receiving_date = $validatedData['receiving_date'];
-                $order->issue_date = $validatedData['issue_date'];
-                $order->save();
-            });
+            $orderUpdateAction->handle($order, $request->getDto(), $request->user());
         } catch (\Exception $e) {
             return $this->sendError('Не удалось изменить заказ', Response::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
         }

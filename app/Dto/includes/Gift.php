@@ -6,6 +6,7 @@ use Spatie\DataTransferObject\DataTransferObject;
 
 class Gift extends DataTransferObject
 {
+    public ?int $id;
     public float $weight;
     public int $length;
     public int $width;

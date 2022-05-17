@@ -35,7 +35,7 @@ class OrderCreateAction
         $orderDto->order_status_id = OrderStatusEnum::CREATED;
         $orderDto->is_pickupable = isset($orderDto->pick_up_address);
         $orderDto->is_deliverable = isset($orderDto->delivery_address);
-
+        //@TODO create receiver
         $client = Client::where($orderDto->client->only('full_name', 'phone')->toArray())->first();
         if (!$client) {
             $client = Client::create($orderDto->client->toArray());

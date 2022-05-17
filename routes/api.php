@@ -139,7 +139,7 @@ Route::group(['middleware' => ['auth:parthners']], function () {
     Route::prefix('outer-api')->group(function () {
 //        Route::get('/getServiceData', [OuterApiController::class, 'getServiceData']);
         Route::post('/order/createOrder', [OuterApiController::class, 'createOrder']);
-        Route::patch('/updateOrder', [OuterApiController::class, 'updateOrder']);
+        Route::put('/order/{external_number}', [OuterApiController::class, 'updateOrder']);
         Route::patch('/setStatus', [OuterApiController::class, 'setStatus']);
         Route::post('/order/setStatus', [OuterApiController::class, 'setStatus']);
         Route::post('/order/cancelOrder', [OuterApiController::class, 'cancelOrder']);
