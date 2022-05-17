@@ -18,9 +18,11 @@ use App\Http\Requests\OuterApi\SetOrderStatusRequest;
 use App\Http\Requests\OuterApi\UpdateOrderRequest;
 use App\Http\Resources\OrderShowOneResource;
 use App\Models\Activity;
+use App\Models\Addressee;
 use App\Models\Client;
 use App\Models\Order;
 use App\Models\OrderHistory;
+use App\Models\Price;
 use App\Models\User;
 use App\Models\Workshop;
 use Carbon\Carbon;
@@ -325,5 +327,16 @@ class OuterApiController extends Controller
     public function getWorkshops(Request $request)
     {
         return Workshop::withPaginate($request);
+    }
+
+    public function getAddressees(Request $request)
+    {
+        return Addressee::withPaginate($request);
+    }
+
+    public function getPrices(Request $request)
+    {
+        $prices = Price::where(["parthner_id" => $request->user()->id])->with('services')->withFilters($request)->withPaginate($request);
+        return $prices;
     }
 }
