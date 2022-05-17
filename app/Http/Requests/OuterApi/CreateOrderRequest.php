@@ -49,8 +49,8 @@ class CreateOrderRequest extends JsonRequest
             'delivery_address' => ['required_without:delivery_point_id', new OnlyOneOfTwoFields('delivery_point_id', 'delivery_address'), 'string', 'max:255'],
             'delivery_price' => ['required_with:delivery_price', new OnlyOneOfTwoFields('delivery_point_id', 'delivery_price'), 'numeric', 'min:0'],
 
-            'receiving_date' => "required|date|date_format:$dateTimeFormat",
-            'issue_date' => "required|date|date_format:$dateTimeFormat|after:receiving_date", // after now
+            'receiving_date' => "required|date|date_format:$dateTimeFormat|after:+30 minutes|before:+5 days",
+            'issue_date' => "required|date|date_format:$dateTimeFormat|after:receiving_date",
 
             'comment' => 'nullable|string|max:1000',
 
@@ -76,10 +76,7 @@ class CreateOrderRequest extends JsonRequest
             'additional_products.*.price' => 'required|numeric|min:0.1', //decimal 2
             'additional_products.*.name' => 'required|string|max:255',
 
-            //gifts
-            //additional
-            //prices
-            //photos
+            //TODO photos
         ];
     }
 
