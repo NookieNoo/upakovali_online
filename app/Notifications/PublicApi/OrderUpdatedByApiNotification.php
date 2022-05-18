@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Notifications\Order;
+namespace App\Notifications\PublicApi;
 
 use App\Models\Activity;
 use App\Models\AdditionalProduct;
@@ -11,22 +11,25 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class UpdateOrderNotification extends Notification implements ShouldQueue
+class OrderUpdatedByApiNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    private Order $order;
-    private string $batchUuid;
-
-    /**
-     * Create a new notification instance.
-     *
-     * @return void
-     */
-    public function __construct(Order $order,  string $batchUuid)
+    public function __construct(
+        private Order $order,
+        private string $batchUuid,
+    )
     {
-        $this->order = $order;
-        $this->batchUuid = $batchUuid;
+    }
+
+    public function getOrder(): Order
+    {
+        return $this->order;
+    }
+
+    public function getBatchUuid(): string
+    {
+        return $this->batchUuid;
     }
 
     /**
@@ -55,8 +58,8 @@ class UpdateOrderNotification extends Notification implements ShouldQueue
         $giftChanges = $batchActivities->filter(fn($item) => $item->subject_type === Gift::class);
         $additionalProductsChanges = $batchActivities->filter(fn($item) => $item->subject_type === AdditionalProduct::class);
         return (new MailMessage)
-            ->subject('Заказ успешно обновлен')
-            ->view('mails.public_api.order_updated_by_api', [
+            ->subject('Партнер успешно обновил заказ')
+            ->view('mails.order.updated', [
                 'order' => $this->order,
                 'link' => "$frontendDomain/order/" . $this->order->id,
                 'orderChanges' => $orderChanges,

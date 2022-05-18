@@ -6,6 +6,7 @@ use App\Dto\OrderUpdateByApiDto;
 use App\Enums\OrderStatus as OrderStatusEnum;
 use App\Enums\SourceType;
 use App\Events\PublicApi\OrderCreatedByApi;
+use App\Events\PublicApi\OrderUpdatedByApi;
 use App\Helpers\Geocoder;
 use App\Models\Client;
 use App\Models\DeliveryPoint;
@@ -97,7 +98,7 @@ class OrderUpdateAction
         $batchUuid = LogBatch::getUuid();
         LogBatch::endBatch();
 
-        $this->dispatcher->dispatch(new OrderCreatedByApi($order, $partner));
+        $this->dispatcher->dispatch(new OrderUpdatedByApi($order, $batchUuid));
 
         return $order;
     }
