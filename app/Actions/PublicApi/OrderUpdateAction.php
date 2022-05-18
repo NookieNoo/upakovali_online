@@ -8,6 +8,7 @@ use App\Enums\SourceType;
 use App\Events\PublicApi\OrderCreatedByApi;
 use App\Events\PublicApi\OrderUpdatedByApi;
 use App\Helpers\Geocoder;
+use App\Models\AdditionalProduct;
 use App\Models\Client;
 use App\Models\DeliveryPoint;
 use App\Models\Gift;
@@ -32,6 +33,8 @@ class OrderUpdateAction
     {
         $orderDto->is_pickupable = isset($orderDto->pick_up_address);
         $orderDto->is_deliverable = isset($orderDto->delivery_address);
+
+        $order->fill($orderDto->toArray());
 
 //        $client = Client::where($orderDto->client->only('full_name', 'phone')->toArray())->first();
 //        if (!$client) {
@@ -81,8 +84,21 @@ class OrderUpdateAction
             }
 
 
-            foreach ($orderDto->additional_products as $productData) {
-                $order->additionalProducts()->create($productData->toArray());
+            $order->load('additionalProducts');
+//            $addProductsIds = Arr::whereNotNull(Arr::pluck($validatedData['additional_products'] ?? [], 'id'));
+            $addProductsIds = Arr::whereNotNull(Arr::pluck(array_map(fn($it) => $it->toArray(), $orderDto->additional_products), 'id'));
+            $oldProductsIds = $order->additionalProducts->pluck('id')->toArray();
+            $idsProductsToDelete = array_diff($oldProductsIds, $addProductsIds);
+
+            AdditionalProduct::destroy($idsProductsToDelete);
+            if (!empty($orderDto->additional_products)) {
+                foreach ($orderDto->additional_products as $additionalProductData) {
+                    if (isset($additionalProductData->id)) {
+                        $order->additionalProducts->find($additionalProductData->id)->fill($additionalProductData->toArray())->save();
+                    } else {
+                        $order->additionalProducts()->create($additionalProductData->toArray());
+                    }
+                }
             }
 
             $order->history()->create([
