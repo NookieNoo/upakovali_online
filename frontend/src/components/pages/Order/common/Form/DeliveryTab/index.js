@@ -12,13 +12,16 @@ import {
 import { Typography, Divider, Box, Grid, Link } from '@material-ui/core';
 import { useFormState } from 'react-final-form';
 import { useSelector } from 'react-redux';
+import { random } from 'lodash';
 import { getServicesListTotal } from 'store/selectors';
 import { userRoles, serviceTypes } from '@app-constants';
 import { KladrAutocompleteBlock, AutocompleteWithRef, PhoneInput } from '@app-universal';
 import TotalBlock from '../common/TotalBlock';
 
-const courierFilter = { role_id: userRoles.courier.id };
 
+const randomStringToDisableSafariAutofill = "fsfd" + random(10000, 99999);
+
+const courierFilter = { role_id: userRoles.courier.id };
 export default function DeliveryTab({ validators, canEditForm, isEdit, isCreate }) {
     const { values: formState, ...rest } = useFormState();
     const giftsTotal = useSelector(getServicesListTotal(formState.gifts?.map((it) => it?.service_id) || []));
@@ -111,14 +114,14 @@ export default function DeliveryTab({ validators, canEditForm, isEdit, isCreate 
                     label="Время приема"
                     disabled={isEdit ? !canEditForm : false}
                     validate={validators.receiving_date}
-                    inputProps={{ autoComplete: 'new-password' }}
+                    inputProps={{ autoComplete: randomStringToDisableSafariAutofill }}
                 />
                 <DateTimeInput
                     source="issue_date"
                     label="Время выдачи"
                     disabled={isEdit ? !canEditForm : false}
                     validate={validators.issue_date}
-                    inputProps={{ autoComplete: 'new-password' }}
+                    inputProps={{ autoComplete: randomStringToDisableSafariAutofill }}
                 />
 
                 {/* <AutocompleteWithRef
