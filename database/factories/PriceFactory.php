@@ -23,12 +23,11 @@ class PriceFactory extends Factory
     {
 //        $availablePriceNames = ['Прайс для нашего сайта', 'Прайс для Озон', 'Прайс для Спортмастер',
 //            'Прайс для ЯМаркет', 'Прайс для WB'];
-        $endDate = $this->faker->dateTime();
         return [
 //            'name' => \Arr::random($availablePriceNames),
 //            'price' => $this->faker->randomFloat(2, 1, 1000),
-            'start' => $this->faker->dateTime($endDate),
-            'end' => $endDate,
+            'start' => $this->faker->dateTimeBetween('-3 days', '-1 day'),
+            'end' => $this->faker->dateTimeBetween('+60 days', '+ 90 days'),
         ];
     }
 }
