@@ -11,7 +11,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class NotifyStatusChanged implements ShouldQueue
+class NotifyOrderChanged implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -21,7 +21,6 @@ class NotifyStatusChanged implements ShouldQueue
      * @return void
      */
     public function __construct(
-        private Order $order,
         private string $batchActivitiesUuid
     )
     {

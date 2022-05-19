@@ -3,6 +3,7 @@
 namespace App\Listeners\Order;
 
 use App\Events\Order\OrderStatusUpdated;
+use App\Jobs\NotifyStatusChanged;
 use App\Notifications\Order\UpdateOrderStatusNotification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
@@ -28,7 +29,11 @@ class OrderStatusUpdatedListener
      */
     public function handle(OrderStatusUpdated $event)
     {
+        $order = $event->getOrder();
         Notification::route('mail', config('mail.send_reports_to'))
-            ->notify(new UpdateOrderStatusNotification($event->getOrder()));
+            ->notify(new UpdateOrderStatusNotification($order));
+        if ($order->isFromApi()) {
+            NotifyStatusChanged::dispatch($order, $event->getBatchUuid());
+        }
     }
 }

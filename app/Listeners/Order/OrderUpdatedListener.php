@@ -3,6 +3,7 @@
 namespace App\Listeners\Order;
 
 use App\Events\Order\OrderUpdated;
+use App\Jobs\NotifyOrderChanged;
 use App\Jobs\NotifyStatusChanged;
 use App\Notifications\Order\UpdateOrderNotification;
 use Illuminate\Support\Facades\Notification;
@@ -31,7 +32,7 @@ class OrderUpdatedListener
         Notification::route('mail', config('mail.send_reports_to'))
             ->notify(new UpdateOrderNotification($order, $event->getBatchUuid()));
         if ($order->isFromApi()) {
-            NotifyStatusChanged::dispatch($order);
+            NotifyOrderChanged::dispatch($event->getBatchUuid());
         }
     }
 }
