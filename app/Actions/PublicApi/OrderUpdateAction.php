@@ -41,36 +41,53 @@ class OrderUpdateAction
             $client = Client::create($orderDto->client->toArray());
         }
         $order->client_id = $client->id; //TODO До какого статуса можно менять клиента
-
+//дать возможность менять мастера (или не указывать его при создании)
         $receiver = Client::where($orderDto->receiver->only('full_name', 'phone')->toArray())->first();
         if (!$receiver) {
             $receiver = Client::create($orderDto->receiver->toArray());
         }
         $order->receiver_id = $receiver->id; //TODO До какого статуса можно менять получателя
 
-//        if ($orderDto->is_pickupable) { // TODO До какого статуса можно менять опции доставки
-//            $coords = $this->geocoder->getCoordsByAddress($orderDto->pick_up_address);
-//            $deliveryPoint = new DeliveryPoint([
-//                'address' => $orderDto->pick_up_address,
-//                'latitude' => $coords['latitude'],
-//                'longitude' => $coords['longitude'],
-//            ]);
-//            $deliveryPoint->save();
-//
-//            $orderDto->pick_up_address_point_id = $deliveryPoint->id;
-//        }
-//
-//        if ($orderDto->is_deliverable) {
-//            $coords = $this->geocoder->getCoordsByAddress($orderDto->delivery_address);
-//            $deliveryPoint = new DeliveryPoint([
-//                'address' => $orderDto->delivery_address,
-//                'latitude' => $coords['latitude'],
-//                'longitude' => $coords['longitude'],
-//            ]);
-//            $deliveryPoint->save();
-//
-//            $orderDto->delivery_address_point_id = $deliveryPoint->id;
-//        }
+        if ($order->isDirty('pick_up_address') && $order->is_pickupable === true) { // TODO До какого статуса можно менять опции доставки
+            $pickUpPoint = DeliveryPoint::where(["address" => $order->pick_up_address])->first();
+            if (!$pickUpPoint) {
+                $coords = $this->geocoder->getCoordsByAddress($order->pick_up_address); //todo проверить, что будет при недоступности сервиса
+                $pickUpPoint = new DeliveryPoint([
+                    'address' => $order->pick_up_address,
+                    'latitude' => $coords['latitude'],
+                    'longitude' => $coords['longitude'],
+                ]);
+                $pickUpPoint->save();
+            }
+            $order->pick_up_address_point_id = $pickUpPoint->id;
+            $order->pick_up_point_id = null;
+        }
+        if ($order->isDirty('is_pickupable') && $order->is_pickupable === false) {
+            $order->pick_up_price = null;
+            $order->pick_up_address = null;
+            $order->pick_up_address_point_id = null;
+        }
+
+
+        if ($order->isDirty('delivery_address') && $order->is_deliverable === true) { // TODO До какого статуса можно менять опции доставки
+            $deliveryPoint = DeliveryPoint::where(["address" => $order->delivery_address])->first();
+            if (!$deliveryPoint) {
+                $coords = $this->geocoder->getCoordsByAddress($order->delivery_address); //todo проверить, что будет при недоступности сервиса
+                $deliveryPoint = new DeliveryPoint([
+                    'address' => $order->delivery_address,
+                    'latitude' => $coords['latitude'],
+                    'longitude' => $coords['longitude'],
+                ]);
+                $deliveryPoint->save();
+            }
+            $order->delivery_address_point_id = $deliveryPoint->id;
+            $order->delivery_point_id = null;
+        }
+        if ($order->isDirty('is_deliverable') && $order->is_deliverable === false) {
+            $order->delivery_price = null;
+            $order->delivery_address = null;
+            $order->delivery_address_point_id = null;
+        }
 
         LogBatch::startBatch();
         $order = DB::transaction(function () use ($order, $orderDto, $partner) {
@@ -107,13 +124,14 @@ class OrderUpdateAction
                 }
             }
 
-            $order->history()->create([
-                'order_id' => $order->id,
-                'status_id' => OrderStatusEnum::CREATED,
-                'causer_id' => $partner->id,
-                'causer_type' => get_class($partner),
-                'date' => Carbon::now(),
-            ]);
+            if ($order->isDirty('order_status_id')) {
+                $order->history()->create([
+                    'status_id' => $order->order_status_id,
+                    'causer_id' => $partner->id,
+                    'causer_type' => get_class($partner),
+                    'date' => Carbon::now(),
+                ]);
+            }
 
             return $order;
         });
