@@ -7,6 +7,8 @@ import trackerAssist from '@openreplay/tracker-assist';
 import 'fix-date';
 import App from './App';
 import './styles/index.css';
+import dayjs from 'dayjs';
+require('dayjs/locale/ru');
 
 if (process.env.NODE_ENV === 'production') {
     Sentry.init({
@@ -32,6 +34,8 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 window.devToolsExtension = window.__REDUX_DEVTOOLS_EXTENSION__;
+
+dayjs.locale('ru');
 
 ReactDOM.render(
     <React.StrictMode>
