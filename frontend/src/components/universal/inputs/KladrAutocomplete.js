@@ -46,7 +46,7 @@ export default function KladrAutocomplete({
                 <TextField
                     {...params}
                     error={error}
-                    helperText={helperText}
+                    helperText={error && helperText}
                     label={label}
                     variant="filled"
                     onChange={handleInput}
