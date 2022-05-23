@@ -5,7 +5,7 @@ import {
     ReferenceInput,
     SelectInput,
     BooleanInput,
-    DateTimeInput,
+    // DateTimeInput,
     FormDataConsumer,
     NumberInput,
 } from 'react-admin';
@@ -17,9 +17,9 @@ import { getServicesListTotal } from 'store/selectors';
 import { userRoles, serviceTypes } from '@app-constants';
 import { KladrAutocompleteBlock, AutocompleteWithRef, PhoneInput } from '@app-universal';
 import TotalBlock from '../common/TotalBlock';
+import { DateTimeInput } from 'components/overriding/react-admin-date-inputs';
 
-
-const randomStringToDisableSafariAutofill = "fsfd" + random(10000, 99999);
+const randomStringToDisableSafariAutofill = 'fsfd' + random(10000, 99999);
 
 const courierFilter = { role_id: userRoles.courier.id };
 export default function DeliveryTab({ validators, canEditForm, isEdit, isCreate }) {

@@ -13,17 +13,17 @@ const submitValidator = ({
     const errors = {};
 
     if (is_pickupable && !pick_up_address) {
-        errors.pick_up_address = 'Введите адрес забора';
+        errors.pick_up_address = 'ra.validation.required';
     }
     if (!is_pickupable && !pick_up_point_id) {
-        errors.pick_up_point_id = 'Выберите точку забора';
+        errors.pick_up_point_id = 'ra.validation.required';
     }
 
     if (is_deliverable && !delivery_address) {
-        errors.delivery_address = 'Выберите адрес доставки';
+        errors.delivery_address = 'ra.validation.required';
     }
     if (!is_deliverable && !delivery_point_id) {
-        errors.delivery_point_id = 'Выберите точку доставки';
+        errors.delivery_point_id = 'ra.validation.required';
     }
 
     return errors;
