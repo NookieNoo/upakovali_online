@@ -1,26 +1,28 @@
-import React, { useCallback } from 'react';
-import PropTypes from 'prop-types';
-import { FieldTitle, useInput, useTranslate } from 'ra-core';
+import { useCallback } from 'react';
+import TextField from '@material-ui/core/TextField';
+import { useInput, FieldTitle, useTranslate, InputHelperText } from 'react-admin';
 import { LocalizationProvider } from '@material-ui/pickers';
-import { TextField } from '@material-ui/core';
 import DayjsUtils from '@date-io/dayjs';
 
-const Picker = ({ Component, ...props }) => {
-    const { options, label, source, resource, className, isRequired, providerOptions, fullWidth, onChange } = props;
-
+const Picker = (props) => {
+    const { providerOptions, label, source, resource, options, className, fullWidth, Component, validate } = props;
     const translate = useTranslate();
-    const { input, meta } = useInput({ source });
-    const { touched, error } = meta;
+
+    const {
+        input,
+        meta: { touched, error },
+        isRequired,
+    } = useInput({ source, validate });
 
     const handleChange = useCallback(
         (value) => {
-            onChange(value);
+            input.onChange(value);
 
             Date.parse(value) ? input.onChange(value.toISOString()) : input.onChange(null);
         },
         [input]
     );
-
+    console.log('source', source);
     return (
         <div className="picker">
             <LocalizationProvider {...providerOptions}>
@@ -28,8 +30,8 @@ const Picker = ({ Component, ...props }) => {
                     {...options}
                     label={<FieldTitle label={label} source={source} resource={resource} isRequired={isRequired} />}
                     margin="normal"
-                    error={!!(touched && error)}
-                    helperText={touched && error}
+                    // error={!!(touched && error)}
+                    // helperText={'touched && error'}
                     className={className}
                     value={input.value ? new Date(input.value) : null}
                     clearText={translate('ra.action.clear_input_value')}
@@ -37,31 +39,24 @@ const Picker = ({ Component, ...props }) => {
                     onChange={(date) => handleChange(date)}
                     onBlur={() => input.onBlur(input.value ? new Date(input.value).toISOString() : null)}
                     renderInput={(props) => (
-                        <TextField {...props} margin="normal" variant="filled" fullWidth={fullWidth} />
+                        <TextField
+                            {...props}
+                            error={!!(touched && error)}
+                            // helperText={touched && error}
+                            helperText={
+                                !!(touched && error) && (
+                                    <InputHelperText touched={touched} error={error} helperText={error} />
+                                )
+                            }
+                            margin="normal"
+                            variant="filled"
+                            fullWidth={fullWidth}
+                        />
                     )}
                 />
             </LocalizationProvider>
         </div>
     );
-};
-
-Picker.propTypes = {
-    input: PropTypes.object,
-    isRequired: PropTypes.bool,
-    label: PropTypes.string,
-    meta: PropTypes.object,
-    options: PropTypes.object,
-    resource: PropTypes.string,
-    source: PropTypes.string,
-    labelTime: PropTypes.string,
-    className: PropTypes.string,
-    providerOptions: PropTypes.shape({
-        dateAdapter: PropTypes.func,
-        dateLibInstance: PropTypes.func,
-        locale: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
-    }),
-    fullWidth: PropTypes.bool,
-    onChange: PropTypes.func,
 };
 
 Picker.defaultProps = {
