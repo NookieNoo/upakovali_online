@@ -53,6 +53,7 @@ const Picker = (props) => {
                             fullWidth={fullWidth}
                         />
                     )}
+                    ampm={false}
                 />
             </LocalizationProvider>
         </div>
