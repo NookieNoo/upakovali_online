@@ -9,6 +9,8 @@ const submitValidator = ({
     delivery_address,
     pick_up_point_id,
     pick_up_address,
+    issue_date,
+    receiving_date,
 }) => {
     const errors = {};
 
@@ -25,11 +27,16 @@ const submitValidator = ({
     if (!is_deliverable && !delivery_point_id) {
         errors.delivery_point_id = 'ra.validation.required';
     }
+    const receivingDate = dayjs(receiving_date);
+    const issueDate = dayjs(issue_date);
+    if (issueDate.isBefore(receivingDate)) {
+        errors.issue_date = 'app.validation.issue_date.is_before_receiving';
+    }
 
     return errors;
 };
 
-const validateIssueTime = (dateTime) => {
+const validateReceivingTime = (dateTime) => {
     let selectedDate = dayjs(dateTime);
     let dateMin = dayjs().add(30, 'm');
     let dateMax = dayjs().add(5, 'd');
@@ -69,8 +76,8 @@ const createOrderFormValidators = {
     delivery_point_id: [],
     delivery_address: [maxLength(255)],
     delivery_price: [required(), number(), minValue(1), decimalAccuracy],
-    receiving_date: [required()],
-    issue_date: [required(), validateIssueTime],
+    receiving_date: [required(), validateReceivingTime],
+    issue_date: [required()],
     comment: [],
     courier_receiver_id: [],
     isPaid: [],

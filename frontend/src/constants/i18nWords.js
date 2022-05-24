@@ -3,6 +3,11 @@ let i18nWords = {
         action: {
             find: 'Найти',
         },
+        validation: {
+            issue_date: {
+                is_before_receiving: 'Должно быть позже даты выдачи'
+            }
+        },
     },
 };
 

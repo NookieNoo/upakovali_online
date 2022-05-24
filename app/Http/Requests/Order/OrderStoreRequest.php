@@ -4,6 +4,7 @@ namespace App\Http\Requests\Order;
 
 use App\Enums\SourceType;
 use App\Http\Requests\JsonRequest;
+use App\Rules\OnlyOneOfTwoFields;
 use App\Rules\UniqueExternalNumberByPartner;
 
 class OrderStoreRequest extends JsonRequest
@@ -26,6 +27,8 @@ class OrderStoreRequest extends JsonRequest
     public function rules()
     {
         $apiSourceId = SourceType::API;
+        $dateTimeFormat = config('main.datetime_format');
+        $phoneRegex = config('main.phone_format_regex');
         return [
             'source_id' => 'required|integer|min:1|exists:sources,id',
             'parthner_id' => "exclude_unless:source_id,{$apiSourceId}|required|integer|min:1|exists:parthners,id",
@@ -36,7 +39,7 @@ class OrderStoreRequest extends JsonRequest
             'client_id' => 'exclude_unless:is_new_client,false|required|integer|min:1|exists:clients,id',
             'client' => 'exclude_unless:is_new_client,true|required|array',
             'client.full_name' => 'exclude_unless:is_new_client,true,false|required|string|max:255',
-            'client.phone' => 'exclude_unless:is_new_client,true,false|required|string|max:50',
+            'client.phone' => ['exclude_unless:is_new_client,true,false', 'required', 'string', 'max:50', "regex:$phoneRegex"],
             'client.email' => 'exclude_unless:is_new_client,true,false|required|string|email',
             'workshop_id' => 'required|integer|min:1|exists:workshops,id',
             'is_pickupable' => 'nullable|boolean',
@@ -47,8 +50,10 @@ class OrderStoreRequest extends JsonRequest
             'delivery_point_id' => 'nullable|integer|min:1|exists:workshops,id',
             'delivery_address' => 'nullable|string|max:255',
             'delivery_price' => 'exclude_unless:is_deliverable,true|required|numeric|min:0',
-            'receiving_date' => 'required|date',
-            'issue_date' => 'required|date',
+
+            'receiving_date' => "required|date|after:+30 minutes|before:+5 days",
+            'issue_date' => "required|date|after:receiving_date",
+
             'comment' => 'nullable|string',
             'courier_receiver_id' => 'nullable|integer|min:1|exists:users,id,role_id,4',
             'courier_issuer_id' => 'nullable|integer|min:1|exists:users,id,role_id,4',
@@ -58,7 +63,7 @@ class OrderStoreRequest extends JsonRequest
             'is_new_receiver' => 'exclude_unless:is_receiver_same,false|required|boolean',
             'receiver_id' => 'exclude_if:is_receiver_same,true|exclude_if:is_new_receiver,true|required|integer|min:1|exists:clients,id',
             'receiver.full_name' => 'exclude_if:is_receiver_same,true|exclude_if:is_new_receiver,false|required|string|max:255',
-            'receiver.phone' => 'exclude_if:is_receiver_same,true|exclude_if:is_new_receiver,false|required|string|max:50',
+            'receiver.phone' => ['exclude_if:is_receiver_same,true', 'exclude_if:is_new_receiver,false', 'required', 'string', 'max:50', "regex:$phoneRegex"],
             'receiver.email' => 'exclude_if:is_receiver_same,true|exclude_if:is_new_receiver,false|required|string|email',
             'gifts' => 'required|array',
             'gifts.*.weight' => 'required|numeric|min:0.1',
