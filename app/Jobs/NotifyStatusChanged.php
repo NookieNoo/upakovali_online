@@ -34,6 +34,6 @@ class NotifyStatusChanged implements ShouldQueue
      */
     public function handle(UpdatesNotifierService $notifier)
     {
-        $notifier->notifyOrderChanged($this->batchActivitiesUuid);
+//        $notifier->notifyOrderChanged($this->batchActivitiesUuid);
     }
 }
