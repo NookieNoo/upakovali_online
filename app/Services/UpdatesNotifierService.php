@@ -35,8 +35,17 @@ class UpdatesNotifierService
         dd($response);
     }
 
-    public function notifyOrderStatusChanged()
+    public function notifyOrderStatusChanged(Order $order, array $data, string $url)
     {
+        $forSend = [
+            'action' => 'update_order_status',
+            'subject_id' => $order->external_number,
+            'data' => $data,
+        ];
 
+        $response = $this->client::post($url, $forSend);
+        if (!$response->ok()) {
+            throw new \RuntimeException('Отправленное уведомление не было принято. Status= ' . $response->status());
+        }
     }
 }

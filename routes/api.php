@@ -15,7 +15,11 @@ use App\Http\Controllers\Api\V1\ServiceController;
 use App\Http\Controllers\Api\V1\SourceController;
 use App\Http\Controllers\Api\V1\UserController;
 use App\Http\Controllers\Api\V1\WorkshopController;
+use App\Jobs\NotifyOrderChanged;
+use App\Jobs\NotifyStatusChanged;
+use App\Notifications\Order\UpdateOrderNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -150,6 +154,10 @@ Route::group(['middleware' => ['auth:parthners']], function () {
         Route::get('/prices', [OuterApiController::class, 'getPrices']);
 //        Route::get('/sources', [OuterApiController::class, 'getWorkshops']);
     });
+});
+
+Route::get('not', function () {
+    NotifyStatusChanged::dispatch(\App\Models\Order::find(1), 135);
 });
 
 Route::fallback(function () {
