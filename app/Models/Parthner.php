@@ -59,6 +59,10 @@ use Illuminate\Notifications\Notifiable;
  * @mixin \Eloquent
  * @property string $password
  * @method static Builder|Parthner wherePassword($value)
+ * @property string $notification_url
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @property-read int|null $notifications_count
+ * @method static Builder|Parthner whereNotificationUrl($value)
  */
 class Parthner extends BaseModel implements
     AuthenticatableContract,
