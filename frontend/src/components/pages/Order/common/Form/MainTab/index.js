@@ -38,7 +38,7 @@ export default function MainTab({ validators, canEditForm, isEdit, isCreate }) {
     const { input: giftsInput, ...rest2 } = useField('gifts');
     const { input: partnerInput } = useField('parthner_id');
     const giftsTotal = useSelector(getServicesListTotal(formState.gifts?.map((it) => it?.service_id) || []));
-    const additionalTotal = formState.additional_products?.reduce((pr, cur) => pr + cur?.price || 0, 0);
+    const additionalTotal = formState.additional_products?.reduce((pr, cur) => pr + (cur?.price || 0), 0);
     const isFromApi = formState.source_id === sourceTypes.API.value;
 
     const onChangeNumber = (props) => {

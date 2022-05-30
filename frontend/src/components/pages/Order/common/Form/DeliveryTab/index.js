@@ -25,7 +25,7 @@ const courierFilter = { role_id: userRoles.courier.id };
 export default function DeliveryTab({ validators, canEditForm, isEdit, isCreate }) {
     const { values: formState, ...rest } = useFormState();
     const giftsTotal = useSelector(getServicesListTotal(formState.gifts?.map((it) => it?.service_id) || []));
-    const additionalTotal = formState.additional_products?.reduce((pr, cur) => pr + cur?.price || 0, 0);
+    const additionalTotal = formState.additional_products?.reduce((pr, cur) => pr + (cur?.price || 0), 0);
     return (
         <>
             <BooleanInput
