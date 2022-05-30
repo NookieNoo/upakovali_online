@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { isPlainObject } from 'lodash';
+import { isPlainObject, isEmpty } from 'lodash';
 import {
     Show,
     ImageField,
@@ -21,15 +21,18 @@ import { OrderShowActions } from './includes/OrderShowActions';
 import { useHasAccess } from '@app-hooks';
 import { ExpandActivityBlock } from '@app-universal';
 import { formatMoney } from '@app-helpers';
+import { sourceTypes } from '@app-constants';
 
-const renderTotal = it => formatMoney(it.total);
+const renderTotal = (it) => formatMoney(it.total);
 
 const filter = { subject_type: 'order' };
 
 export default function OrderShow(props) {
     const { record, loaded } = useShowController(props);
     const { list: canWatchActivity } = useHasAccess('activity');
-
+    const isFromApi = record?.source_id === sourceTypes.API.value;
+    console.log('record', record);
+    console.log('isFromApi', isFromApi);
     return (
         <Show
             actions={<OrderShowActions isDataLoaded={loaded} />}
@@ -40,8 +43,8 @@ export default function OrderShow(props) {
                 <Tab label="Общее">
                     <TextField label="Источник" source="source.name" />
                     <TextField label="Статус" source="order_status.name" />
-                    <TextField label="Партнер" source="parthner.full_name" />
-                    <TextField label="Внешний номер" source="external_number" />
+                    {isFromApi && <TextField label="Партнер" source="parthner.full_name" />}
+                    {isFromApi && <TextField label="Внешний номер" source="external_number" />}
                     <TextField label="Клиент" source="client.full_name" />
                     <TextField label="Мастерская" source="workshop.address" />
                     <RichTextField label="Комментарий" source="comment" />
@@ -58,24 +61,32 @@ export default function OrderShow(props) {
                             <TextField source="service.product.name" label="Тип услуги" />
                         </Datagrid>
                     </ArrayField>
+                    {!isEmpty(record?.additional_products) && (
+                        <ArrayField source="additional_products" fieldKey="id" label="Дополнительные товары">
+                            <Datagrid>
+                                <TextField source="id" />
+                                <TextField source="name" label="Название" />
+                                <TextField source="price" label="Цена" />
+                            </Datagrid>
+                        </ArrayField>
+                    )}
                     <FunctionField label="Итоговая стоимость" render={renderTotal} />
-                    <ArrayField source="additional_products" fieldKey="id" label="Дополнительные товары">
-                        <Datagrid>
-                            <TextField source="id" />
-                            <TextField source="name" label="Название" />
-                            <TextField source="price" label="Цена" />
-                        </Datagrid>
-                    </ArrayField>
                 </Tab>
                 {/* Размер из прайса */}
                 <Tab label="Доставка">
                     <BooleanField label="Забор" source="is_pickupable" />
-                    <TextField label="Точка забора товара" source="pick_up_point.address" />
-                    <TextField label="Точка забора товара" source="pick_up_address" />
+                    {record?.is_pickupable ? (
+                        <TextField label="Точка забора товара" source="pick_up_address" />
+                    ) : (
+                        <TextField label="Точка забора товара" source="pick_up_point.address" />
+                    )}
 
                     <BooleanField label="Доставка" source="is_deliverable" />
-                    <TextField label="Точка выдачи товара" source="delivery_point.address" />
-                    <TextField label="Точка выдачи товара" source="delivery_address" />
+                    {record?.is_deliverable ? (
+                        <TextField label="Точка выдачи товара" source="delivery_address" />
+                    ) : (
+                        <TextField label="Точка выдачи товара" source="delivery_point.address" />
+                    )}
 
                     <DateField label="Время приема" source="receiving_date" showTime />
                     <DateField label="Время выдачи" source="issue_date" showTime />

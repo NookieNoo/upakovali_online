@@ -231,6 +231,9 @@ class Order extends BaseModel
         foreach ($gifts as $gift) {
             $total += $gift->service->sum;
         }
+        foreach ($this->additionalProducts as $product) {
+            $total += $product->price;
+        }
         if ($this->pick_up_price) $total += $this->pick_up_price;
         if ($this->delivery_price) $total += $this->delivery_price;
         return $total;
