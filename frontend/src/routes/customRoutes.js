@@ -9,6 +9,7 @@ const customRoutes = [
     <RouteWithoutLayout exact path="/registration" component={RegistrationPage} />,
     <RouteWithoutLayout exact path="/forgot-password" component={ForgotPassword} />,
     <RouteWithoutLayout exact path="/password-restore" component={PasswordRestore} />,
+    <RouteWithoutLayout exact path="/email/verify" component={PasswordRestore} />,
     <RouteWithoutLayout
         exact
         path="/new-password"

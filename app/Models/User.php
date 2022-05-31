@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Enums\UserType;
+use App\Notifications\VerifyEmailNotification;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Builder;
@@ -66,7 +68,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @method static Builder|User withPaginate(\Illuminate\Http\Request $request)
  * @mixin \Eloquent
  */
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable, LogsActivity;
 
@@ -223,5 +225,10 @@ class User extends Authenticatable
                 }
                 return $logName;
             });
+    }
+
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new VerifyEmailNotification);
     }
 }

@@ -17,6 +17,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
+use Illuminate\Auth\Events\Registered;
 
 class AuthController extends Controller
 {
@@ -34,6 +35,7 @@ class AuthController extends Controller
                 'errorMessage' => $e->getMessage(),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
+        event(new Registered($user));
 
         $token = $user->createToken('myapptoken')->plainTextToken;
         return response()->json([
@@ -55,6 +57,10 @@ class AuthController extends Controller
                 'message' => 'Неправильный пароль/почта',
                 'code' => Response::HTTP_UNAUTHORIZED,
             ], Response::HTTP_UNAUTHORIZED);
+        }
+
+        if (!$user->email_verified_at) {
+            return $this->sendError('Пожалуйста, подтвердите email', Response::HTTP_UNAUTHORIZED);
         }
 
         if (!$user->is_active) {
