@@ -41,8 +41,8 @@ Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('
 Route::post('/login/parthner', [AuthController::class, 'loginParthner']);
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill();
-
-    return redirect('/home');
+//    return redirect('/home');
+    return redirect('localhost:3000/login');
 })->middleware(['auth', 'signed'])->name('verification.verify');
 
 Route::get('/debug-sentry', function () {
