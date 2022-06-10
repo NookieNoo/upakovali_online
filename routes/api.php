@@ -39,11 +39,12 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
 Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.reset');
 Route::post('/login/parthner', [AuthController::class, 'loginParthner']);
-Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-    $request->fulfill();
-//    return redirect('/home');
-    return redirect('localhost:3000/login');
-})->middleware(['auth', 'signed'])->name('verification.verify');
+//Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+//    $request->fulfill();
+////    return redirect('/home');
+//    return redirect('localhost:3000/login');
+//})->middleware(['auth', 'signed'])->name('verification.verify');
+Route::post("/verify-email/{id}/{hash}", [AuthController::class, 'verifyEmail'])->name("verification.verify");
 
 Route::get('/debug-sentry', function () {
     throw new Exception('My first Sentry error!');

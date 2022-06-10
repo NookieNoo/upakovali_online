@@ -2,7 +2,7 @@
 import * as React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { RouteWithoutLayout } from 'react-admin';
-import { Analytics, ForgotPassword, PasswordRestore, RegistrationPage, NewPassword } from '@app-pages';
+import { Analytics, ForgotPassword, PasswordRestore, RegistrationPage, NewPassword, VerifyEmail } from '@app-pages';
 
 const customRoutes = [
     <Route exact path="/analytics" component={Analytics} />,
@@ -10,6 +10,7 @@ const customRoutes = [
     <RouteWithoutLayout exact path="/forgot-password" component={ForgotPassword} />,
     <RouteWithoutLayout exact path="/password-restore" component={PasswordRestore} />,
     <RouteWithoutLayout exact path="/email/verify" component={PasswordRestore} />,
+    <RouteWithoutLayout exact path="/verify-email/:user_id/:hash" component={VerifyEmail} />,
     <RouteWithoutLayout
         exact
         path="/new-password"

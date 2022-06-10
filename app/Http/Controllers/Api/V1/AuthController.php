@@ -11,6 +11,7 @@ use App\Http\Requests\Auth\ResetPasswordRequest;
 use App\Models\Parthner;
 use App\Models\User;
 use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -154,5 +155,27 @@ class AuthController extends Controller
         return $status === Password::PASSWORD_RESET
             ? $this->send(Response::HTTP_OK, __($status))
             : $this->sendError(__($status), Response::HTTP_INTERNAL_SERVER_ERROR);
+    }
+
+    public function verifyEmail(Request $request)
+    {
+        if ($request->user()->hasVerifiedEmail()) {
+            return response()->json(
+                [
+                    "message" => "Given email is already verified.",
+                ],
+                400
+            );
+        }
+
+        if ($request->user()->markEmailAsVerified()) {
+            event(new Verified($request->user()));
+        }
+
+        return response()->json(
+            [
+                "message" => "Verification complete.",
+            ]
+        );
     }
 }

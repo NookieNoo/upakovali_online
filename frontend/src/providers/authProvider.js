@@ -43,6 +43,12 @@ export const authProvider = {
             body: JSON.stringify(values),
         });
     },
+    verifyEmail: (id, hash, body) => {
+        return fetchUtils.fetchJson(`${baseApiUrl}/verify-email/${id}/${hash}`, {
+            method: 'post',
+            body: JSON.stringify(body),
+        });
+    },
     checkError: ({ status }) => {
         if (status === 401 || status === 403) {
             localStorage.removeItem('username');
