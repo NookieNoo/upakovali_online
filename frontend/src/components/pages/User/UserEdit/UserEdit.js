@@ -32,7 +32,6 @@ export default function UserEdit(props) {
                     optionText="visible_name"
                     validate={editUserFormValidators.role_id}
                 />
-                <BooleanInput label="Активен?" source="is_active" />
             </SimpleForm>
         </Edit>
     );

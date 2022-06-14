@@ -64,7 +64,7 @@ class AuthController extends Controller
             return $this->sendError('Пожалуйста, подтвердите email', Response::HTTP_UNAUTHORIZED);
         }
 
-        if (!$user->is_active) {
+        if (!$user->role_id) {
             return $this->sendError('Пожалуйста, дождитесь подтверждения аккаунта', Response::HTTP_UNAUTHORIZED);
         }
 
@@ -159,23 +159,17 @@ class AuthController extends Controller
 
     public function verifyEmail(Request $request)
     {
-        if ($request->user()->hasVerifiedEmail()) {
-            return response()->json(
-                [
-                    "message" => "Given email is already verified.",
-                ],
-                400
-            );
+        $id = (int) $request->route('id');
+        $user = User::findOrFail($id);
+        $url = config('main.login_front_page');
+        if ($user->hasVerifiedEmail()) {
+            return redirect()->away($url);
         }
 
-        if ($request->user()->markEmailAsVerified()) {
-            event(new Verified($request->user()));
+        if ($user->markEmailAsVerified()) {
+            event(new Verified($user));
         }
 
-        return response()->json(
-            [
-                "message" => "Verification complete.",
-            ]
-        );
+        return redirect()->away($url);
     }
 }

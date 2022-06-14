@@ -29,7 +29,6 @@ class UserGetRequest extends FormRequest
         return [
             'query' => 'string|max:255',
             'role_id' => 'integer|min:1|exists:roles,id',
-            'is_active' => 'boolean',
         ];
     }
 

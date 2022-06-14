@@ -35,7 +35,6 @@ class UserFactory extends Factory
             'password' => Hash::make('0000'), // password
             'remember_token' => Str::random(10),
             'role_id' => rand(1, 4),
-            'is_active' => true
         ];
     }
 

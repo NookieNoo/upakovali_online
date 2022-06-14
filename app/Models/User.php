@@ -28,7 +28,6 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property \Illuminate\Support\Carbon|null $email_verified_at
  * @property string $password
  * @property int|null $role_id
- * @property bool $is_active
  * @property string|null $remember_token
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -84,7 +83,6 @@ class User extends Authenticatable implements MustVerifyEmail
         'phone',
         'role_id',
         'email',
-        'is_active'
     ];
 
     /**
@@ -165,9 +163,6 @@ class User extends Authenticatable implements MustVerifyEmail
                     ->orWhere(DB::raw("LOWER(" . $this->getTable() . ".phone)"), 'LIKE', "%" . mb_strtolower($q) . "%")
                     ->orWhere(DB::raw("LOWER(" . $this->getTable() . ".email)"), 'LIKE', "%" . mb_strtolower($q) . "%");
             })
-            ->when($request->query('is_active'), function (Builder $query, $is_active) {
-                if ($is_active) $query->where($this->getTable() . ".is_active", $is_active);
-            })
             ->when($request->query('role_id'), function (Builder $query, $roleId) {
                 $query->where($this->getTable() . ".role_id", $roleId);
             });
@@ -227,8 +222,8 @@ class User extends Authenticatable implements MustVerifyEmail
             });
     }
 
-//    public function sendEmailVerificationNotification()
-//    {
-//        $this->notify(new VerifyEmailNotification);
-//    }
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new VerifyEmailNotification);
+    }
 }

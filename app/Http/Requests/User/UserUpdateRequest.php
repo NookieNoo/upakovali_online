@@ -28,7 +28,6 @@ class UserUpdateRequest extends JsonRequest
             'phone' => 'required|string|max:50',
             'role_id' => 'required|integer|min:1|exists:roles,id',
             'password' => 'string|min:4|max:255|confirmed',
-            'is_active' => 'boolean',
         ];
     }
 }
