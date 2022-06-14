@@ -55,6 +55,8 @@ use Illuminate\Support\Str;
 class Activity extends \Spatie\Activitylog\Models\Activity
 {
     use HasFactory;
+    
+    protected $dateFormat = 'Y-m-d H:i:s P';
 
     public function scopeWithOrder($query, Request $request)
     {
