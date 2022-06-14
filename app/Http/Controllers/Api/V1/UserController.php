@@ -7,6 +7,7 @@ use App\Http\Requests\User\UserGetRequest;
 use App\Http\Requests\User\UserStoreRequest;
 use App\Http\Requests\User\UserUpdateRequest;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -52,6 +53,8 @@ class UserController extends Controller
             return $this->sendError('Не удалось создать пользователя', Response::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
         }
 
+        $this->dispatch(new Registered($user));
+        
         return $this->send(
             Response::HTTP_CREATED,
             Response::$statusTexts[Response::HTTP_CREATED],
