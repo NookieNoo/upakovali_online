@@ -53,8 +53,8 @@ class UserController extends Controller
             return $this->sendError('Не удалось создать пользователя', Response::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
         }
 
-        $this->dispatch(new Registered($user));
-        
+        event(new Registered($user));
+
         return $this->send(
             Response::HTTP_CREATED,
             Response::$statusTexts[Response::HTTP_CREATED],
