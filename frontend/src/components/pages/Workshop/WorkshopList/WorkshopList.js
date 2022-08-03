@@ -25,7 +25,7 @@ export default function WorkshopList(props) {
     const handleClose = () => props.history.push('/workshop');
     return (
         <>
-            <List {...props} title="Мастерские" actions={<WorkshopListActions />} filters={filters}>
+            <List {...props} title="Мастерские" actions={<WorkshopListActions />} filters={filters} bulkActionButtons={false}>
                 <Datagrid rowClick="show" isRowSelectable={() => false}>
                     <TextField label="id" source="id" />
                     <TextField label="Адрес" source="address" />

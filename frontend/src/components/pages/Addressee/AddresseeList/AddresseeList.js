@@ -25,7 +25,7 @@ export default function AddresseeList(props) {
     const handleClose = () => props.history.push('/addressee');
     return (
         <>
-            <List {...props} title="Адресаты" actions={<AddresseeListActions />} filters={filters}>
+            <List {...props} title="Адресаты" actions={<AddresseeListActions />} filters={filters} bulkActionButtons={false}>
                 <Datagrid rowClick="show" isRowSelectable={() => false}>
                     <TextField label="id" source="id" />
                     <TextField label="Кому" source="name" />

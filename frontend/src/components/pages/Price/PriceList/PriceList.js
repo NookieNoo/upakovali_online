@@ -22,7 +22,7 @@ export default function PriceList(props) {
 
     return (
         // <List {...props} title="Заказы" filters={filters}>
-        <List {...props} title="Прайсы" filters={priceFilters}>
+        <List {...props} title="Прайсы" filters={priceFilters} bulkActionButtons={false}>
             <CustomizableDatagrid rowClick="show" defaultColumns={defaultColumns} isRowSelectable={() => false}>
                 <TextField label="id" source="id" />
                 <TextField label="Партнер" source="parthner.full_name" />

@@ -25,7 +25,13 @@ export default function ProductList(props) {
     const handleClose = () => props.history.push('/product');
     return (
         <>
-            <List {...props} title="ServiceTypes" actions={<ProductListActions />} filters={filters}>
+            <List
+                {...props}
+                title="ServiceTypes"
+                actions={<ProductListActions />}
+                filters={filters}
+                bulkActionButtons={false}
+            >
                 <Datagrid rowClick="show" isRowSelectable={() => false}>
                     <TextField label="id" source="id" />
                     <TextField label="Название" source="name" />

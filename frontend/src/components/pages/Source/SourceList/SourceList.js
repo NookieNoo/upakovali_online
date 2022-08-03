@@ -25,7 +25,13 @@ export default function SourceList(props) {
     const handleClose = () => props.history.push('/source');
     return (
         <>
-            <List {...props} title="Источники" actions={<SourceListActions />} filters={filters}>
+            <List
+                {...props}
+                title="Источники"
+                actions={<SourceListActions />}
+                filters={filters}
+                bulkActionButtons={false}
+            >
                 <Datagrid rowClick="show" isRowSelectable={() => false}>
                     <TextField label="id" source="id" />
                     <TextField label="Название" source="name" />

@@ -14,7 +14,7 @@ const parthnerFilters = [
 
 export default function ParthnerList(props) {
     return (
-        <List {...props} title="Партнеры" filters={parthnerFilters}>
+        <List {...props} title="Партнеры" filters={parthnerFilters} bulkActionButtons={false}>
             <CustomizableDatagrid rowClick="show" isRowSelectable={() => false}>
                 <TextField label="id" source="id" />
                 <TextField label="Название" source="full_name" />

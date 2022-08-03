@@ -11,7 +11,7 @@ const userFilters = [
 
 export default function UserList(props) {
     return (
-        <List {...props} title="Пользователи" filters={userFilters}>
+        <List {...props} title="Пользователи" filters={userFilters} bulkActionButtons={false}>
             <CustomizableDatagrid rowClick="show" isRowSelectable={() => false}>
                 <TextField label="id" source="id" />
                 <TextField label="ФИО" source="full_name" />

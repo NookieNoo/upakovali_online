@@ -32,7 +32,7 @@ export default function OrderList(props) {
     if (isMaster) filters = masterFilters;
 
     return (
-        <List {...props} title="Заказы" filters={filters}>
+        <List {...props} title="Заказы" filters={filters} bulkActionButtons={false}>
             <CustomizableDatagrid rowClick="show" defaultColumns={defaultColumns} isRowSelectable={() => false}>
                 <TextField label="id" source="id" />
                 <TextField label="Источник" source="source.name" />
