@@ -1,15 +1,10 @@
 import * as React from 'react';
 import { List, TextField, EmailField, TextInput, SelectInput, ReferenceInput } from 'react-admin';
 import CustomizableDatagrid from 'ra-customizable-datagrid';
-import { userRoles } from '@app-constants';
-
-const managerFilter = { role_id: userRoles.manager.id };
 
 const parthnerFilters = [
     <TextInput label="Название" source="query" alwaysOn />,
-    <ReferenceInput label="Менеджер" source="manager_id" reference="user" filter={managerFilter} alwaysOn>
-        <SelectInput optionText="full_name" optionValue="id" />
-    </ReferenceInput>,
+    <TextInput label="Менеджер" source="manager" alwaysOn />,
 ];
 
 export default function ParthnerList(props) {
@@ -19,6 +14,7 @@ export default function ParthnerList(props) {
                 <TextField label="id" source="id" />
                 <TextField label="Название" source="full_name" />
                 <TextField label="Телефон" source="phone" />
+                <TextField label="Менеджер" source="manager" />
                 <EmailField label="Email" source="email" />
                 <TextField label="Комментарий" source="comment" />
             </CustomizableDatagrid>

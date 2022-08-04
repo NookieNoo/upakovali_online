@@ -30,9 +30,7 @@ export const dataProvider = {
     getOne: (resource, params) =>
         httpClient(`${baseApiUrl}/${resource}/${params.id}`).then(({ json }) => {
             //@FIXME Подумать, куда это вынести
-            if (resource === 'parthner') {
-                json.data.manager_id = json.data.manager.id;
-            } else if (resource === 'price') {
+            if (resource === 'price') {
                 json.data.parthner_id = json.data.parthner?.id;
                 json.data.services.forEach((it) => {
                     it.product_id = it.product.id;

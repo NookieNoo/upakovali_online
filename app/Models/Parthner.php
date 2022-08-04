@@ -77,7 +77,7 @@ class Parthner extends BaseModel implements
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $additionalHidden = ['manager_id'];
+        $additionalHidden = [];
         $this->hidden = array_merge($this->hidden, $additionalHidden);
     }
 
@@ -116,8 +116,8 @@ class Parthner extends BaseModel implements
                     ->orWhere(DB::raw("LOWER(" . $this->getTable() . ".phone)"), 'LIKE', "%" . mb_strtolower($q) . "%")
                     ->orWhere(DB::raw("LOWER(" . $this->getTable() . ".email)"), 'LIKE', "%" . mb_strtolower($q) . "%");
             })
-            ->when($request->query('manager_id'), function (Builder $query, $roleId) {
-                $query->where($this->getTable() . ".manager_id", $roleId);
+            ->when($request->query('manager'), function (Builder $query, $q) {
+                $query->where(DB::raw("LOWER(" . $this->getTable() . ".manager)"), 'LIKE', "%" . mb_strtolower($q) . "%");
             });
     }
 

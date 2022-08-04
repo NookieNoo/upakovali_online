@@ -26,7 +26,7 @@ class ParthnerUpdateRequest extends JsonRequest
     {
         return [
             'full_name' => 'required|string|max:255',
-            'manager_id' => 'required|integer|min:1|exists:users,id,role_id,2',
+            'manager' => 'required|string|max:255',
             'phone' => 'required|string|max:50',
             'email' => ['required', 'string', 'max:255', 'email', new UniquePartner(
                 $this->get('phone'), $this->get('email'), $this->route('id')

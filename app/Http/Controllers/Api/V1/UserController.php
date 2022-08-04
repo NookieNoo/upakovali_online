@@ -107,10 +107,6 @@ class UserController extends Controller
         }
 
         if ($validatedData['role_id'] !== $user->role_id) {
-            if ($user->parthners()->exists()) {
-                return $this->sendError('Нельзя изменить роль этого пользователя, т.к. это менеджер, и у него есть партнер', Response::HTTP_BAD_REQUEST);
-            }
-
             if ($user->ordersLikeMaster()->exists()) {
                 return $this->sendError('Нельзя изменить роль этого пользователя, т.к. это мастер, и у него есть заказы', Response::HTTP_BAD_REQUEST);
             }
@@ -137,10 +133,6 @@ class UserController extends Controller
             $user = User::findOrFail($id);
             if ($request->user()->cannot('delete', $user, User::class)) {
                 return $this->sendError('Доступ закрыт', Response::HTTP_FORBIDDEN);
-            }
-
-            if ($user->parthners()->exists()) {
-                return $this->sendError('Нельзя изменить роль этого пользователя, т.к. это менеджер, и у него есть партнер', Response::HTTP_BAD_REQUEST);
             }
 
             if ($user->ordersLikeMaster()->exists()) {

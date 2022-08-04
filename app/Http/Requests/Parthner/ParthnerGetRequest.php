@@ -27,7 +27,7 @@ class ParthnerGetRequest extends FormRequest
     {
         return [
             'query' => 'string|max:255',
-            'manager_id' => 'integer|min:1|exists:users,id',
+            'manager' => 'string|max:255',
         ];
     }
 

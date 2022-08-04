@@ -31,7 +31,7 @@ class ParthnerController extends Controller
         if ($request->user()->cannot('viewAny', Parthner::class)) {
             return $this->sendError('Доступ закрыт', Response::HTTP_FORBIDDEN);
         }
-        return Parthner::with('manager', 'manager.role')->withFilters($request)->withOrder($request)->withPaginate($request);
+        return Parthner::withFilters($request)->withOrder($request)->withPaginate($request);
     }
 
     /**
@@ -72,7 +72,7 @@ class ParthnerController extends Controller
     public function show(Request $request, $id)
     {
         try {
-            $parthner = Parthner::with('manager', 'manager.role', 'prices', 'prices.services')->findOrFail($id);
+            $parthner = Parthner::with('prices', 'prices.services')->findOrFail($id);
             if ($request->user()->cannot('view', $parthner, Parthner::class)) {
                 return $this->sendError('Доступ закрыт', Response::HTTP_FORBIDDEN);
             }
@@ -102,12 +102,6 @@ class ParthnerController extends Controller
         }
 
         $validatedData = $request->validated();
-
-        if ($validatedData['manager_id'] !== $parthner->manager_id) {
-            if ($parthner->orders()->exists()) {
-                return $this->sendError('Нельзя изменить менеджера этого партнера, т.к. у него есть заказы', Response::HTTP_BAD_REQUEST);
-            }
-        }
 
         $parthner->update($validatedData);
 

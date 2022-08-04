@@ -38,7 +38,7 @@ export default function ParhtnerShow(props) {
                         <TextField label="Название" source="full_name" />
                         <EmailField label="Email" source="email" />
                         <TextField label="Телефон" source="phone" />
-                        <TextField label="Менеджер" source="manager.full_name" />
+                        <TextField label="Менеджер" source="manager" />
                         <TextField label="Url для уведомлений" source="notification_url" />
                         <RichTextField label="Комментарий" source="comment" />
                     </SimpleShowLayout>

@@ -29,9 +29,7 @@ class ParthnerFactory extends Factory
         $email = $this->faker->email();
         return [
             'full_name' => $this->faker->company(),
-            'manager_id' => function () {
-                return User::where(['role_id' => 2])->inRandomOrder()->first()->id;
-            },
+            'manager' => fn() => $this->faker->name(),
             'phone' => $phone,
             'email' => $email,
             'comment' => $this->faker->sentence(),

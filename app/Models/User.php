@@ -128,11 +128,6 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsTo(Role::class);
     }
 
-    public function parthners()
-    {
-        return $this->hasMany(Parthner::class, 'manager_id');
-    }
-
     public function ordersLikeMaster()
     {
         return $this->hasMany(Order::class, 'master_id');

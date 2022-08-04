@@ -8,7 +8,7 @@ const createParthnerFormValidators = {
     email: [required(), maxLength(255), email()],
     comment: [],
     notification_url: [required(), maxLength(255), validateUrl],
-    manager_id: [required()],
+    manager: [required(), maxLength(255)],
 };
 
 const editParthnerFormValidators = {
@@ -17,7 +17,7 @@ const editParthnerFormValidators = {
     email: [required(), maxLength(255), email()],
     comment: [],
     notification_url: [required(), maxLength(255), validateUrl],
-    manager_id: [required()],
+    manager: [required(), maxLength(255)],
 };
 
 export { createParthnerFormValidators, editParthnerFormValidators };
