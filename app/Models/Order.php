@@ -234,8 +234,8 @@ class Order extends BaseModel
         foreach ($this->additionalProducts as $product) {
             $total += $product->price;
         }
-        if ($this->pick_up_price) $total += $this->pick_up_price;
-        if ($this->delivery_price) $total += $this->delivery_price;
+        if ($this->is_pickupable) $total += $this->pick_up_price;
+        if ($this->is_deliverable) $total += $this->delivery_price;
         return $total;
     }
 
