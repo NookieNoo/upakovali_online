@@ -24,6 +24,7 @@ import { useTranslate, useLogin, useNotify, useSafeSetState } from 'ra-core';
 import { Notification, TextInput, required } from 'react-admin';
 import { registerFormValidators } from '@app-helpers';
 import { userRoles } from '@app-constants';
+import PhoneMaskedInput from 'components/universal/inputs/PhoneMaskedInput';
 
 const theme = createTheme();
 
@@ -145,6 +146,11 @@ const RegistrationPage = (props) => {
                                         name="phone"
                                         autoComplete="phone"
                                         validateField="phone"
+                                        options={{
+                                            InputProps: {
+                                                inputComponent: PhoneMaskedInput,
+                                            },
+                                        }}
                                     />
                                     <Field
                                         component={Input}
