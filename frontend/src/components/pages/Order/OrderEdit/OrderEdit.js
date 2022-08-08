@@ -6,7 +6,7 @@ import OrderForm from '../common/Form';
 export default function OrderEdit(props) {
     return (
         <Edit {...props} mutationMode="pessimistic">
-            <OrderForm validators={editOrderFormValidators} isEdit={true} />
+            <OrderForm validators={editOrderFormValidators} isEdit={true}  disabled/>
         </Edit>
     );
 }

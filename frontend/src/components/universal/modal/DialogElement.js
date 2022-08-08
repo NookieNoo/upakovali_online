@@ -8,7 +8,9 @@ function DialogElement(props) {
 
     const handleOpen = React.useCallback(() => {
         beforeOpenCallback();
-        setIsOpen(true);
+        if(!props.isCheck){
+            setIsOpen(true);
+        }
     }, [beforeOpenCallback]);
 
     const handleClose = React.useCallback(() => {
@@ -40,6 +42,7 @@ DialogElement.propTypes = {
 
 DialogElement.defaultProps = {
     isOpen: false,
+    isCheck: true,
     beforeCloseCallback: () => {},
     beforeOpenCallback: () => {},
 };
