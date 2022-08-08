@@ -146,7 +146,7 @@ export default function MainTab({ validators, canEditForm, isEdit, isCreate }) {
                     <TextInputWithScanner
                         source="external_number"
                         label="Внешний номер"
-                        // disabled={isEdit}
+                        disabled={isEdit}
                         validate={validators.external_number}
                         onSubmit={onChangeNumber}
                         scannerModalProps={{ submitKeyLabel: translate('ra.action.save') }}
