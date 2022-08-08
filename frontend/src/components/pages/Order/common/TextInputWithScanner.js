@@ -75,7 +75,7 @@ export default function TextInputWithScanner({
                     endAdornment: (
                         <DialogElement
                             maxWidth="md"
-                            isCheck={disabled}
+                            isDisabled={disabled}
                             dialogOpenComponent={
                                 <IconButton disabled={disabled}>
                                     <QrIcon />
