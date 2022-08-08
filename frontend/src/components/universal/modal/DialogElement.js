@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import SimpleDialogWindow from './SimpleDialogWindow';
 
 function DialogElement(props) {
-    const { dialogOpenComponent, maxWidth, beforeCloseCallback, beforeOpenCallback } = props;
+    const { dialogOpenComponent, maxWidth, beforeCloseCallback, beforeOpenCallback, isDisabled} = props;
     const [isOpen, setIsOpen] = useState(props.isOpen);
 
     const handleOpen = React.useCallback(() => {
@@ -18,7 +18,7 @@ function DialogElement(props) {
 
     return (
         <>
-            <div onClick={handleOpen}>{dialogOpenComponent}</div>
+            <div onClick={isDisabled ? handleOpen : () => {}}>{dialogOpenComponent}</div>
             <SimpleDialogWindow
                 isOpen={isOpen}
                 renderContent={() => props.content({ onOpen: handleOpen, onClose: handleClose })}
@@ -40,6 +40,7 @@ DialogElement.propTypes = {
 
 DialogElement.defaultProps = {
     isOpen: false,
+    isDisabled: true,
     beforeCloseCallback: () => {},
     beforeOpenCallback: () => {},
 };
