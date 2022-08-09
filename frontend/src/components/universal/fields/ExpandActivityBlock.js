@@ -18,12 +18,15 @@ const dateFields = ['receiving_date', 'issue_date'];
 
 const renderValue = (key, val) => {
     if (dateFields.includes(key)) {
-        return formatDateTime(val);
+        console.log(`${key} ${val}`);
     }
     if (isBoolean(val)) {
         return val ? 'Да' : 'Нет';
     } else if (isNull(val)) {
         return '<Пусто>';
+    }
+    if (dateFields.includes(key)) {
+        return formatDateTime(val);
     }
     return val;
 };
@@ -48,7 +51,7 @@ export default function ExpandActivityBlock({ id, record, resource, ...rest }) {
                                 {Object.keys(properties.attributes).map((key, index) => (
                                     <TableRow key={index}>
                                         <TableCell>{key}</TableCell>
-                                        <TableCell>{renderValue(key, loGet(properties, `old.${key}`, '<Пусто>'))}</TableCell>
+                                        <TableCell>{renderValue(key, loGet(properties, `old.${key}`, null))}</TableCell>
                                         <TableCell>{renderValue(key, properties.attributes[key])}</TableCell>
                                     </TableRow>
                                 ))}
