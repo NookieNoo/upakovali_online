@@ -16,11 +16,12 @@ import {
     useShowController,
     useRecordContext,
     DateField,
-    Pagination
+    Pagination,
 } from 'react-admin';
 import { ShowSplitter, SimpleAccordionMemo } from '@app-universal';
 import { useHasAccess } from '@app-hooks';
-import { ExpandActivityBlock } from '@app-universal';
+import { ExpandActivityBlock, DateFieldLocalized } from '@app-universal';
+import { formatDateTime } from '@app-helpers';
 
 const filterByCauser = { causer_type: 'parthner' };
 const filterBySubject = { subject_type: 'parthner' };
@@ -67,7 +68,7 @@ export default function ParhtnerShow(props) {
                                 <SimpleAccordionMemo
                                     key={index}
                                     heading={it.name}
-                                    secondaryHeading={`${it.start} - ${it.end}`}
+                                    secondaryHeading={`${formatDateTime(it.start)} - ${formatDateTime(it.end)}`}
                                 >
                                     <ArrayField source={`prices[${index}].services`} label="Список прайсов">
                                         <Datagrid>
@@ -97,7 +98,12 @@ export default function ParhtnerShow(props) {
                                         >
                                             <TextField label="id" source="id" />
                                             <TextField label="Описание" source="description" />
-                                            <DateField label="Дата" source="created_at" showTime />
+                                            <DateFieldLocalized
+                                                showLabel={false}
+                                                label="Дата"
+                                                source="created_at"
+                                                showTime
+                                            />
                                         </Datagrid>
                                     </ReferenceManyField>
                                 </div>
@@ -121,7 +127,12 @@ export default function ParhtnerShow(props) {
                                         >
                                             <TextField label="id" source="id" />
                                             <TextField label="Описание" source="description" />
-                                            <DateField label="Дата" source="created_at" showTime />
+                                            <DateFieldLocalized
+                                                showLabel={false}
+                                                label="Дата"
+                                                source="created_at"
+                                                showTime
+                                            />
                                         </Datagrid>
                                     </ReferenceManyField>
                                 </div>

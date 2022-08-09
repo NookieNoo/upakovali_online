@@ -13,11 +13,10 @@ import {
     Datagrid,
     ChipField,
     BooleanField,
-    DateField,
 } from 'react-admin';
 import { ShowSplitter } from '@app-universal';
 import { useHasAccess } from '@app-hooks';
-import { ExpandActivityBlock } from '@app-universal';
+import { ExpandActivityBlock, DateFieldLocalized } from '@app-universal';
 
 const filterBySubject = { subject_type: 'client' };
 
@@ -92,7 +91,7 @@ export default function ClientShow(props) {
                                             <TextField label="id" source="id" />
                                             <TextField label="Описание" source="description" />
                                             <TextField label="Кто" source="causer.full_name" />
-                                            <DateField label="Дата" source="created_at" showTime />
+                                            <DateFieldLocalized showLabel={false} label="Дата" source="created_at" showTime />
                                         </Datagrid>
                                     </ReferenceManyField>
                                 </div>

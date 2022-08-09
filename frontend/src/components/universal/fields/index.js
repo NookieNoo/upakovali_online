@@ -1,3 +1,4 @@
 import ExpandActivityBlock from './ExpandActivityBlock';
+import DateFieldLocalized from './DateFieldLocalized';
 
-export { ExpandActivityBlock };
+export { ExpandActivityBlock, DateFieldLocalized };
