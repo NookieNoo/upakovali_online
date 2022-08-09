@@ -7,10 +7,10 @@ export default function DateFieldLocalized(props) {
         <>
             {showLabel ? (
                 <Labeled label={label}>
-                    <DateField {...props} />
+                    <DateField {...rest} />
                 </Labeled>
             ) : (
-                <DateField {...props} />
+                <DateField {...rest} label={label} />
             )}
         </>
     );
