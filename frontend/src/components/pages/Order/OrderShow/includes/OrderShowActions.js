@@ -41,9 +41,14 @@ export const OrderShowActions = (props) => {
         );
 
     const options = getStatusesOptions(orderStatuses, data?.order_status.id, isAdmin);
+    const styles = { 
+        btn_group: {
+            alignItems: 'center'
+        }
+    };
 
     return (
-        <TopToolbar>
+        <TopToolbar style={styles.btn_group}>
             {isDataLoaded && (
                 <SelectInput
                     label="Статус заказа"
@@ -56,7 +61,7 @@ export const OrderShowActions = (props) => {
                     optionLabelField="name"
                 />
             )}
-            <EditButton basePath={basePath} record={data} />
+            <EditButton basePath={basePath} record={data}/>
         </TopToolbar>
     );
 };
