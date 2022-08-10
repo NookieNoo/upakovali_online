@@ -37,12 +37,19 @@ use Illuminate\Support\Facades\DB;
  */
 class Price extends BaseModel
 {
+    protected $appends = ['is_virtual'];
+
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
         // $additionalHidden = ['parthner_id'];
         $additionalHidden = [];
         $this->hidden = array_merge($this->hidden, $additionalHidden);
+    }
+
+    public function getIsVirtualAttribute()
+    {
+        return !isset($this->parthner_id);
     }
 
     public function services()

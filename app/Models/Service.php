@@ -57,6 +57,11 @@ class Service extends BaseModel
         return $this->belongsTo(Product::class);
     }
 
+    public function gifts()
+    {
+        return $this->hasMany(Gift::class);
+    }
+
     public function scopeWithFilters($query, Request $request)
     {
         return $query->when($request->query('product_id'), function (Builder $query, $productId) {
