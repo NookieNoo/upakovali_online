@@ -44,6 +44,7 @@ class CreateOrdersTable extends Migration
             $table->unsignedInteger('receiver_id');
 
             $table->timestampsTz();
+            $table->softDeletes();
         });
 
         Schema::table('orders', function (Blueprint $table) {
