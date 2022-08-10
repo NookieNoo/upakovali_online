@@ -21,8 +21,21 @@ import {
     BooleanField,
     DateField,
     ChipField,
+    Datagrid,
 } from 'react-admin';
-import CustomizableDatagrid from 'ra-customizable-datagrid';
+// import CustomizableDatagrid from 'ra-customizable-datagrid';
+import { makeStyles } from '@material-ui/core';
+import CustomizableDatagrid from 'components/overriding/ra-customizable-datagrid';
+
+const useStyles = makeStyles((theme) => ({
+    table: {
+        overflowX: 'scroll',
+        maxWidth: '100%',
+        [theme.breakpoints.down('xs')]: {
+            maxWidth: '100vw',
+        },
+    },
+}));
 
 const postRowStyle = (record, index) => ({
     backgroundColor: record.nb_views >= 500 ? '#efe' : 'white',
@@ -49,33 +62,17 @@ const defaultColumns = [
 export function OrdersList(props) {
     // const { basePath } = useListContext();
     const basePath = 'order'; //@TODO Проверить работу
+    const classes = useStyles();
 
     return (
-        // <Card style={{ width: '100%' }}>
-        //     <CardHeader title="Список заказов" />
-        //     <List dense={true}>
-        //         {orderList.map((it, index) => (
-        //             <ListItem key={index}>
-        //                 <ListItemAvatar>
-        //                     <Avatar />
-        //                 </ListItemAvatar>
-        //                 <ListItemText primary={it.date1} secondary={it.p + ' ' + it.c} />
-        //                 <ListItemSecondaryAction>{it.price}</ListItemSecondaryAction>
-        //             </ListItem>
-        //         ))}
-        //     </List>
-        // </Card>
-        // <ListContextProvider value={listContext}>
-        <ListBase basePath={basePath} resource="order" filter={filterOrders}>
+        <ListBase basePath={basePath} resource="order" filter={filterOrders} style={{ border: '1px solid red' }}>
             <CardHeader title="Список заказов на сегодня" />
-            {/* <SimpleList
-                primaryText={(record) => 'Клиент: ' + record.client.full_name}
-                secondaryText={(record) => 'Мастер: ' + record.master.full_name}
-                tertiaryText={(record) => record.issue_date}
-                linkType={false}
-                rowStyle={postRowStyle}
-            /> */}
-            <CustomizableDatagrid isRowSelectable={() => false} rowClick="show" defaultColumns={defaultColumns}>
+            <CustomizableDatagrid
+                isRowSelectable={() => false}
+                rowClick="show"
+                defaultColumns={defaultColumns}
+                customDatagridClasses={classes.table}
+            >
                 <TextField label="id" source="id" />
                 <TextField label="Источник" source="source.name" />
                 <TextField label="Партнер" source="parthner.full_name" />

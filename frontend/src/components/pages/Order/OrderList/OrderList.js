@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { List, DateField, TextField, BooleanField, ChipField, EditButton, useGetIdentity } from 'react-admin';
-import CustomizableDatagrid from 'ra-customizable-datagrid';
+import CustomizableDatagrid from 'components/overriding/ra-customizable-datagrid';
 import { userRoles } from '@app-constants';
 import { useHasAccess } from '@app-hooks';
 import { adminFilters, courierFilters, masterFilters } from './filters';
