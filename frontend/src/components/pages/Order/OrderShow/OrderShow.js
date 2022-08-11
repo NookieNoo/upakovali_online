@@ -19,7 +19,7 @@ import {
 import Aside from './Aside';
 import { OrderShowActions } from './includes/OrderShowActions';
 import { useHasAccess } from '@app-hooks';
-import { ExpandActivityBlock } from '@app-universal';
+import { ExpandActivityBlock, DateFieldLocalized } from '@app-universal';
 import { formatMoney } from '@app-helpers';
 import { sourceTypes } from '@app-constants';
 
@@ -88,8 +88,8 @@ export default function OrderShow(props) {
                         <TextField label="Точка выдачи товара" source="delivery_point.address" />
                     )}
 
-                    <DateField label="Время приема" source="receiving_date" showTime />
-                    <DateField label="Время выдачи" source="issue_date" showTime />
+                    <DateFieldLocalized label="Время приема" source="receiving_date" showTime />
+                    <DateFieldLocalized label="Время выдачи" source="issue_date" showTime />
 
                     <TextField label="Курьер принимающий" source="courier_receiver.full_name" />
                     <TextField label="Курьер выдающий" source="courier_issuer.full_name" />
@@ -120,7 +120,7 @@ export default function OrderShow(props) {
                                     <TextField label="id" source="id" />
                                     <TextField label="Описание" source="description" />
                                     <TextField label="Кто" source="causer.full_name" />
-                                    <DateField label="Дата" source="created_at" showTime />
+                                    <DateFieldLocalized showLabel={false} label="Дата" source="created_at" showTime />
                                 </Datagrid>
                             </ReferenceManyField>
                         </div>

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { List, DateField, TextField, TextInput, DateInput, EditButton, ReferenceInput, SelectInput } from 'react-admin';
-import CustomizableDatagrid from 'ra-customizable-datagrid';
+import CustomizableDatagrid from 'components/overriding/ra-customizable-datagrid';
 import { useHasAccess } from '@app-hooks';
 
 const defaultColumns = ['id', 'name', 'start', 'end', 'parthner.full_name'];

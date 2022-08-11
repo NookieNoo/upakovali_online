@@ -8,6 +8,7 @@ import {
     SimpleFormIterator,
     NumberInput,
     RadioButtonGroupInput,
+    FormDataConsumer,
 } from 'react-admin';
 import { editPriceFormValidators } from '@app-helpers';
 import { AutocompleteWithRef } from '@app-universal';
@@ -30,12 +31,18 @@ export default function PriceEdit(props) {
                     validate={editPriceFormValidators.end}
                     inputProps={{ autoComplete: 'new-password' }}
                 />
-                <AutocompleteWithRef
-                    label="Партнер"
-                    source="parthner_id"
-                    reference="parthner"
-                    validate={editPriceFormValidators.parthner_id}
-                />
+                <FormDataConsumer>
+                    {({ formData, ...rest }) =>
+                        !formData.is_virtual && (
+                            <AutocompleteWithRef
+                                label="Партнер"
+                                source="parthner_id"
+                                reference="parthner"
+                                validate={editPriceFormValidators.parthner_id}
+                            />
+                        )
+                    }
+                </FormDataConsumer>
                 <ArrayInput source="services" label="Сервисы" validate={editPriceFormValidators.services}>
                     <SimpleFormIterator>
                         <TextInput source="name" label="Название" validate={editPriceFormValidators['services.name']} />

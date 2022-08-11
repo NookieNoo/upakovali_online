@@ -12,12 +12,21 @@ import {
     TableCell,
     TableRow,
 } from '@material-ui/core';
+import { formatDateTime } from '@app-helpers';
 
-const renderValue = (val) => {
+const dateFields = ['receiving_date', 'issue_date'];
+
+const renderValue = (key, val) => {
+    if (dateFields.includes(key)) {
+        console.log(`${key} ${val}`);
+    }
     if (isBoolean(val)) {
         return val ? 'Да' : 'Нет';
     } else if (isNull(val)) {
         return '<Пусто>';
+    }
+    if (dateFields.includes(key)) {
+        return formatDateTime(val);
     }
     return val;
 };
@@ -42,8 +51,8 @@ export default function ExpandActivityBlock({ id, record, resource, ...rest }) {
                                 {Object.keys(properties.attributes).map((key, index) => (
                                     <TableRow key={index}>
                                         <TableCell>{key}</TableCell>
-                                        <TableCell>{loGet(properties, `old.${key}`, '<Пусто>')}</TableCell>
-                                        <TableCell>{renderValue(properties.attributes[key])}</TableCell>
+                                        <TableCell>{renderValue(key, loGet(properties, `old.${key}`, null))}</TableCell>
+                                        <TableCell>{renderValue(key, properties.attributes[key])}</TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>

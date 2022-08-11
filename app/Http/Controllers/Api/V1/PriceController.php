@@ -13,6 +13,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Arr;
 
 class PriceController extends Controller
 {
@@ -100,13 +101,35 @@ class PriceController extends Controller
 //        }
 
 
-                $price->services()->delete();
-                foreach($validatedData['services'] as $serviceData) {
-                    $service = Service::create(array_merge($serviceData, ['price_id' => $price->id]));
+                $price->load('services');
+                $addServicesIds = Arr::whereNotNull(Arr::pluck($validatedData['services'] ?? [], 'id'));
+                $oldServicesIds = $price->services->pluck('id')->toArray();
+                $idsServicesToDelete = array_diff($oldServicesIds, $addServicesIds);
+
+                foreach ($price->services as $service) {
+                    if (in_array($service->id, $idsServicesToDelete)) {
+                        if ($service->gifts()->exists()) {
+                            //TODO Вынести в правило
+                            throw new \RuntimeException('Невозможно удалить сервис, т.к. есть подарок, использующий его');
+                        }
+                    }
+                }
+
+                Service::destroy($idsServicesToDelete);
+                if (!empty($validatedData['services'])) {
+                    foreach ($validatedData['services'] as $serviceData) {
+                        if (isset($serviceData['id'])) {
+                            $price->services->find($serviceData['id'])->fill($serviceData)->save();
+                        } else {
+                            $price->services()->create($serviceData);
+                        }
+                    }
                 }
 
                 return $price;
             });
+        } catch (\RuntimeException $e) {
+            return $this->sendError($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
         } catch (\Exception $e) {
             return $this->sendError('Не удалось обновить прайс', Response::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
         }

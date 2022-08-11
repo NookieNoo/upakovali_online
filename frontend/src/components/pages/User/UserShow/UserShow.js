@@ -20,7 +20,7 @@ import { ShowSplitter } from '@app-universal';
 import AvatarShowField from './AvatarShowField';
 import { userRoles } from '@app-constants';
 import { useHasAccess } from '@app-hooks';
-import { ExpandActivityBlock } from '@app-universal';
+import { ExpandActivityBlock, DateFieldLocalized } from '@app-universal';
 
 const useStyles = makeStyles({
     table: {
@@ -137,7 +137,7 @@ export default function UserShow(props) {
                                             <TextField label="id" source="id" />
                                             <TextField label="Описание" source="description" />
                                             <TextField label="Кто" source="causer.full_name" />
-                                            <DateField label="Дата" source="created_at" showTime />
+                                            <DateFieldLocalized showLabel={false} label="Дата" source="created_at" showTime />
                                         </Datagrid>
                                     </ReferenceManyField>
                                 </div>
@@ -162,7 +162,7 @@ export default function UserShow(props) {
                                         >
                                             <TextField label="id" source="id" />
                                             <TextField label="Описание" source="description" />
-                                            <DateField label="Дата" source="created_at" showTime />
+                                            <DateFieldLocalized showLabel={false} label="Дата" source="created_at" showTime />
                                         </Datagrid>
                                     </ReferenceManyField>
                                 </div>

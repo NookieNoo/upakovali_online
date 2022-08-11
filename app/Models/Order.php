@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\SourceType;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Facades\DB;
@@ -104,7 +105,7 @@ use Spatie\Activitylog\LogOptions;
  */
 class Order extends BaseModel
 {
-    use LogsActivity;
+    use LogsActivity, SoftDeletes;
 
     protected $casts = [
         'pick_up_price' => 'float',

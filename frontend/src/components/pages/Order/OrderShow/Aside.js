@@ -3,9 +3,14 @@ import { Typography, Card, CardContent, Box, Link, Stepper, Step, StepLabel, Ste
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import MessageIcon from '@material-ui/icons/Message';
 import { last } from 'lodash';
+import { formatDateTime } from '@app-helpers';
 
 export default function Aside(props) {
     const { history } = props;
+    const createdDate = history && history[0].date;
+    const formattedCreatedDate = formatDateTime(createdDate);
+    const lastChangeDate = history && last(history).date;
+    const formattedLastChangeDate = formatDateTime(lastChangeDate);
     return (
         <>
             <Box m="0 0 1em 1em">
@@ -22,7 +27,7 @@ export default function Aside(props) {
                                     </Box>
                                     <Box flexGrow={1}>
                                         <Typography>Создан</Typography>
-                                        <Typography>{history && history[0].date}</Typography>
+                                        <Typography>{formattedCreatedDate}</Typography>
                                     </Box>
                                 </Box>
                             </Box>
@@ -33,7 +38,7 @@ export default function Aside(props) {
                                     </Box>
                                     <Box flexGrow={1}>
                                         <Typography>Последнее изменение</Typography>
-                                        <Typography>{history && last(history).date}</Typography>
+                                        <Typography>{formattedLastChangeDate}</Typography>
                                     </Box>
                                 </Box>
                             </Box>
@@ -56,7 +61,7 @@ export default function Aside(props) {
                                             );
                                         }}
                                     >
-                                        {it.date}
+                                        {formatDateTime(it.date)}
                                     </StepLabel>
                                     <StepContent>
                                         <Typography variant="body2" gutterBottom>

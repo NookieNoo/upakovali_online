@@ -14,6 +14,7 @@ import {
     SimpleShowLayout,
     NumberField
 } from 'react-admin';
+import { DateFieldLocalized } from '@app-universal';
 // import Aside from './Aside';
 // import { OrderShowActions } from './includes/OrderShowActions';
 
@@ -28,8 +29,8 @@ export default function PriceShow(props) {
         >
             <SimpleShowLayout>
                 <TextField label="Источник" source="name" />
-                <DateField label="Действует с" source="start" />
-                <DateField label="Действует до" source="end" />
+                <DateFieldLocalized label="Действует с" source="start" />
+                <DateFieldLocalized label="Действует до" source="end" />
                 <TextField label="Партнер" source="parthner.full_name" />
                 <ArrayField source="services" fieldKey="id" label="Сервисы">
                     <Datagrid>

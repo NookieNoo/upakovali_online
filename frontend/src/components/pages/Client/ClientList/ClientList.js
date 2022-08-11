@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { List, TextField, EmailField, TextInput } from 'react-admin';
-import CustomizableDatagrid from 'ra-customizable-datagrid';
+import CustomizableDatagrid from 'components/overriding/ra-customizable-datagrid';
 
 const clientFilters = [<TextInput label="ФИО" source="query" alwaysOn />];
 
