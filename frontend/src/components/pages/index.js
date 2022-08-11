@@ -4,10 +4,11 @@ export * from './Order';
 export * from './User';
 export * from './Parthner';
 export * from './Anatytics';
-export * from './Registration';
-export * from './Login';
-export * from './ForgotPassword';
-export * from './PasswordRestore';
+export * from './Auth/AuthContainer'
+export * from './Auth/Registration';
+export * from './Auth/Login';
+export * from './Auth/ForgotPassword';
+export * from './Auth/PasswordRestore';
 export * from './NewPassword';
 export * from './Price';
 export * from './Workshop';

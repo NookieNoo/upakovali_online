@@ -6,7 +6,6 @@ import {
     TextField,
     FormControlLabel,
     Checkbox,
-    Link,
     Grid,
     Card,
     Box,
@@ -24,6 +23,7 @@ import { useTranslate, useLogin, useNotify, useSafeSetState } from 'ra-core';
 import { Notification, TextInput, required } from 'react-admin';
 import { registerFormValidators } from '@app-helpers';
 import { userRoles } from '@app-constants';
+import { Link } from "react-router-dom";
 
 const theme = createTheme();
 
@@ -53,6 +53,17 @@ const useStyles = makeStyles((theme) => ({
     icon: {
         backgroundColor: theme.palette.secondary[500],
     },
+    link: {
+        fontSize: '0.875rem',
+        fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+        fontWeight: '400',
+        lineHeight: '1.43',
+        letterSpacing: '0.01071em',
+
+        '& a': {
+            textDecoration: 'none',
+        }
+    }
 }));
 
 const Input = ({
@@ -181,9 +192,11 @@ const RegistrationPage = (props) => {
                                     </Button>
                                     <Grid container>
                                         <Grid item xs>
-                                            <Link href="/login" variant="body2">
-                                                Уже есть аккаунт?
-                                            </Link>
+                                            <div className={classes.link}>
+                                                <Link to="/login">
+                                                    Вспомнили пароль?
+                                                </Link>
+                                            </div>
                                         </Grid>
                                     </Grid>
                                 </form>
