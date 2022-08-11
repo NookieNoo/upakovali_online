@@ -1,4 +1,4 @@
-import { required, maxLength, email } from 'react-admin';
+import { required, maxLength, minLength, email } from 'react-admin';
 
 const submitValidator = ({ password, password_confirmation }) => {
     const errors = {};
@@ -14,8 +14,8 @@ const registerFormValidators = {
     phone: [required(), maxLength(50)],
     email: [required(), maxLength(255), email()],
     full_name: [required(), maxLength(255)],
-    password: [required(), maxLength(255)],
-    password_confirmation: [required(), maxLength(255)],
+    password: [required(), maxLength(255), minLength(4)],
+    password_confirmation: [required(), maxLength(255), minLength(4)],
     submit: submitValidator,
 };
 
