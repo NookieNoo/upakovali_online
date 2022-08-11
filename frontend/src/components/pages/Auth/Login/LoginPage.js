@@ -1,12 +1,18 @@
 import { useState } from 'react';
 import { useLogin, useNotify, Notification, defaultTheme } from 'react-admin';
+import Paper from '@material-ui/core/Paper';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
+import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import Link from '@material-ui/core/Link';
+import Box from '@material-ui/core/Box';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
-import { Login } from 'react-admin';
+import { Admin, Login } from 'react-admin';
+import { Link } from "react-router-dom";
+import LinkUI from '@material-ui/core/Link';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -34,10 +40,10 @@ const useStyles = makeStyles((theme) => ({
     },
     submit: {
         margin: theme.spacing(3, 0, 2),
-    },
+    }
 }));
 
-const ForgotPassword = () => {
+const LoginPage = () => {
     const classes = useStyles();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -45,10 +51,7 @@ const ForgotPassword = () => {
     const notify = useNotify();
     const submit = (e) => {
         e.preventDefault();
-        login({ username: email, password }).catch((e) => {
-            notify('Invalid email or password');
-            console.log('Invalid email or password');
-        });
+        login({ username: email, password }).catch((e) => notify(e.message));
     };
 
     return (
@@ -89,14 +92,18 @@ const ForgotPassword = () => {
                     </Button>
                     <Grid container>
                         <Grid item xs>
-                            <Link href="/password-restore" variant="body2">
-                                Забыли пароль?
-                            </Link>
+                            <LinkUI variant="body2">
+                                <Link to="/auth/password-restore">
+                                    Забыли пароль?
+                                </Link>
+                            </LinkUI>
                         </Grid>
                         <Grid item>
-                            <Link href="/registration" variant="body2">
-                                Нет учетной записи?
-                            </Link>
+                            <LinkUI variant="body2">
+                                <Link to="/auth/registration">
+                                    Нет учетной записи?
+                                </Link> 
+                            </LinkUI>
                         </Grid>
                     </Grid>
                 </form>
@@ -105,4 +112,4 @@ const ForgotPassword = () => {
     );
 };
 
-export { ForgotPassword };
+export { LoginPage };
