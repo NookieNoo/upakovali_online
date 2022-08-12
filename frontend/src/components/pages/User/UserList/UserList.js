@@ -19,7 +19,7 @@ export default function UserList(props) {
                     primaryText={(record) => `[${record.role.visible_name}] ${record.full_name}`}
                     secondaryText={(record) => record.phone}
                     tertiaryText={(record) => record.email}
-                    linkType={(record) => (record.canEdit ? 'edit' : 'show')}
+                    linkType="show"
                 />
             ) : (
                 <CustomizableDatagrid rowClick="show" isRowSelectable={() => false}>
