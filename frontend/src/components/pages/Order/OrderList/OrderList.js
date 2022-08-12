@@ -1,9 +1,21 @@
 import * as React from 'react';
-import { List, DateField, TextField, BooleanField, ChipField, EditButton, useGetIdentity } from 'react-admin';
+import {
+    List,
+    DateField,
+    TextField,
+    BooleanField,
+    ChipField,
+    EditButton,
+    useGetIdentity,
+    SimpleList,
+    Datagrid,
+} from 'react-admin';
 import CustomizableDatagrid from 'components/overriding/ra-customizable-datagrid';
 import { userRoles } from '@app-constants';
 import { useHasAccess } from '@app-hooks';
+import { useMediaQuery } from '@material-ui/core';
 import { adminFilters, courierFilters, masterFilters } from './filters';
+import OrderMobileGrid from './OrderMobileGrid';
 
 const defaultColumns = [
     'id',
@@ -23,6 +35,7 @@ export default function OrderList(props) {
     const { resource } = props;
     const { edit: canEdit } = useHasAccess(resource);
     const { identity } = useGetIdentity();
+    const isXSmall = useMediaQuery((theme) => theme.breakpoints.down('xs'));
 
     let filters = adminFilters;
     const isCourier = identity?.role.id === userRoles.courier.id;
@@ -33,30 +46,34 @@ export default function OrderList(props) {
 
     return (
         <List {...props} title="Заказы" filters={filters} bulkActionButtons={false}>
-            <CustomizableDatagrid rowClick="show" defaultColumns={defaultColumns} isRowSelectable={() => false}>
-                <TextField label="id" source="id" />
-                <TextField label="Источник" source="source.name" />
-                <TextField label="Партнер" source="parthner.full_name" />
-                <TextField label="Внешний №" source="external_number" />
-                <TextField label="Клиент" source="client.full_name" />
-                <TextField label="Мастерская" source="workshop.address" />
-                <BooleanField label="Забор" source="is_pickupable" />
-                <BooleanField label="Доставка" source="is_deliverable" />
-                {/* Здесь должен быть адрес приема(но он берется из разных источников) */}
-                <DateField label="Дата приема" source="receiving_date" />
-                <DateField label="Дата выдачи" source="issue_date" />
-                <TextField label="Комментарий" source="comment" />
-                <TextField label="Курьер приема" source="courier_receiver.full_name" />
-                <TextField label="Курьер выдачи" source="courier_issuer.full_name" />
-                <TextField label="Сумма" source="total" />
-                <BooleanField label="Оплачено" source="isPaid" />
-                <TextField label="Мастер" source="master.full_name" />
-                <TextField label="Получатель" source="receiver.full_name" />
+            {isXSmall ? (
+                <OrderMobileGrid />
+            ) : (
+                <CustomizableDatagrid rowClick="show" defaultColumns={defaultColumns} isRowSelectable={() => false}>
+                    <TextField label="id" source="id" />
+                    <TextField label="Источник" source="source.name" />
+                    <TextField label="Партнер" source="parthner.full_name" />
+                    <TextField label="Внешний №" source="external_number" />
+                    <TextField label="Клиент" source="client.full_name" />
+                    <TextField label="Мастерская" source="workshop.address" />
+                    <BooleanField label="Забор" source="is_pickupable" />
+                    <BooleanField label="Доставка" source="is_deliverable" />
+                    {/* Здесь должен быть адрес приема(но он берется из разных источников) */}
+                    <DateField label="Дата приема" source="receiving_date" />
+                    <DateField label="Дата выдачи" source="issue_date" />
+                    <TextField label="Комментарий" source="comment" />
+                    <TextField label="Курьер приема" source="courier_receiver.full_name" />
+                    <TextField label="Курьер выдачи" source="courier_issuer.full_name" />
+                    <TextField label="Сумма" source="total" />
+                    <BooleanField label="Оплачено" source="isPaid" />
+                    <TextField label="Мастер" source="master.full_name" />
+                    <TextField label="Получатель" source="receiver.full_name" />
 
-                <ChipField label="Статус" source="order_status.name" />
+                    <ChipField label="Статус" source="order_status.name" />
 
-                {canEdit ? <EditButton label={null} /> : <span></span>}
-            </CustomizableDatagrid>
+                    {canEdit ? <EditButton label={null} /> : <span></span>}
+                </CustomizableDatagrid>
+            )}
         </List>
     );
 }
