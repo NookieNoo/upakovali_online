@@ -15,3 +15,4 @@ export * from './Addressee';
 export * from './Product';
 export * from './Source';
 export * from './VerifyEmail';
+export * from './Accordion'

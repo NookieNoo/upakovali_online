@@ -14,6 +14,7 @@ import {
 } from '@app-pages';
 import { useHasAccess } from '@app-hooks';
 
+
 export const CustomMenu = (props) => {
     const { enabled: hasAccessToClient } = useHasAccess('client');
     const { enabled: hasAccessToParthner } = useHasAccess('parthner');
