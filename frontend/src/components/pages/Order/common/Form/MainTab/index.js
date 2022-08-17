@@ -22,6 +22,7 @@ import TextInputWithScanner from '../../TextInputWithScanner';
 import TotalBlock from '../common/TotalBlock';
 import ServiceOptionRenderer from './includes/ServiceOptionRenderer';
 import { VIRTUAL_PARTNER_ID } from '@app-constants';
+import { makeStyles } from '@material-ui/core/styles';
 
 const defaultSourceSort = { field: 'id', order: 'ASC' };
 const masterFilter = { role_id: userRoles.master.id };
@@ -31,6 +32,17 @@ const enableGetChoices = (arg) => {
     return false;
 };
 
+const useStyles = makeStyles(
+    theme => ({
+        styleInput: {
+            width: '275px'
+        },
+        styleExternalNumber: {
+            width: '275px',
+            marginLeft: '10px'
+        }
+    })
+);
 export default function MainTab({ validators, canEditForm, isEdit, isCreate }) {
     const translate = useTranslate();
     const { values: formState, ...rest } = useFormState();
@@ -49,6 +61,7 @@ export default function MainTab({ validators, canEditForm, isEdit, isCreate }) {
         product_id: serviceTypes.PACKAGE.id,
         parthner_id: formState.parthner_id,
     });
+    const classes = useStyles();
 
     useEffect(() => {
         // console.log('CHANGE PARTHNER_ID', formState.parthner_id);
@@ -69,7 +82,7 @@ export default function MainTab({ validators, canEditForm, isEdit, isCreate }) {
     return (
         <>
             <Box display={'flex'} flexDirection={'column'} width={'265px'}>
-                <ReferenceInput label="Источник" sort={defaultSourceSort} source="source_id" reference="source">
+                <ReferenceInput className={classes.styleInput} label="Источник" sort={defaultSourceSort} source="source_id" reference="source">
                     <SelectInputWrap
                         disabled={isEdit}
                         optionText="name"
@@ -79,13 +92,14 @@ export default function MainTab({ validators, canEditForm, isEdit, isCreate }) {
                     />
                 </ReferenceInput>
                 {isEdit && (
-                    <ReferenceInput label="Статус" source="order_status_id" reference="order_status">
+                    <ReferenceInput className={classes.styleInput} label="Статус" source="order_status_id" reference="order_status">
                         <SelectInput optionText="name" optionValue="id" validate={validators.order_status_id} />
                     </ReferenceInput>
                 )}
             </Box>
             {isFromApi && (
                 <AutocompleteWithRef
+                    className={classes.styleInput}
                     label="Партнер"
                     source="parthner_id"
                     reference="parthner"
@@ -103,6 +117,7 @@ export default function MainTab({ validators, canEditForm, isEdit, isCreate }) {
                         <Grid container justifyContent="flex-start" spacing={1}>
                             <Grid item>
                                 <TextInput
+                                    className={classes.styleInput}
                                     source="client.full_name"
                                     label="ФИО клиента"
                                     validate={validators['client.full_name']}
@@ -110,17 +125,19 @@ export default function MainTab({ validators, canEditForm, isEdit, isCreate }) {
                             </Grid>
                             <Grid item>
                                 <PhoneInput
+                                    className={classes.styleInput}
                                     source="client.phone"
                                     label="Телефон"
                                     validate={validators['client.phone']}
                                 />
                             </Grid>
                             <Grid item>
-                                <TextInput source="client.email" label="Email" validate={validators['client.email']} />
+                                <TextInput className={classes.styleInput} source="client.email" label="Email" validate={validators['client.email']} />
                             </Grid>
                         </Grid>
                     ) : (
                         <AutocompleteWithRef
+                            className={classes.styleInput}
                             label="Клиент"
                             source="client_id"
                             reference="client"
@@ -131,6 +148,7 @@ export default function MainTab({ validators, canEditForm, isEdit, isCreate }) {
                 </>
             ) : (
                 <AutocompleteWithRef
+                    className={classes.styleInput}
                     label="Клиент"
                     source="client_id"
                     reference="client"
@@ -144,6 +162,7 @@ export default function MainTab({ validators, canEditForm, isEdit, isCreate }) {
             <Box display={'flex'} flexDirection={'column'} width={'265px'}>
                 {isFromApi && (
                     <TextInputWithScanner
+                        className={classes.styleExternalNumber}
                         source="external_number"
                         label="Внешний номер"
                         disabled={isEdit}
@@ -153,10 +172,11 @@ export default function MainTab({ validators, canEditForm, isEdit, isCreate }) {
                         scannerModalProps={{ submitKeyLabel: translate('ra.action.save') }}
                     />
                 )}
-                <ReferenceInput label="Мастерская" source="workshop_id" reference="workshop" disabled={isEdit}>
+                <ReferenceInput className={classes.styleInput} label="Мастерская" source="workshop_id" reference="workshop" disabled={isEdit}>
                     <SelectInput optionText="address" optionValue="id" validate={validators.workshop_id} />
                 </ReferenceInput>
                 <AutocompleteWithRef
+                    className={classes.styleInput}
                     label="Мастер"
                     source="master_id"
                     reference="user"
@@ -168,14 +188,15 @@ export default function MainTab({ validators, canEditForm, isEdit, isCreate }) {
 
             <ArrayInput source="gifts" label="Подарки" validate={validators.gifts}>
                 <SimpleFormIterator>
-                    <NumberInput source="weight" label="Вес (кг)" validate={validators['gifts.weight']} />
-                    <NumberInput source="length" label="Длина (см)" min={1} validate={validators['gifts.length']} />
-                    <NumberInput source="width" label="Ширина (см)" min={1} validate={validators['gifts.width']} />
-                    <NumberInput source="height" label="Высота (см)" min={1} validate={validators['gifts.height']} />
-                    <ReferenceInput label="Кому" source="addressee_id" reference="addressee">
+                    <NumberInput className={classes.styleInput} source="weight" label="Вес (кг)" validate={validators['gifts.weight']} />
+                    <NumberInput className={classes.styleInput} source="length" label="Длина (см)" min={1} validate={validators['gifts.length']} />
+                    <NumberInput className={classes.styleInput} source="width" label="Ширина (см)" min={1} validate={validators['gifts.width']} />
+                    <NumberInput className={classes.styleInput} source="height" label="Высота (см)" min={1} validate={validators['gifts.height']} />
+                    <ReferenceInput className={classes.styleInput} label="Кому" source="addressee_id" reference="addressee">
                         <SelectInput optionText="name" optionValue="id" validate={validators['gifts.addressee_id']} />
                     </ReferenceInput>
                     <ReferenceInput
+                        className={classes.styleInput}
                         label="Сервис"
                         source="service_id"
                         reference="service"
@@ -198,8 +219,9 @@ export default function MainTab({ validators, canEditForm, isEdit, isCreate }) {
                 validate={validators.additional_products}
             >
                 <SimpleFormIterator>
-                    <TextInput source="name" label="Название" validate={validators['additional_products.name']} />
+                    <TextInput className={classes.styleInput} source="name" label="Название" validate={validators['additional_products.name']} />
                     <NumberInput
+                        className={classes.styleInput}
                         source="price"
                         min={0}
                         label="Стоимость"

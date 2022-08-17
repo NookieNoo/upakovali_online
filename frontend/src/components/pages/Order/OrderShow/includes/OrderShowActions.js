@@ -12,7 +12,7 @@ const getStatusesOptions = (orderStatuses, currentOrderStatus = null, isAdmin = 
 };
 
 export const OrderShowActions = (props) => {
-    const { basePath, data, resource, isDataLoaded } = props;
+    const { basePath, data, resource, isDataLoaded, className } = props;
     const { isAdmin } = useGetRole();
     const [mutate] = useMutation();
     const notify = useNotify();
@@ -56,7 +56,7 @@ export const OrderShowActions = (props) => {
                     optionLabelField="name"
                 />
             )}
-            <EditButton basePath={basePath} record={data} />
+            <EditButton className={className} basePath={basePath} record={data} />
         </TopToolbar>
     );
 };
