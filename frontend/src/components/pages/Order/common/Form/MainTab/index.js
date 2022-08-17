@@ -147,6 +147,7 @@ export default function MainTab({ validators, canEditForm, isEdit, isCreate }) {
                         source="external_number"
                         label="Внешний номер"
                         disabled={isEdit}
+                        isDisabled={false}
                         validate={validators.external_number}
                         onSubmit={onChangeNumber}
                         
