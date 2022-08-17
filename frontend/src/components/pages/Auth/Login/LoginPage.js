@@ -11,7 +11,7 @@ import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
 import { Admin, Login } from 'react-admin';
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 import LinkUI from '@material-ui/core/Link';
 
 const useStyles = makeStyles((theme) => ({
@@ -40,7 +40,10 @@ const useStyles = makeStyles((theme) => ({
     },
     submit: {
         margin: theme.spacing(3, 0, 2),
-    }
+    },
+    link: {
+        textDecoration: 'none',
+    },
 }));
 
 const LoginPage = () => {
@@ -60,6 +63,7 @@ const LoginPage = () => {
                 <Typography component="h1" variant="h5">
                     Войти
                 </Typography>
+                <LinkUI>sdfsdfsdf</LinkUI>
                 <form className={classes.form} onSubmit={submit} noValidate>
                     <TextField
                         variant="outlined"
@@ -92,18 +96,14 @@ const LoginPage = () => {
                     </Button>
                     <Grid container>
                         <Grid item xs>
-                            <LinkUI variant="body2">
-                                <Link to="/auth/password-restore">
-                                    Забыли пароль?
-                                </Link>
-                            </LinkUI>
+                            <Link className={classes.link} to="/auth/password-restore">
+                                <LinkUI variant="body2">Забыли пароль?</LinkUI>
+                            </Link>
                         </Grid>
                         <Grid item>
-                            <LinkUI variant="body2">
-                                <Link to="/auth/registration">
-                                    Нет учетной записи?
-                                </Link> 
-                            </LinkUI>
+                            <Link className={classes.link} to="/auth/registration">
+                                <LinkUI variant="body2">Нет учетной записи?</LinkUI>
+                            </Link>
                         </Grid>
                     </Grid>
                 </form>
