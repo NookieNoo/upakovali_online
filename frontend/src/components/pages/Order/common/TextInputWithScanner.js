@@ -62,6 +62,7 @@ export default function TextInputWithScanner({
     scannerInputProps,
     scannerModalProps,
     disabled,
+    className
 }) {
     return (
         <Box display={'flex'} alignSelf={'center'}>
@@ -71,6 +72,7 @@ export default function TextInputWithScanner({
                 validate={validate}
                 disabled={disabled}
                 {...scannerInputProps}
+                className={className}
                 InputProps={{
                     endAdornment: (
                         <DialogElement

@@ -22,13 +22,32 @@ import { ShowSplitter, SimpleAccordionMemo } from '@app-universal';
 import { useHasAccess } from '@app-hooks';
 import { ExpandActivityBlock, DateFieldLocalized } from '@app-universal';
 import { formatDateTime } from '@app-helpers';
+import { makeStyles } from '@material-ui/core/styles';
 
 const filterByCauser = { causer_type: 'parthner' };
 const filterBySubject = { subject_type: 'parthner' };
+const useStyles = makeStyles(theme => ({
+    styleTabbedShowLayout: {
+        "@media (max-width: 480px) and (min-width: 320px) ": {
+            width: '100vw',
+            '& div': {
+                flexWrap: 'wrap',
+            }
+        }
+    },
+    tab: {
+        "@media (max-width: 480px) and (min-width: 320px) ": {
+            width: '100vw',
+            marginLeft: 'auto',
+            marginRight: 'auto'
+        }
+    },
+}));
 
 export default function ParhtnerShow(props) {
     const { record } = useShowController(props);
     const { list: canWatchActivity } = useHasAccess('activity');
+    const classes = useStyles();
     // const data = useRecordContext({record});
     // console.log('data', data);
     return (
@@ -45,8 +64,8 @@ export default function ParhtnerShow(props) {
                     </SimpleShowLayout>
                 }
                 rightSide={
-                    <TabbedShowLayout>
-                        <Tab label="Заказы">
+                    <TabbedShowLayout className={classes.styleTabbedShowLayout}>
+                        <Tab className={classes.tab} label="Заказы">
                             <ReferenceManyField
                                 label="Список заказов, отфильтрованный по партнеру"
                                 target="parthner_id"
@@ -63,7 +82,7 @@ export default function ParhtnerShow(props) {
                                 </Datagrid>
                             </ReferenceManyField>
                         </Tab>
-                        <Tab label="Прайсы">
+                        <Tab label="Прайсы" className={classes.tab} >
                             {record?.prices?.map((it, index) => (
                                 <SimpleAccordionMemo
                                     key={index}
@@ -81,7 +100,7 @@ export default function ParhtnerShow(props) {
                             ))}
                         </Tab>
                         {canWatchActivity && (
-                            <Tab label="История изменений">
+                            <Tab label="История изменений" className={classes.tab}>
                                 <div>
                                     <ReferenceManyField
                                         label="Список действий пользователя"
@@ -110,7 +129,7 @@ export default function ParhtnerShow(props) {
                             </Tab>
                         )}
                         {canWatchActivity && (
-                            <Tab label="История действий">
+                            <Tab label="История действий" className={classes.tab}>
                                 <div>
                                     <ReferenceManyField
                                         label="Список действий пользователя"

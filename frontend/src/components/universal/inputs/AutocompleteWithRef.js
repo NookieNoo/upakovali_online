@@ -76,10 +76,11 @@ const AutocompleteWithRef = ({
     emptyValue,
     filter,
     disabled,
+    className,
     ...rest
 }) => {
     return (
-        <ReferenceInput disabled={disabled} label={label} source={source} reference={reference} filter={filter}>
+        <ReferenceInput disabled={disabled} label={label} source={source} reference={reference} filter={filter} className={className}>
             <AutocompleteInput
                 optionText={<OptionRenderer />}
                 inputText={inputText}
