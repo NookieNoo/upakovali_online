@@ -18,6 +18,7 @@ export default function KladrAutocomplete({
     helperText,
     id,
     disabled,
+    className
 }) {
     const [open, setOpen] = React.useState(false);
     const filterOptions = filterOptionsCallback ? filterOptionsCallback : (x) => x;
@@ -42,6 +43,7 @@ export default function KladrAutocomplete({
             value={value}
             freeSolo
             disabled={disabled}
+            className={className}
             renderInput={(params) => (
                 <TextField
                     {...params}

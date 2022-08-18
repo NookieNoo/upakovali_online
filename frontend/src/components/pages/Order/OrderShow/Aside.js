@@ -6,14 +6,14 @@ import { last } from 'lodash';
 import { formatDateTime } from '@app-helpers';
 
 export default function Aside(props) {
-    const { history } = props;
+    const { history,sx } = props;
     const createdDate = history && history[0].date;
     const formattedCreatedDate = formatDateTime(createdDate);
     const lastChangeDate = history && last(history).date;
     const formattedLastChangeDate = formatDateTime(lastChangeDate);
     return (
         <>
-            <Box m="0 0 1em 1em">
+            <Box m="0 0 1em 1em" sx={sx}>
                 <Card>
                     <CardContent>
                         <Typography variant="h6" gutterBottom>
