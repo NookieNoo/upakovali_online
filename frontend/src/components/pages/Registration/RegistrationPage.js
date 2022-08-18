@@ -24,6 +24,8 @@ import { useTranslate, useLogin, useNotify, useSafeSetState } from 'ra-core';
 import { Notification, TextInput, required } from 'react-admin';
 import { registerFormValidators } from '@app-helpers';
 import { userRoles } from '@app-constants';
+import PhoneMaskedInput from 'components/universal/inputs/PhoneMaskedInput';
+import { useRedirect } from 'ra-core';
 
 const theme = createTheme();
 
@@ -77,11 +79,16 @@ const RegistrationPage = (props) => {
     const classes = useStyles();
     const notify = useNotify();
 
+    const redirect = useRedirect();
+
     const submit = (values) => {
         console.log(values);
         authProvider
             .register(values)
-            .then((res) => notify(res?.message || 'Пользователь зарегистрирован', { type: 'success' }))
+            .then((res) => {
+                notify(res?.message || 'Пользователь зарегистрирован', { type: 'success' });
+                redirect('/login');
+            })
             .catch((error) => {
                 notify(error?.message || 'Пожалуйста, попробуйте позже', { type: 'error' });
             });
@@ -145,6 +152,11 @@ const RegistrationPage = (props) => {
                                         name="phone"
                                         autoComplete="phone"
                                         validateField="phone"
+                                        options={{
+                                            InputProps: {
+                                                inputComponent: PhoneMaskedInput,
+                                            },
+                                        }}
                                     />
                                     <Field
                                         component={Input}
