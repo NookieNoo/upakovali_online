@@ -11,7 +11,8 @@ import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
 import { Admin, Login } from 'react-admin';
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
+import LinkUI from '@material-ui/core/Link';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -41,16 +42,8 @@ const useStyles = makeStyles((theme) => ({
         margin: theme.spacing(3, 0, 2),
     },
     link: {
-        fontSize: '0.875rem',
-        fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-        fontWeight: '400',
-        lineHeight: '1.43',
-        letterSpacing: '0.01071em',
-
-        '& a': {
-            textDecoration: 'none',
-        }
-    }
+        textDecoration: 'none',
+    },
 }));
 
 const LoginPage = () => {
@@ -70,6 +63,7 @@ const LoginPage = () => {
                 <Typography component="h1" variant="h5">
                     Войти
                 </Typography>
+                <LinkUI>sdfsdfsdf</LinkUI>
                 <form className={classes.form} onSubmit={submit} noValidate>
                     <TextField
                         variant="outlined"
@@ -102,18 +96,14 @@ const LoginPage = () => {
                     </Button>
                     <Grid container>
                         <Grid item xs>
-                            <div className={classes.link}>
-                                <Link to="/auth/password-restore">
-                                    Забыли пароль?
-                                </Link>
-                            </div>
+                            <Link className={classes.link} to="/auth/password-restore">
+                                <LinkUI variant="body2">Забыли пароль?</LinkUI>
+                            </Link>
                         </Grid>
                         <Grid item>
-                            <div className={classes.link}>
-                                <Link to="/auth/registration">
-                                    Нет учетной записи?
-                                </Link> 
-                            </div>
+                            <Link className={classes.link} to="/auth/registration">
+                                <LinkUI variant="body2">Нет учетной записи?</LinkUI>
+                            </Link>
                         </Grid>
                     </Grid>
                 </form>

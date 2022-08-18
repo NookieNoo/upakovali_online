@@ -6,7 +6,8 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { Login } from 'react-admin';
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
+import LinkUI from '@material-ui/core/Link';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -99,19 +100,15 @@ const ForgotPassword = () => {
                         Войти
                     </Button>
                     <Grid container>
-                    <Grid item xs>
+                        <Grid item xs>
                             <div className={classes.link}>
-                                <Link to="/auth/password-restore">
-                                    Забыли пароль?
-                                </Link>
+                                <Link to="/auth/password-restore">Забыли пароль?</Link>
                             </div>
                         </Grid>
                         <Grid item>
-                            <div className={classes.link}>
-                                <Link to="/auth/registration">
-                                    Нет учетной записи?
-                                </Link> 
-                            </div>
+                            <Link to="/auth/registration">
+                                <LinkUI variant="body2">Нет1sfsdfsdfsdfsd учетной записи?</LinkUI>
+                            </Link>
                         </Grid>
                     </Grid>
                 </form>
