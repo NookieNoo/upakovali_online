@@ -7,6 +7,8 @@ import ru from 'react-phone-input-2/lang/ru.json';
 import { Field } from 'react-final-form';
 
 export function PhoneInput2(props) {
+    const { containerClass, inputClass, buttonClass, dropdownClass, searchClass } = props;
+
     return (
         <Field
             name="phone"
@@ -14,6 +16,11 @@ export function PhoneInput2(props) {
                 console.log('input', input);
                 return (
                     <PhoneInput
+                        containerClass={containerClass}
+                        inputClass={inputClass}
+                        buttonClass={buttonClass}
+                        dropdownClass={dropdownClass}
+                        searchClass={searchClass}
                         inputProps={{
                             name: 'phone',
                             required: true,

@@ -40,6 +40,39 @@ const useStyles = makeStyles(
         styleExternalNumber: {
             width: '275px',
             marginLeft: '10px'
+        },
+        inputPhone: {
+            height: '49px',
+            width: '275px !important',
+            backgroundColor: 'rgba(0, 0, 0, 0.04) !important',
+            border: '1px solid white !important',
+            borderBottom: '1px solid grey !important',
+            borderTopLeftRadius: '4px !important',
+            borderTopRightRadius: '4px !important',
+            borderBottomLeftRadius: '0 !important',
+            borderBottomRightRadius: '0 !important',
+            transition: 'background-color 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms !important',
+
+            '&:hover': {
+                backgroundColor: 'rgba(0, 0, 0, 0.13) !important',
+            },
+
+            '&:focus': {
+                boxShadow: 'none !important'
+            }
+
+        },
+        container: {
+
+            '& div': {
+                backgroundColor: 'transparent !important',
+            },
+
+            marginTop: '7px',
+
+            '@media (max-width: 644px) and (min-width: 320px)': {
+                marginTop: '0',
+            }
         }
     })
 );
@@ -125,7 +158,8 @@ export default function MainTab({ validators, canEditForm, isEdit, isCreate }) {
                             </Grid>
                             <Grid item>
                                 <PhoneInput
-                                    className={classes.styleInput}
+                                    containerClass={classes.container}
+                                    inputClass={classes.inputPhone}
                                     source="client.phone"
                                     label="Телефон"
                                     validate={validators['client.phone']}
@@ -168,7 +202,7 @@ export default function MainTab({ validators, canEditForm, isEdit, isCreate }) {
                         disabled={isEdit}
                         validate={validators.external_number}
                         onSubmit={onChangeNumber}
-                        
+
                         scannerModalProps={{ submitKeyLabel: translate('ra.action.save') }}
                     />
                 )}
