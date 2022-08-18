@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { isValidElement } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
@@ -30,8 +30,12 @@ function SimpleAccordion(props) {
         <div className={classes.root}>
             <Accordion TransitionProps={mountOptions}>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1bh-content">
-                    <Typography className={classes.heading}>{heading}</Typography>
-                    <Typography className={classes.secondaryHeading}>{secondaryHeading}</Typography>
+                    {isValidElement(heading) ? heading : <Typography className={classes.heading}>{heading}</Typography>}
+                    {isValidElement(secondaryHeading) ? (
+                        secondaryHeading
+                    ) : (
+                        <Typography className={classes.secondaryHeading}>{secondaryHeading}</Typography>
+                    )}
                 </AccordionSummary>
                 <AccordionDetails>{children}</AccordionDetails>
             </Accordion>
