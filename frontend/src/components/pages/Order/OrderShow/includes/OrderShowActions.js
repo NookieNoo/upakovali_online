@@ -3,6 +3,7 @@ import { TopToolbar, EditButton, useNotify, useMutation, useRefresh } from 'reac
 import { orderStatuses } from '@app-constants';
 import SelectInput from '@app-universal/inputs/SelectInput';
 import { useGetRole } from '@app-hooks';
+import { makeStyles } from '@material-ui/core/styles';
 
 const getStatusesOptions = (orderStatuses, currentOrderStatus = null, isAdmin = false) => {
     const statusesArray = Object.values(orderStatuses);
@@ -11,12 +12,21 @@ const getStatusesOptions = (orderStatuses, currentOrderStatus = null, isAdmin = 
     return statusesArray.map((it, index) => ({ ...it, disabled: index !== currentStatusIndex + 1 }));
 };
 
+const useStyles = makeStyles((theme) => ({
+    btn_group: {
+        alignItems: 'center',
+        display: 'flex'
+    }
+}));
+
+
 export const OrderShowActions = (props) => {
     const { basePath, data, resource, isDataLoaded } = props;
     const { isAdmin } = useGetRole();
     const [mutate] = useMutation();
     const notify = useNotify();
     const refresh = useRefresh();
+    const classes = useStyles();
 
     const changeStatus = (event) =>
         mutate(
@@ -41,27 +51,29 @@ export const OrderShowActions = (props) => {
         );
 
     const options = getStatusesOptions(orderStatuses, data?.order_status.id, isAdmin);
-    const styles = { 
+    const styles = {
         btn_group: {
             alignItems: 'center'
         }
     };
 
     return (
-        <TopToolbar style={styles.btn_group}>
-            {isDataLoaded && (
-                <SelectInput
-                    label="Статус заказа"
-                    // disableValue="not_available"
-                    source="order_status.id"
-                    options={options}
-                    value={data.order_status.id}
-                    onChange={changeStatus}
-                    optionValueField="id"
-                    optionLabelField="name"
-                />
-            )}
-            <EditButton basePath={basePath} record={data}/>
+        <TopToolbar>
+            <div className={classes.btn_group}>
+                    {isDataLoaded && (
+                        <SelectInput
+                        label="Статус заказа"
+                        // disableValue="not_available"
+                        source="order_status.id"
+                        options={options}
+                        value={data.order_status.id}
+                        onChange={changeStatus}
+                        optionValueField="id"
+                        optionLabelField="name"
+                        />
+                    )}
+                    <EditButton basePath={basePath} record={data}/>
+            </div>
         </TopToolbar>
     );
 };
