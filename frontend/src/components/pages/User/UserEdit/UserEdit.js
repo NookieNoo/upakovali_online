@@ -34,6 +34,9 @@ const useStyles = makeStyles((theme) => ({
         },
 
         marginBottom: '19px'
+    },
+    overflow: {
+        '& .MuiCard-root': {overflow: 'visible !important'}
     }
 }));
 
@@ -52,7 +55,7 @@ export default function UserEdit(props) {
     const classes = useStyles();
 
     return (
-        <Edit {...props} transform={transform} mutationMode="pessimistic">
+        <Edit {...props} transform={transform} mutationMode="pessimistic" className={classes.overflow}>
             <SimpleForm validate={editUserFormValidators.submit} redirect="show">
                 <TextInput label="ФИО" source="full_name" validate={editUserFormValidators.full_name} />
                 <EmailField label="Email" source="email" />

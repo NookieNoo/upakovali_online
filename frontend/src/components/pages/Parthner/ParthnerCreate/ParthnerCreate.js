@@ -33,6 +33,9 @@ const useStyles = makeStyles((theme) => ({
         },
 
         marginBottom: '19px'
+    },
+    overflow: {
+        '& .MuiCard-root': {overflow: 'visible !important'}
     }
 }));
 
@@ -40,7 +43,7 @@ export default function ParthnerCreate(props) {
     const classes = useStyles();
 
     return (
-        <Create {...props} title="Создание партнера">
+        <Create {...props} title="Создание партнера" className={classes.overflow}>
             <SimpleForm redirect="show">
                 <TextInput label="Название" source="full_name" validate={createParthnerFormValidators.full_name} />
                 <TextInput label="Email" source="email" validate={createParthnerFormValidators.email} />
