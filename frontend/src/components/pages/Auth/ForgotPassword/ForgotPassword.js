@@ -4,9 +4,10 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import Link from '@material-ui/core/Link';
 import { makeStyles } from '@material-ui/core/styles';
 import { Login } from 'react-admin';
+import { Link } from 'react-router-dom';
+import LinkUI from '@material-ui/core/Link';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -35,6 +36,17 @@ const useStyles = makeStyles((theme) => ({
     submit: {
         margin: theme.spacing(3, 0, 2),
     },
+    link: {
+        fontSize: '0.875rem',
+        fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+        fontWeight: '400',
+        lineHeight: '1.43',
+        letterSpacing: '0.01071em',
+
+        '& a': {
+            textDecoration: 'none',
+        }
+    }
 }));
 
 const ForgotPassword = () => {
@@ -89,13 +101,13 @@ const ForgotPassword = () => {
                     </Button>
                     <Grid container>
                         <Grid item xs>
-                            <Link href="/password-restore" variant="body2">
-                                Забыли пароль?
-                            </Link>
+                            <div className={classes.link}>
+                                <Link to="/auth/password-restore">Забыли пароль?</Link>
+                            </div>
                         </Grid>
                         <Grid item>
-                            <Link href="/registration" variant="body2">
-                                Нет учетной записи?
+                            <Link to="/auth/registration">
+                                <LinkUI variant="body2">Нет1sfsdfsdfsdfsd учетной записи?</LinkUI>
                             </Link>
                         </Grid>
                     </Grid>

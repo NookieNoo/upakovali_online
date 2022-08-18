@@ -6,7 +6,6 @@ import {
     TextField,
     FormControlLabel,
     Checkbox,
-    Link,
     Grid,
     Card,
     Box,
@@ -26,6 +25,8 @@ import { registerFormValidators } from '@app-helpers';
 import { userRoles } from '@app-constants';
 import PhoneMaskedInput from 'components/universal/inputs/PhoneMaskedInput';
 import { useRedirect } from 'ra-core';
+import { Link } from 'react-router-dom';
+import LinkUI from '@material-ui/core/Link';
 
 const theme = createTheme();
 
@@ -54,6 +55,9 @@ const useStyles = makeStyles((theme) => ({
     },
     icon: {
         backgroundColor: theme.palette.secondary[500],
+    },
+    link: {
+        textDecoration: 'none',
     },
 }));
 
@@ -193,8 +197,8 @@ const RegistrationPage = (props) => {
                                     </Button>
                                     <Grid container>
                                         <Grid item xs>
-                                            <Link href="/login" variant="body2">
-                                                Уже есть аккаунт?
+                                            <Link to="/login" className={classes.link}>
+                                                <LinkUI variant="body2">Вспомнили пароль?</LinkUI>
                                             </Link>
                                         </Grid>
                                     </Grid>
