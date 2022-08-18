@@ -22,24 +22,61 @@ import { useHasAccess } from '@app-hooks';
 import { ExpandActivityBlock, DateFieldLocalized } from '@app-universal';
 import { formatMoney } from '@app-helpers';
 import { sourceTypes } from '@app-constants';
+import { makeStyles } from '@material-ui/core/styles';
 
 const renderTotal = (it) => formatMoney(it.total);
 
 const filter = { subject_type: 'order' };
 
+const useStyles = makeStyles(theme => ({
+       orderMedia: {
+            '@media (max-width: 985px) and (min-width: 320px)': {
+                '& div': {
+                    flexWrap: 'wrap',
+                }
+            }
+       },
+       editBtn: {
+           '@media (max-width: 985px) and (min-width: 600px)': {
+                marginRight: '8%'
+           }
+       },
+       table: {
+            '@media (max-width: 400px) and (min-width: 320px)': {
+                '& .MuiTab-root': {
+                    flexWrap: 'wrap',
+                    width: '100vw',
+                    marginRight: 'auto',
+                    marginLeft: 'auto'
+                }
+            }
+       }
+    })
+);
+
+const sx = {
+    "@media (max-width: 985px) and (min-width: 320px)": {
+        margin: '16px 0 0 0',
+        width: '100vw'
+    }
+};
+
 export default function OrderShow(props) {
     const { record, loaded } = useShowController(props);
     const { list: canWatchActivity } = useHasAccess('activity');
     const isFromApi = record?.source_id === sourceTypes.API.value;
+    const classes = useStyles();
     console.log('record', record);
     console.log('isFromApi', isFromApi);
+
     return (
         <Show
-            actions={<OrderShowActions isDataLoaded={loaded} />}
-            aside={<Aside history={record?.history} />}
+            actions={<OrderShowActions className={classes.editBtn} isDataLoaded={loaded} />}
+            aside={<Aside sx={sx} history={record?.history} />}
+            className={classes.orderMedia}
             {...props}
         >
-            <TabbedShowLayout>
+            <TabbedShowLayout className={classes.table}>
                 <Tab label="Общее">
                     <TextField label="Источник" source="source.name" />
                     <TextField label="Статус" source="order_status.name" />
