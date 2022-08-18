@@ -34,7 +34,11 @@ const useStyles = makeStyles((theme) => ({
         },
 
         marginBottom: '19px'
+    },
+    overflow: {
+        '& .MuiCard-root': {overflow: 'visible !important'}
     }
+
 }));
 
 
@@ -42,7 +46,7 @@ export default function UserCreate(props) {
     const classes = useStyles();
 
     return (
-        <Create {...props} title="Создание пользователя">
+        <Create {...props} title="Создание пользователя" className={classes.overflow}>
             <SimpleForm validate={createUserFormValidators.submit} redirect="show">
                 <TextInput label="ФИО" source="full_name" validate={createUserFormValidators.full_name} />
                 <TextInput label="Email" source="email" validate={createUserFormValidators.email} />

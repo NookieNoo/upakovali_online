@@ -35,6 +35,9 @@ const useStyles = makeStyles((theme) => ({
         },
 
         marginBottom: '19px'
+    },
+    overflow: {
+        '& .MuiCard-root': {overflow: 'visible !important'}
     }
 }));
 
@@ -44,7 +47,7 @@ export default function ParthnerEdit(props) {
     const classes = useStyles();
 
     return (
-        <Edit {...props} mutationMode="pessimistic">
+        <Edit {...props} mutationMode="pessimistic" className={classes.overflow}>
             <SimpleForm redirect="show">
                 <TextInput label="Название" source="full_name" validate={editParthnerFormValidators.full_name} />
                 <TextInput label="Email" source="email" validate={editParthnerFormValidators.email} />

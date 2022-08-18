@@ -33,6 +33,9 @@ const useStyles = makeStyles((theme) => ({
         },
 
         marginBottom: '19px'
+    },
+    overflow: {
+        '& .MuiCard-root': {overflow: 'visible !important'}
     }
 }));
 
@@ -40,7 +43,7 @@ export default function ClientEdit(props) {
     const classes = useStyles();
 
     return (
-        <Edit {...props} mutationMode="pessimistic">
+        <Edit {...props} mutationMode="pessimistic" className={classes.overflow}>
             <SimpleForm redirect="show">
                 <TextInput label="ФИО" source="full_name" validate={editClientFormValidators.full_name} />
                 <PhoneInput containerClass={classes.container} inputClass={classes.inputPhone} label="Телефон" source="phone" validate={editClientFormValidators.phone} />
