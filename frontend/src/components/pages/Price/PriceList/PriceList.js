@@ -1,8 +1,19 @@
 import * as React from 'react';
-import { List, DateField, TextField, TextInput, SimpleList, DateInput, EditButton, ReferenceInput, SelectInput } from 'react-admin';
+import {
+    List,
+    DateField,
+    TextField,
+    TextInput,
+    SimpleList,
+    DateInput,
+    EditButton,
+    ReferenceInput,
+    SelectInput,
+} from 'react-admin';
 import CustomizableDatagrid from 'components/overriding/ra-customizable-datagrid';
 import { useHasAccess } from '@app-hooks';
 import { useMediaQuery } from '@material-ui/core';
+import { get as loGet } from 'lodash';
 
 const defaultColumns = ['id', 'name', 'start', 'end', 'parthner.full_name'];
 
@@ -27,14 +38,14 @@ export default function PriceList(props) {
         <List {...props} title="Прайсы" filters={priceFilters} bulkActionButtons={false}>
             {isXSmall ? (
                 <SimpleList
-                    primaryText={(record = {}) => `[${record.id}] ${_.get(record.parthner, ['full_name'], 'Партнер отсутствует')}`}
-                    secondaryText={(record) => 
-                        `Название: ${record.name}\n` +
-                        `Действует с: ${record.start}\n` +
-                        `Действует до: ${record.end}`
+                    primaryText={(record = {}) =>
+                        `[${record.id}] ${loGet(record.parthner, ['full_name'], 'Партнер отсутствует')}`
                     }
-                    rowStyle={() => ({ whiteSpace: 'pre-line'})}
-                    linkType="show"  
+                    secondaryText={(record) =>
+                        `Название: ${record.name}\n` + `Действует с: ${record.start}\n` + `Действует до: ${record.end}`
+                    }
+                    rowStyle={() => ({ whiteSpace: 'pre-line' })}
+                    linkType="show"
                 />
             ) : (
                 <CustomizableDatagrid rowClick="show" defaultColumns={defaultColumns} isRowSelectable={() => false}>
@@ -45,8 +56,7 @@ export default function PriceList(props) {
                     <DateField label="Действует до" source="end" />
                     {canEdit ? <EditButton label={null} /> : <span></span>}
                 </CustomizableDatagrid>
-            ) 
-        }
+            )}
         </List>
     );
 }
