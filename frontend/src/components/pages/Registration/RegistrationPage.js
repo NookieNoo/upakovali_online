@@ -87,7 +87,7 @@ const RegistrationPage = (props) => {
             .register(values)
             .then((res) => {
                 notify(res?.message || 'Пользователь зарегистрирован', { type: 'success' });
-                redirect('/login');
+                setTimeout(() => redirect('/login'), 2000);
             })
             .catch((error) => {
                 notify(error?.message || 'Пожалуйста, попробуйте позже', { type: 'error' });
