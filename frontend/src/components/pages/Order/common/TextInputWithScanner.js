@@ -62,7 +62,6 @@ export default function TextInputWithScanner({
     scannerInputProps,
     scannerModalProps,
     disabled,
-    isDisabled
 }) {
     return (
         <Box display={'flex'} alignSelf={'center'}>
@@ -76,7 +75,7 @@ export default function TextInputWithScanner({
                     endAdornment: (
                         <DialogElement
                             maxWidth="md"
-                            isDisabled={isDisabled}
+                            isDisabled={disabled}
                             dialogOpenComponent={
                                 <IconButton disabled={disabled}>
                                     <QrIcon />
