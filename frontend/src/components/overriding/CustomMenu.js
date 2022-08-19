@@ -46,6 +46,9 @@ const useStyles = makeStyles((theme) => ({
         transform: 'rotate(0deg)',
     },
     sideBarClose: {
+        '& .MuiCollapse-root': {
+            width: '55px !important'
+        },
         '& .MuiMenuItem-root': {
             marginLeft: '0 !important'
         }
@@ -124,7 +127,6 @@ export const CustomMenu = (props) => {
                             to="/workshop"
                             primaryText="Мастерские"
                             leftIcon={<WorkshopIcon />}
-                            state={{ _scrollToTop: true }}
                         />
                     )}
                     {hasAccessToAddressee && (

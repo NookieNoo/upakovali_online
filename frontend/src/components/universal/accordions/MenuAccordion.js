@@ -2,7 +2,7 @@ import * as React from 'react';
 import { List, MenuItem, Collapse, Typography } from '@material-ui/core';
 import { useTranslate } from 'react-admin';
 import { Box } from '@material-ui/core';
-
+import PropTypes from 'prop-types';
 
 const MenuAccordion = (props) => {
 
@@ -41,5 +41,15 @@ const MenuAccordion = (props) => {
         </Box>
     );
 };
+
+MenuAccordion.propTypes = {
+    handleToggle: PropTypes.func,
+    isOen: PropTypes.bool,
+    dense: PropTypes.bool,
+    name: PropTypes.string,
+    icon: PropTypes.element,
+    children: PropTypes.element,
+    classes: PropTypes.object
+}
 
 export { MenuAccordion };
