@@ -6,6 +6,7 @@ import 'react-phone-input-2/lib/material.css';
 import ru from 'react-phone-input-2/lang/ru.json';
 import { Field } from 'react-final-form';
 import { makeStyles } from '@material-ui/core';
+import PropTypes from 'prop-types';
 
 const useStyles = makeStyles((theme) => ({
     input: {
@@ -39,7 +40,13 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-
+PhoneInput2.propTypes = {
+    containerClass: PropTypes.object,
+    inputClass: PropTypes.object,
+    buttonClass: PropTypes.object,
+    dropdownClass: PropTypes.object,
+    searchClass: PropTypes.object
+};
 
 export function PhoneInput2(props) {
     const { containerClass, inputClass, buttonClass, dropdownClass, searchClass } = props;
@@ -74,3 +81,5 @@ export function PhoneInput2(props) {
         />
     );
 }
+
+
