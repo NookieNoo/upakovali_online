@@ -2,13 +2,12 @@
 import * as React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { RouteWithoutLayout } from 'react-admin';
-import { Analytics, ForgotPassword, PasswordRestore, RegistrationPage, NewPassword, VerifyEmail } from '@app-pages';
+import { Analytics, PasswordRestore, NewPassword, VerifyEmail } from '@app-pages';
+import AuthContainer from 'components/pages/Auth/AuthContainer';
 
 const customRoutes = [
     <Route exact path="/analytics" component={Analytics} />,
-    <RouteWithoutLayout exact path="/registration" component={RegistrationPage} />,
-    <RouteWithoutLayout exact path="/forgot-password" component={ForgotPassword} />,
-    <RouteWithoutLayout exact path="/password-restore" component={PasswordRestore} />,
+    <RouteWithoutLayout exact path="/auth/*" component={AuthContainer} />,
     <RouteWithoutLayout exact path="/email/verify" component={PasswordRestore} />,
     <RouteWithoutLayout exact path="/verify-email/:user_id/:hash" component={VerifyEmail} />,
     <RouteWithoutLayout

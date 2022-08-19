@@ -6,7 +6,6 @@ import {
     TextField,
     FormControlLabel,
     Checkbox,
-    Link,
     Grid,
     Card,
     Box,
@@ -24,6 +23,10 @@ import { useTranslate, useLogin, useNotify, useSafeSetState } from 'ra-core';
 import { Notification, TextInput, required } from 'react-admin';
 import { registerFormValidators } from '@app-helpers';
 import { userRoles } from '@app-constants';
+import PhoneMaskedInput from 'components/universal/inputs/PhoneMaskedInput';
+import { useRedirect } from 'ra-core';
+import { Link } from 'react-router-dom';
+import LinkUI from '@material-ui/core/Link';
 
 const theme = createTheme();
 
@@ -53,6 +56,9 @@ const useStyles = makeStyles((theme) => ({
     icon: {
         backgroundColor: theme.palette.secondary[500],
     },
+    link: {
+        textDecoration: 'none',
+    },
 }));
 
 const Input = ({
@@ -77,11 +83,16 @@ const RegistrationPage = (props) => {
     const classes = useStyles();
     const notify = useNotify();
 
+    const redirect = useRedirect();
+
     const submit = (values) => {
         console.log(values);
         authProvider
             .register(values)
-            .then((res) => notify(res?.message || 'Пользователь зарегистрирован', { type: 'success' }))
+            .then((res) => {
+                notify(res?.message || 'Пользователь зарегистрирован', { type: 'success' });
+                setTimeout(() => redirect('/login'), 2000);
+            })
             .catch((error) => {
                 notify(error?.message || 'Пожалуйста, попробуйте позже', { type: 'error' });
             });
@@ -145,6 +156,11 @@ const RegistrationPage = (props) => {
                                         name="phone"
                                         autoComplete="phone"
                                         validateField="phone"
+                                        options={{
+                                            InputProps: {
+                                                inputComponent: PhoneMaskedInput,
+                                            },
+                                        }}
                                     />
                                     <Field
                                         component={Input}
@@ -181,8 +197,8 @@ const RegistrationPage = (props) => {
                                     </Button>
                                     <Grid container>
                                         <Grid item xs>
-                                            <Link href="/login" variant="body2">
-                                                Уже есть аккаунт?
+                                            <Link to="/login" className={classes.link}>
+                                                <LinkUI variant="body2">Вспомнили пароль?</LinkUI>
                                             </Link>
                                         </Grid>
                                     </Grid>
