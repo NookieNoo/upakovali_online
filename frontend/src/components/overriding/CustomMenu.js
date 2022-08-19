@@ -16,7 +16,9 @@ import { useHasAccess } from '@app-hooks';
 import { MenuAccordion } from 'components/universal/accordions/MenuAccordion';
 import { useState } from 'react';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
+
 
 const useStyles = makeStyles((theme) => ({
     styleIcon: {
@@ -28,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     styleMenuItem: {
-        marginLeft: '15px',
+        marginLeft: 15,
         color: 'grey',
     },
     animationArrowOpen: {
@@ -42,6 +44,11 @@ const useStyles = makeStyles((theme) => ({
         height: '24px',
         animation: '$closeAccordion .5s',
         transform: 'rotate(0deg)',
+    },
+    sideBarClose: {
+        '& .MuiMenuItem-root': {
+            marginLeft: '0 !important'
+        }
     },
     '@keyframes openAccordion': {
         '0%': {
@@ -84,6 +91,8 @@ export const CustomMenu = (props) => {
         setState((state) => ({ ...state, [menu]: !state[menu] }));
     };
 
+    const open = useSelector((state) => state.admin.ui.sidebarOpen);
+
     return (
         <Menu {...props}>
             <DashboardMenuItem />
@@ -95,55 +104,58 @@ export const CustomMenu = (props) => {
                 <MenuItemLink to="/analytics" primaryText="Аналитика" leftIcon={<AnalyticsIcon />} />
             )} */}
             {hasAccessToPrice && <MenuItemLink to="/price" primaryText="Прайсы" leftIcon={<PriceIcon />} />}
-            <MenuAccordion
-                handleToggle={() => handleToggle('menuAccordion')}
-                isOpen={state.menuAccordion}
-                name="Справочники"
-                icon={
-                    <div className={state.menuAccordion ? classes.animationArrowOpen : classes.animationArrowClose}>
-                        <ArrowForwardIcon fontSize="medium" />
-                    </div>
-                }
-                dense={dense}
-                classes={classes.styleIcon}
-            >
-                {hasAccessToWorkshop && (
-                    <MenuItemLink
-                        className={classes.styleMenuItem}
-                        dense={dense}
-                        to="/workshop"
-                        primaryText="Мастерские"
-                        leftIcon={<WorkshopIcon />}
-                    />
-                )}
-                {hasAccessToAddressee && (
-                    <MenuItemLink
-                        className={classes.styleMenuItem}
-                        dense={dense}
-                        to="/addressee"
-                        primaryText="Адресаты"
-                        leftIcon={<AddresseeIcon />}
-                    />
-                )}
-                {hasAccessToProduct && (
-                    <MenuItemLink
-                        className={classes.styleMenuItem}
-                        dense={dense}
-                        to="/product"
-                        primaryText="ServiceType"
-                        leftIcon={<ProductIcon />}
-                    />
-                )}
-                {hasAccessToSource && (
-                    <MenuItemLink
-                        className={classes.styleMenuItem}
-                        dense={dense}
-                        to="/source"
-                        primaryText="Источники"
-                        leftIcon={<SourceIcon />}
-                    />
-                )}
-            </MenuAccordion>
+            <div className={!open ? classes.sideBarClose : ''}>
+                <MenuAccordion
+                    handleToggle={() => handleToggle('menuAccordion')}
+                    isOpen={state.menuAccordion}
+                    name="Справочники"
+                    icon={
+                        <div className={state.menuAccordion ? classes.animationArrowOpen : classes.animationArrowClose}>
+                            <ArrowForwardIcon fontSize="medium" />
+                        </div>
+                    }
+                    dense={dense}
+                    classes={classes.styleIcon}
+                >
+                    {hasAccessToWorkshop && (
+                        <MenuItemLink
+                            className={classes.styleMenuItem}
+                            dense={dense}
+                            to="/workshop"
+                            primaryText="Мастерские"
+                            leftIcon={<WorkshopIcon />}
+                            state={{ _scrollToTop: true }}
+                        />
+                    )}
+                    {hasAccessToAddressee && (
+                        <MenuItemLink
+                            className={classes.styleMenuItem}
+                            dense={dense}
+                            to="/addressee"
+                            primaryText="Адресаты"
+                            leftIcon={<AddresseeIcon />}
+                        />
+                    )}
+                    {hasAccessToProduct && (
+                        <MenuItemLink
+                            className={classes.styleMenuItem}
+                            dense={dense}
+                            to="/product"
+                            primaryText="ServiceType"
+                            leftIcon={<ProductIcon />}
+                        />
+                    )}
+                    {hasAccessToSource && (
+                        <MenuItemLink
+                            className={classes.styleMenuItem}
+                            dense={dense}
+                            to="/source"
+                            primaryText="Источники"
+                            leftIcon={<SourceIcon />}
+                        />
+                    )}
+                </MenuAccordion>
+            </div>
         </Menu>
     );
 };
