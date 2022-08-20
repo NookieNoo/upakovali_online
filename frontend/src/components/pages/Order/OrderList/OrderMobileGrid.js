@@ -4,11 +4,12 @@ import PropTypes from 'prop-types';
 import { List, ListItem, ListItemText } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
-import { TextField, BooleanField, DateField, ChipField } from 'react-admin';
+import { TextField, BooleanField, DateField, ChipField, EditButton } from 'react-admin';
 import { linkToRecord, sanitizeListRestProps, useListContext, RecordContextProvider } from 'ra-core';
 import { SimpleAccordionMemo } from '@app-universal';
-import { Card, CardContent } from '@material-ui/core';
+import { Card, CardContent, Box } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
+import { useHasAccess } from '@app-hooks';
 
 const useStyles = makeStyles(
     {
@@ -18,6 +19,7 @@ const useStyles = makeStyles(
 );
 
 const OrderMobileGrid = (props) => {
+    const { resource } = props;
     const {
         className,
         classes: classesOverride,
@@ -32,15 +34,27 @@ const OrderMobileGrid = (props) => {
         tertiaryText,
         useTranslate,
         rowStyle,
+        loadedStyle,
         ...rest
     } = props;
-    const { basePath, data, ids, loaded, total } = useListContext(props);
+    const { edit: canEdit } = useHasAccess(resource);
+
+    const { basePath, data, ids, loaded, total, perPage } = useListContext(props);
     const classes = useStyles(props);
+
+    const times = (nbChildren, fn) =>
+    Array.from({ length: nbChildren }, (_, key) => fn(key));
 
     if (loaded === false) {
         // FIXME
-        return <div>LOADING</div>;
-    }
+        return (
+            <List >
+                 {times(perPage, key => (
+                <Box className={loadedStyle} />
+            ))}
+            </List>
+        );
+    };
 
     return (
         total > 0 && (
@@ -115,6 +129,7 @@ const OrderMobileGrid = (props) => {
                                             </CardContent>
                                         </Card>
                                     </ListItem>
+                                    {canEdit ? <EditButton label={null} /> : <span></span>}
                                 </SimpleAccordionMemo>
                             </li>
                         </RecordContextProvider>
@@ -137,6 +152,7 @@ OrderMobileGrid.propTypes = {
     secondaryText: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
     tertiaryText: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
     rowStyle: PropTypes.func,
+    loadedStyle: PropTypes.string
 };
 
 export default OrderMobileGrid;

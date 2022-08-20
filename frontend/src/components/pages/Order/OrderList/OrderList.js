@@ -13,7 +13,7 @@ import {
 import CustomizableDatagrid from 'components/overriding/ra-customizable-datagrid';
 import { userRoles } from '@app-constants';
 import { useHasAccess } from '@app-hooks';
-import { useMediaQuery } from '@material-ui/core';
+import { useMediaQuery, makeStyles } from '@material-ui/core';
 import { adminFilters, courierFilters, masterFilters } from './filters';
 import OrderMobileGrid from './OrderMobileGrid';
 
@@ -31,6 +31,17 @@ const defaultColumns = [
     'order_status.name',
 ];
 
+const useStyles = makeStyles((theme) => ({
+    loadedStyle: {
+        backgroundColor: '#E0E0E0',
+        border: '1px solid #E0E0E0',
+        borderRadius: '4px',
+        margin: '10px',
+        height: '91px'
+    }
+})
+);
+
 export default function OrderList(props) {
     const { resource } = props;
     const { edit: canEdit } = useHasAccess(resource);
@@ -40,6 +51,7 @@ export default function OrderList(props) {
     let filters = adminFilters;
     const isCourier = identity?.role.id === userRoles.courier.id;
     const isMaster = identity?.role.id === userRoles.master.id;
+    const classes = useStyles();
 
     if (isCourier) filters = courierFilters;
     if (isMaster) filters = masterFilters;
@@ -47,7 +59,7 @@ export default function OrderList(props) {
     return (
         <List {...props} title="Заказы" filters={filters} bulkActionButtons={false}>
             {isXSmall ? (
-                <OrderMobileGrid />
+                <OrderMobileGrid loadedStyle={classes.loadedStyle}/>
             ) : (
                 <CustomizableDatagrid rowClick="show" defaultColumns={defaultColumns} isRowSelectable={() => false}>
                     <TextField label="id" source="id" />
