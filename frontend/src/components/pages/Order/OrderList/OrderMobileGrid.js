@@ -4,24 +4,34 @@ import PropTypes from 'prop-types';
 import { List, ListItem, ListItemText } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
-import { TextField, BooleanField, DateField, ChipField } from 'react-admin';
+import { TextField, BooleanField, DateField, ChipField, EditButton } from 'react-admin';
 import { linkToRecord, sanitizeListRestProps, useListContext, RecordContextProvider } from 'ra-core';
 import { SimpleAccordionMemo } from '@app-universal';
-import { Card, CardContent } from '@material-ui/core';
+import { Card, CardContent, Box } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 
-const useStyles = makeStyles(
-    {
-        tertiary: { float: 'right', opacity: 0.541176 },
+const useStyles = makeStyles((theme) => ({
+    tertiary: { float: 'right', opacity: 0.541176 },
+    name: 'RaSimpleList',
+    loader: {
+        backgroundColor: '#E0E0E0',
+        border: '1px solid #E0E0E0',
+        borderRadius: '4px',
+        margin: '10px',
+        height: '91px',
     },
-    { name: 'RaSimpleList' },
-);
+    editBtn: {
+        width: '24px',
+        height: '24px',
+        marginTop: 'auto',
+        marginBottom: 'auto',
+    },
+}));
 
 const OrderMobileGrid = (props) => {
     const {
         className,
         classes: classesOverride,
-        hasBulkActions,
         leftAvatar,
         leftIcon,
         linkType = 'edit',
@@ -34,12 +44,20 @@ const OrderMobileGrid = (props) => {
         rowStyle,
         ...rest
     } = props;
-    const { basePath, data, ids, loaded, total } = useListContext(props);
+
+    const { basePath, data, ids, loaded, total, perPage } = useListContext(props);
     const classes = useStyles(props);
 
+    const times = (nbChildren, fn) => Array.from({ length: nbChildren }, (_, key) => fn(key));
+
     if (loaded === false) {
-        // FIXME
-        return <div>LOADING</div>;
+        return (
+            <List>
+                {times(perPage, (key) => (
+                    <Box key={key} className={classes.loader} />
+                ))}
+            </List>
+        );
     }
 
     return (
@@ -63,38 +81,42 @@ const OrderMobileGrid = (props) => {
                                         <Card>
                                             <CardContent>
                                                 <Typography variant="body2">
-                                                   <span>
-                                                    Мастерская:&nbsp;</span>
-                                                    <TextField  label="Мастерская" source='workshop.address'/>
+                                                    <span>Мастерская:&nbsp;</span>
+                                                    <TextField label="Мастерская" source="workshop.address" />
                                                 </Typography>
                                                 <Typography variant="body2">
-                                                    <span>
-
-                                                    Забор:&nbsp;</span><BooleanField label="Забор" source='is_pickupable'/>
+                                                    <span>Забор:&nbsp;</span>
+                                                    <BooleanField label="Забор" source="is_pickupable" />
                                                 </Typography>
                                                 <Typography variant="body2">
                                                     <span>Доставка:&nbsp;</span>
-                                                    <BooleanField  label="Доставка" source='is_deliverable'/>
+                                                    <BooleanField label="Доставка" source="is_deliverable" />
                                                 </Typography>
                                                 <Typography variant="body2">
                                                     <span>Дата приема:&nbsp;</span>
-                                                    <DateField  label="Дата приема" source='receiving_date'/>
+                                                    <DateField label="Дата приема" source="receiving_date" />
                                                 </Typography>
                                                 <Typography variant="body2">
                                                     <span>Дата выдачи:&nbsp;</span>
-                                                    <DateField  label="Дата выдачи" source='issue_date'/>
+                                                    <DateField label="Дата выдачи" source="issue_date" />
                                                 </Typography>
                                                 <Typography variant="body2">
                                                     <span>Комментарий:&nbsp;</span>
-                                                    <TextField  label="Комментарий" source='comment'/>
+                                                    <TextField label="Комментарий" source="comment" />
                                                 </Typography>
                                                 <Typography variant="body2">
                                                     <span>Курьер приема:&nbsp;</span>
-                                                    <TextField  label="Курьер приема" source='courier_receiver.full_name'/>
+                                                    <TextField
+                                                        label="Курьер приема"
+                                                        source="courier_receiver.full_name"
+                                                    />
                                                 </Typography>
                                                 <Typography variant="body2">
                                                     <span>Курьер выдачи:&nbsp;</span>
-                                                    <TextField  label="Курьер выдачи" source='courier_issuer.full_name'/>
+                                                    <TextField
+                                                        label="Курьер выдачи"
+                                                        source="courier_issuer.full_name"
+                                                    />
                                                 </Typography>
                                                 <Typography variant="body2">
                                                     <span>Оплачено:&nbsp;</span>
@@ -108,13 +130,12 @@ const OrderMobileGrid = (props) => {
                                                     <span>Получатель:&nbsp;</span>
                                                     <TextField label="Получатель" source="receiver.full_name" />
                                                 </Typography>
-                                                <Typography variant="body2">
-                                                    <span>Статус:&nbsp;</span>
-                                                    <ChipField label="Статус" source="order_status.name" />
-                                                </Typography>
+                                                <span>Статус:&nbsp;</span>
+                                                <ChipField label="Статус" source="order_status.name" />
                                             </CardContent>
                                         </Card>
                                     </ListItem>
+                                    <EditButton record={data[id]} className={classes.editBtn} />
                                 </SimpleAccordionMemo>
                             </li>
                         </RecordContextProvider>
