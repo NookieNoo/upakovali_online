@@ -13,7 +13,7 @@ import Typography from '@material-ui/core/Typography';
 const useStyles = makeStyles((theme) => ({
     tertiary: { float: 'right', opacity: 0.541176 },
     name: 'RaSimpleList',
-    loaded: {
+    loader: {
         backgroundColor: '#E0E0E0',
         border: '1px solid #E0E0E0',
         borderRadius: '4px',
@@ -24,10 +24,9 @@ const useStyles = makeStyles((theme) => ({
         width: '24px',
         height: '24px',
         marginTop: 'auto',
-        marginBottom: 'auto'
-    }
-})
-);
+        marginBottom: 'auto',
+    },
+}));
 
 const OrderMobileGrid = (props) => {
     const {
@@ -49,19 +48,17 @@ const OrderMobileGrid = (props) => {
     const { basePath, data, ids, loaded, total, perPage } = useListContext(props);
     const classes = useStyles(props);
 
-    const times = (nbChildren, fn) =>
-    Array.from({ length: nbChildren }, (_, key) => fn(key));
+    const times = (nbChildren, fn) => Array.from({ length: nbChildren }, (_, key) => fn(key));
 
     if (loaded === false) {
-        // FIXME
         return (
-            <List >
-                 {times(perPage, key => (
-                <Box key={key} className={classes.loaded} />
-            ))}
+            <List>
+                {times(perPage, (key) => (
+                    <Box key={key} className={classes.loader} />
+                ))}
             </List>
         );
-    };
+    }
 
     return (
         total > 0 && (
@@ -84,38 +81,42 @@ const OrderMobileGrid = (props) => {
                                         <Card>
                                             <CardContent>
                                                 <Typography variant="body2">
-                                                   <span>
-                                                    Мастерская:&nbsp;</span>
-                                                    <TextField  label="Мастерская" source='workshop.address'/>
+                                                    <span>Мастерская:&nbsp;</span>
+                                                    <TextField label="Мастерская" source="workshop.address" />
                                                 </Typography>
                                                 <Typography variant="body2">
-                                                    <span>
-
-                                                    Забор:&nbsp;</span><BooleanField label="Забор" source='is_pickupable'/>
+                                                    <span>Забор:&nbsp;</span>
+                                                    <BooleanField label="Забор" source="is_pickupable" />
                                                 </Typography>
                                                 <Typography variant="body2">
                                                     <span>Доставка:&nbsp;</span>
-                                                    <BooleanField  label="Доставка" source='is_deliverable'/>
+                                                    <BooleanField label="Доставка" source="is_deliverable" />
                                                 </Typography>
                                                 <Typography variant="body2">
                                                     <span>Дата приема:&nbsp;</span>
-                                                    <DateField  label="Дата приема" source='receiving_date'/>
+                                                    <DateField label="Дата приема" source="receiving_date" />
                                                 </Typography>
                                                 <Typography variant="body2">
                                                     <span>Дата выдачи:&nbsp;</span>
-                                                    <DateField  label="Дата выдачи" source='issue_date'/>
+                                                    <DateField label="Дата выдачи" source="issue_date" />
                                                 </Typography>
                                                 <Typography variant="body2">
                                                     <span>Комментарий:&nbsp;</span>
-                                                    <TextField  label="Комментарий" source='comment'/>
+                                                    <TextField label="Комментарий" source="comment" />
                                                 </Typography>
                                                 <Typography variant="body2">
                                                     <span>Курьер приема:&nbsp;</span>
-                                                    <TextField  label="Курьер приема" source='courier_receiver.full_name'/>
+                                                    <TextField
+                                                        label="Курьер приема"
+                                                        source="courier_receiver.full_name"
+                                                    />
                                                 </Typography>
                                                 <Typography variant="body2">
                                                     <span>Курьер выдачи:&nbsp;</span>
-                                                    <TextField  label="Курьер выдачи" source='courier_issuer.full_name'/>
+                                                    <TextField
+                                                        label="Курьер выдачи"
+                                                        source="courier_issuer.full_name"
+                                                    />
                                                 </Typography>
                                                 <Typography variant="body2">
                                                     <span>Оплачено:&nbsp;</span>
@@ -129,12 +130,12 @@ const OrderMobileGrid = (props) => {
                                                     <span>Получатель:&nbsp;</span>
                                                     <TextField label="Получатель" source="receiver.full_name" />
                                                 </Typography>
-                                                    <span>Статус:&nbsp;</span>
-                                                    <ChipField label="Статус" source="order_status.name" />
+                                                <span>Статус:&nbsp;</span>
+                                                <ChipField label="Статус" source="order_status.name" />
                                             </CardContent>
                                         </Card>
                                     </ListItem>
-                                    <EditButton record={data[id]} className={classes.editBtn}/>
+                                    <EditButton record={data[id]} className={classes.editBtn} />
                                 </SimpleAccordionMemo>
                             </li>
                         </RecordContextProvider>
@@ -156,7 +157,7 @@ OrderMobileGrid.propTypes = {
     rightIcon: PropTypes.func,
     secondaryText: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
     tertiaryText: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
-    rowStyle: PropTypes.func
+    rowStyle: PropTypes.func,
 };
 
 export default OrderMobileGrid;
