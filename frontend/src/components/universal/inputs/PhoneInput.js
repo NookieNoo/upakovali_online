@@ -9,8 +9,11 @@ import { makeStyles } from '@material-ui/core';
 import PropTypes from 'prop-types';
 
 const useStyles = makeStyles((theme) => ({
+    phoneContent: {
+        height: '75px',
+    },
     input: {
-        height: '46px',
+        height: '48px',
         width: '256px !important',
         backgroundColor: 'rgba(0, 0, 0, 0.04) !important',
         border: '1px solid white !important',
@@ -30,12 +33,32 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     container: {
+        marginTop: '8px',
         '& div': {
             backgroundColor: 'transparent !important',
         },
-
-        marginBottom: '19px',
     },
+    errorText: {
+        width: '228px',
+        color: '#f44336',
+        marginLeft: '14px',
+        marginRight: '14px',
+        marginTop: '4px',
+        fontWeight: '400',
+        lineHeight: '1.66',
+        fontSize: '0.75rem',
+        fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+    },
+    errorInput: {
+        borderBottom: '1px solid #f44336 !important',
+        color: 'red',
+    },
+    errorContainer: {
+        marginBottom: '0',
+        '& .special-label': {
+            color: '#f44336',
+        },
+    }
 }));
 
 PhoneInput2.propTypes = {
@@ -44,6 +67,7 @@ PhoneInput2.propTypes = {
     buttonClass: PropTypes.object,
     dropdownClass: PropTypes.object,
     searchClass: PropTypes.object,
+
 };
 
 export function PhoneInput2(props) {
@@ -63,13 +87,13 @@ export function PhoneInput2(props) {
             render={({ input }) => {
                 console.log('input', input);
                 return (
-                    <>
+                    <div className={classes.phoneContent}>
                         <PhoneInput
-                            containerClass={`${classes.container} ${containerClass}`}
-                            inputClass={`${classes.input} ${inputClass}`}
+                            containerClass={!!(touched && error) ? `${classes.errorContainer} ${classes.container} ${containerClass}` : `${classes.container} ${containerClass}`}
+                            inputClass={!!(touched && error) ? `${classes.errorInput} ${classes.input} ${inputClass}` : `${classes.input} ${inputClass}`}
                             buttonClass={`${classes.button} ${buttonClass}`}
                             dropdownClass={`${classes.dropdown} ${dropdownClass}`}
-                            searchClass={`${classes.serach} ${searchClass}`}
+                            searchClass={`${classes.search} ${searchClass}`}
                             inputProps={{
                                 name: 'phone',
                                 required: true,
@@ -83,8 +107,8 @@ export function PhoneInput2(props) {
                             onChange={onChange}
                             onFocus={onFocus}
                         />
-                        {!!(touched && error) && <ValidationError error={touched && error} />}
-                    </>
+                        {!!(touched && error) && <div className={classes.errorText}><ValidationError error={touched && error} /></div>}
+                    </div>
                 );
             }}
             placeholder="latitude"
