@@ -6,7 +6,6 @@ import {
     TextField,
     FormControlLabel,
     Checkbox,
-    Link,
     Grid,
     Card,
     Box,
@@ -36,6 +35,8 @@ import { useTranslate, useLogin, useNotify, useSafeSetState } from 'ra-core';
 import { Notification, TextInput, required } from 'react-admin';
 import { Field, Form } from 'react-final-form';
 import { passwordRestoreFormValidators } from '@app-helpers';
+import { Link } from 'react-router-dom';
+import LinkUI from '@material-ui/core/Link';
 
 const theme = createTheme();
 
@@ -82,6 +83,9 @@ const useStyles = makeStyles((theme) => ({
     },
     icon: {
         backgroundColor: theme.palette.secondary[500],
+    },
+    link: {
+        textDecoration: 'none',
     },
 }));
 
@@ -147,8 +151,8 @@ const PasswordRestore = (props) => {
                                     </Button>
                                     <Grid container>
                                         <Grid item xs>
-                                            <Link href="/login" variant="body2">
-                                                Вспомнили пароль?
+                                            <Link to="/login" className={classes.link}>
+                                                <LinkUI variant="body2">Вспомнили пароль?</LinkUI>
                                             </Link>
                                         </Grid>
                                     </Grid>
