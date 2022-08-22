@@ -56,9 +56,6 @@ export function PhoneInput2(props) {
         isRequired,
         ...rest2
     } = useInput(props);
-    console.log('metaRest', metaRest);
-    console.log("rest2", rest2);
-    console.log("rest2", props?.helperText);
 
     return (
         <Field
@@ -83,12 +80,10 @@ export function PhoneInput2(props) {
                             preferredCountries={['ru', 'ua', 'kz', 'gr', 'de']}
                             name="phone"
                             {...input}
-                            style={{ border: '1px solid red' }}
                             onChange={onChange}
                             onFocus={onFocus}
                         />
-                        {/* <div>{touched && error}</div> */}
-                        <ValidationError error={touched && error} />
+                        {!!(touched && error) && <ValidationError error={touched && error} />}
                     </>
                 );
             }}
