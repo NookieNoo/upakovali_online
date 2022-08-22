@@ -4,6 +4,7 @@ import { createParthnerFormValidators } from '@app-helpers';
 import { PhoneInput } from '@app-universal';
 
 export default function ParthnerCreate(props) {
+
     return (
         <Create {...props} title="Создание партнера">
             <SimpleForm redirect="show">

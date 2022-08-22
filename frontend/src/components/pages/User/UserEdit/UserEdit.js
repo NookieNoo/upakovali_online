@@ -3,6 +3,13 @@ import { Edit, SimpleForm, TextInput, PasswordInput, SelectInput, EmailField, Bo
 import { editUserFormValidators } from 'helpers/validators/userFormValidators';
 import { userRoles } from '@app-constants';
 import { PhoneInput } from '@app-universal';
+import { makeStyles } from '@material-ui/core';
+
+const useStyles = makeStyles((theme) => ({
+    overflow: {
+        '& .MuiCard-root': {overflow: 'visible !important'}
+    }
+}));
 
 export default function UserEdit(props) {
     const onSuccess = () => {
@@ -16,9 +23,10 @@ export default function UserEdit(props) {
         ...data,
         role_id: data.role.id,
     });
+    const classes = useStyles();
 
     return (
-        <Edit {...props} transform={transform} mutationMode="pessimistic">
+        <Edit {...props} transform={transform} mutationMode="pessimistic" className={classes.overflow}>
             <SimpleForm validate={editUserFormValidators.submit} redirect="show">
                 <TextInput label="ФИО" source="full_name" validate={editUserFormValidators.full_name} />
                 <EmailField label="Email" source="email" />

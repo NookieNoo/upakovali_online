@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 export const OrderShowActions = (props) => {
-    const { basePath, data, resource, isDataLoaded } = props;
+    const { basePath, data, resource, isDataLoaded, className } = props;
     const { isAdmin } = useGetRole();
     const [mutate] = useMutation();
     const notify = useNotify();
@@ -51,11 +51,6 @@ export const OrderShowActions = (props) => {
         );
 
     const options = getStatusesOptions(orderStatuses, data?.order_status.id, isAdmin);
-    const styles = {
-        btn_group: {
-            alignItems: 'center'
-        }
-    };
 
     return (
         <TopToolbar>

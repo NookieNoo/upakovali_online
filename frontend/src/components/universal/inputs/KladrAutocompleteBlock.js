@@ -31,7 +31,7 @@ const fetchKladrItems = ({ options, beforeFetch, afterFetch, successCallback, er
 };
 
 export function KladrAutocompleteBlock(props) {
-    const { source, validate, id, label, ...rest } = props;
+    const { source, validate, id, label, className, ...rest } = props;
     const dispatch = useDispatch();
     const notify = useNotify();
     const [options, setOptions] = React.useState([]);
@@ -107,6 +107,7 @@ export function KladrAutocompleteBlock(props) {
             helperText={getValidationMsg(meta.error)}
             id={id}
             label={label}
+            className={className}
             {...rest}
         />
     );

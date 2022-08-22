@@ -3,10 +3,21 @@ import { Create, SimpleForm, TextInput, PasswordInput, SelectInput } from 'react
 import { createUserFormValidators } from 'helpers/validators/userFormValidators';
 import { userRoles } from '@app-constants';
 import { PhoneInput } from '@app-universal';
+import { makeStyles } from '@material-ui/core';
+
+const useStyles = makeStyles((theme) => ({
+    overflow: {
+        '& .MuiCard-root': {overflow: 'visible !important'}
+    }
+
+}));
+
 
 export default function UserCreate(props) {
+    const classes = useStyles();
+
     return (
-        <Create {...props} title="Создание пользователя">
+        <Create {...props} title="Создание пользователя" className={classes.overflow}>
             <SimpleForm validate={createUserFormValidators.submit} redirect="show">
                 <TextInput label="ФИО" source="full_name" validate={createUserFormValidators.full_name} />
                 <TextInput label="Email" source="email" validate={createUserFormValidators.email} />

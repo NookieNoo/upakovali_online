@@ -8,6 +8,7 @@ import { PhoneInput } from '@app-universal';
 const managerFilter = { role_id: userRoles.manager.id };
 
 export default function ParthnerEdit(props) {
+
     return (
         <Edit {...props} mutationMode="pessimistic">
             <SimpleForm redirect="show">

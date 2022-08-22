@@ -61,7 +61,7 @@ export default function TextInputWithScanner({
     label,
     scannerInputProps,
     scannerModalProps,
-    disabled
+    disabled,
 }) {
     return (
         <Box display={'flex'} alignSelf={'center'}>
