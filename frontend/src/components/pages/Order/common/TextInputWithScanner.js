@@ -62,6 +62,7 @@ export default function TextInputWithScanner({
     scannerInputProps,
     scannerModalProps,
     disabled,
+    className
 }) {
     return (
         <Box display={'flex'} alignSelf={'center'}>
@@ -70,6 +71,7 @@ export default function TextInputWithScanner({
                 label={label}
                 validate={validate}
                 disabled={disabled}
+                className={className}
                 {...scannerInputProps}
                 InputProps={{
                     endAdornment: (
@@ -97,4 +99,5 @@ TextInputWithScanner.defaultProps = {
 TextInputWithScanner.propTypes = {
     handleChange: PropTypes.func,
     disabled: PropTypes.bool,
+    className: PropTypes.string
 };
