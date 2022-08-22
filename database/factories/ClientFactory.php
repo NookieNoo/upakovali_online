@@ -27,7 +27,7 @@ class ClientFactory extends Factory
         return [
             'full_name' => $this->faker->name(),
             'phone' => $phone,
-            'email' => $this->faker->email(),
+            'email' => null,
             'comment' => $this->faker->sentence(),
         ];
     }
