@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TextInput } from 'react-admin';
+import { TextInput, useInput, TextField, FieldTitle, ValidationError } from 'react-admin';
 import PhoneMaskedInput from './PhoneMaskedInput';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/material.css';
@@ -26,18 +26,16 @@ const useStyles = makeStyles((theme) => ({
         },
 
         '&:focus': {
-            boxShadow: 'none !important'
-        }
-
+            boxShadow: 'none !important',
+        },
     },
     container: {
-
         '& div': {
             backgroundColor: 'transparent !important',
         },
 
-        marginBottom: '19px'
-    }
+        marginBottom: '19px',
+    },
 }));
 
 PhoneInput2.propTypes = {
@@ -45,12 +43,19 @@ PhoneInput2.propTypes = {
     inputClass: PropTypes.object,
     buttonClass: PropTypes.object,
     dropdownClass: PropTypes.object,
-    searchClass: PropTypes.object
+    searchClass: PropTypes.object,
 };
 
 export function PhoneInput2(props) {
     const { containerClass, inputClass, buttonClass, dropdownClass, searchClass } = props;
     const classes = useStyles();
+
+    const {
+        input: { name, onChange, onFocus, ...rest },
+        meta: { touched, error, ...metaRest },
+        isRequired,
+        ...rest2
+    } = useInput(props);
 
     return (
         <Field
@@ -58,28 +63,31 @@ export function PhoneInput2(props) {
             render={({ input }) => {
                 console.log('input', input);
                 return (
-                    <PhoneInput
-                        containerClass={`${classes.container} ${containerClass}`}
-                        inputClass={`${classes.input} ${inputClass}`}
-                        buttonClass={`${classes.button} ${buttonClass}`}
-                        dropdownClass={`${classes.dropdown} ${dropdownClass}`}
-                        searchClass={`${classes.serach} ${searchClass}`}
-                        inputProps={{
-                            name: 'phone',
-                            required: true,
-                            autoFocus: true,
-                            enableSearch: true,
-                        }}
-                        localization={ru}
-                        preferredCountries={['ru', 'ua', 'kz', 'gr', 'de']}
-                        name="phone"
-                        {...input}
-                    />
+                    <>
+                        <PhoneInput
+                            containerClass={`${classes.container} ${containerClass}`}
+                            inputClass={`${classes.input} ${inputClass}`}
+                            buttonClass={`${classes.button} ${buttonClass}`}
+                            dropdownClass={`${classes.dropdown} ${dropdownClass}`}
+                            searchClass={`${classes.serach} ${searchClass}`}
+                            inputProps={{
+                                name: 'phone',
+                                required: true,
+                                // autoFocus: true,
+                                enableSearch: true,
+                            }}
+                            localization={ru}
+                            preferredCountries={['ru', 'ua', 'kz', 'gr', 'de']}
+                            name="phone"
+                            {...input}
+                            onChange={onChange}
+                            onFocus={onFocus}
+                        />
+                        {!!(touched && error) && <ValidationError error={touched && error} />}
+                    </>
                 );
             }}
             placeholder="latitude"
         />
     );
 }
-
-

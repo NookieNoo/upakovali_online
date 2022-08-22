@@ -78,4 +78,12 @@ class OrderStoreRequest extends JsonRequest
             'order_photos' => 'array',
         ];
     }
+
+    public function messages()
+    {
+        $phoneMask = config('main.phone_format_mask');
+        return [
+            'regex' => "Формат телефона не соответствует шаблону: $phoneMask"
+        ];
+    }
 }

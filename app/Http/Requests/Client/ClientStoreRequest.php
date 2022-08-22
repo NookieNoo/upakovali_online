@@ -25,10 +25,14 @@ class ClientStoreRequest extends JsonRequest
      */
     public function rules()
     {
+        $emailValidators = ['nullable', 'string', 'email'];
+        if ($this->get('email')) {
+            $emailValidators[] = new UniqueClient($this->get('phone'), $this->get('email'), $this->route('id'));
+        }
         return [
             'full_name' => 'required|string|max:255',
             'phone' => 'required|string|max:50',
-            'email' => ['required', 'string', 'email', new UniqueClient($this->get('phone'), $this->get('email'))],
+            'email' => $emailValidators,
             'comment' => 'string'
         ];
     }
