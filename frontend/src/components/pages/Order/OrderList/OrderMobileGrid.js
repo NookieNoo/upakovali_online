@@ -9,21 +9,30 @@ import { linkToRecord, sanitizeListRestProps, useListContext, RecordContextProvi
 import { SimpleAccordionMemo } from '@app-universal';
 import { Card, CardContent, Box } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
-import { useHasAccess } from '@app-hooks';
 
-const useStyles = makeStyles(
-    {
-        tertiary: { float: 'right', opacity: 0.541176 },
+const useStyles = makeStyles((theme) => ({
+    tertiary: { float: 'right', opacity: 0.541176 },
+    name: 'RaSimpleList',
+    loaded: {
+        backgroundColor: '#E0E0E0',
+        border: '1px solid #E0E0E0',
+        borderRadius: '4px',
+        margin: '10px',
+        height: '91px',
     },
-    { name: 'RaSimpleList' },
+    editBtn: {
+        width: '24px',
+        height: '24px',
+        marginTop: 'auto',
+        marginBottom: 'auto'
+    }
+})
 );
 
 const OrderMobileGrid = (props) => {
-    const { resource } = props;
     const {
         className,
         classes: classesOverride,
-        hasBulkActions,
         leftAvatar,
         leftIcon,
         linkType = 'edit',
@@ -34,10 +43,8 @@ const OrderMobileGrid = (props) => {
         tertiaryText,
         useTranslate,
         rowStyle,
-        loadedStyle,
         ...rest
     } = props;
-    const { edit: canEdit } = useHasAccess(resource);
 
     const { basePath, data, ids, loaded, total, perPage } = useListContext(props);
     const classes = useStyles(props);
@@ -50,7 +57,7 @@ const OrderMobileGrid = (props) => {
         return (
             <List >
                  {times(perPage, key => (
-                <Box className={loadedStyle} />
+                <Box key={key} className={classes.loaded} />
             ))}
             </List>
         );
@@ -122,14 +129,12 @@ const OrderMobileGrid = (props) => {
                                                     <span>Получатель:&nbsp;</span>
                                                     <TextField label="Получатель" source="receiver.full_name" />
                                                 </Typography>
-                                                <Typography variant="body2">
                                                     <span>Статус:&nbsp;</span>
                                                     <ChipField label="Статус" source="order_status.name" />
-                                                </Typography>
                                             </CardContent>
                                         </Card>
                                     </ListItem>
-                                    {canEdit ? <EditButton label={null} /> : <span></span>}
+                                    <EditButton record={data[id]} className={classes.editBtn}/>
                                 </SimpleAccordionMemo>
                             </li>
                         </RecordContextProvider>
@@ -151,8 +156,7 @@ OrderMobileGrid.propTypes = {
     rightIcon: PropTypes.func,
     secondaryText: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
     tertiaryText: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
-    rowStyle: PropTypes.func,
-    loadedStyle: PropTypes.string
+    rowStyle: PropTypes.func
 };
 
 export default OrderMobileGrid;
