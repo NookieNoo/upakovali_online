@@ -85,7 +85,6 @@ export function PhoneInput2(props) {
         <Field
             name="phone"
             render={({ input }) => {
-                console.log('input', input);
                 return (
                     <div className={classes.phoneContent}>
                         <PhoneInput
@@ -94,6 +93,7 @@ export function PhoneInput2(props) {
                             buttonClass={`${classes.button} ${buttonClass}`}
                             dropdownClass={`${classes.dropdown} ${dropdownClass}`}
                             searchClass={`${classes.search} ${searchClass}`}
+                            specialLabel={props?.label || 'Телефон'}
                             inputProps={{
                                 name: 'phone',
                                 required: true,

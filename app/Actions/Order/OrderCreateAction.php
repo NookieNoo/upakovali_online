@@ -35,7 +35,11 @@ class OrderCreateAction
             $validatedData['order_status_id'] = OrderStatusEnum::CREATED;
 
             if ($validatedData['is_new_client']) {
-                $client = Client::where(['email' => $validatedData['client']['email'], 'phone' => $validatedData['client']['phone']])->first();
+                $clientFilter = ['phone' => $validatedData['client']['phone']];
+                if (isset($validatedData['client']['email'])) {
+                    $clientFilter['email'] = $validatedData['client']['email'];
+                }
+                $client = Client::where($clientFilter)->first();
                 if (!$client) {
                     $client = new Client($validatedData['client']);
                     $client->save();
@@ -52,7 +56,11 @@ class OrderCreateAction
                 $receiver->id = $client->id;
             } else {
                 if ($validatedData['is_new_receiver']) {
-                    $receiver = Client::where(['email' => $validatedData['receiver']['email'], 'phone' => $validatedData['receiver']['phone']])->first();
+                    $receiverFilter = ['phone' => $validatedData['receiver']['phone']];
+                    if (isset($validatedData['receiver']['email'])) {
+                        $receiverFilter['email'] = $validatedData['receiver']['email'];
+                    }
+                    $receiver = Client::where($receiverFilter)->first();
                     if (!$receiver) {
                         $receiver = new Client($validatedData['receiver']);
                         $receiver->save();
