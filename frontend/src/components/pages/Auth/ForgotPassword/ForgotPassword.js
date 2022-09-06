@@ -107,7 +107,7 @@ const ForgotPassword = () => {
                         </Grid>
                         <Grid item>
                             <Link to="/auth/registration">
-                                <LinkUI variant="body2">Нет1sfsdfsdfsdfsd учетной записи?</LinkUI>
+                                <LinkUI variant="body2">Нет учетной записи?</LinkUI>
                             </Link>
                         </Grid>
                     </Grid>

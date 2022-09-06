@@ -63,7 +63,6 @@ const LoginPage = () => {
                 <Typography component="h1" variant="h5">
                     Войти
                 </Typography>
-                <LinkUI>sdfsdfsdf</LinkUI>
                 <form className={classes.form} onSubmit={submit} noValidate>
                     <TextField
                         variant="outlined"
