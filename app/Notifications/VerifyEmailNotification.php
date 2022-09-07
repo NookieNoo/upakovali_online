@@ -45,12 +45,13 @@ class VerifyEmailNotification extends Notification
     public function toMail($notifiable)
     {
         $link = $this->verificationUrl($notifiable);
-        $frontendDomain = config('main.frontend_domain');
+        $frontendDomain = config('main.new_password_front_page');
+
         return (new MailMessage)
             ->subject('Необходимо подтверждение почты')
             ->view('mails.auth.verify_email', [
 //                'link' => "$frontendDomain/order/"
-                'link' => $link
+                'link' => $frontendDomain . '?verify_url=' . urlencode($link),
             ]);
     }
 

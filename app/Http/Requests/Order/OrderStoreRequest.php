@@ -73,8 +73,8 @@ class OrderStoreRequest extends JsonRequest
             'gifts.*.addressee_id' => 'required|integer|min:1|exists:addressees,id',
             'gifts.*.service_id' => 'required|integer|min:1|exists:services,id',
             'additional_products' => 'array',
-            'additional_products.*.price' => 'numeric|min:0.1',
-            'additional_products.*.name' => 'string|max:255',
+            'additional_products.*.price' => 'required|numeric|min:0.1',
+            'additional_products.*.name' => 'required|string|max:255',
             'order_photos' => 'array',
         ];
     }

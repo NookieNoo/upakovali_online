@@ -163,13 +163,13 @@ class AuthController extends Controller
         $user = User::findOrFail($id);
         $url = config('main.login_front_page');
         if ($user->hasVerifiedEmail()) {
-            return redirect()->away($url);
+            return $this->send(Response::HTTP_OK, 'Email уже подтвержден', ['alreadyVerified' => true]);
         }
 
         if ($user->markEmailAsVerified()) {
             event(new Verified($user));
         }
 
-        return redirect()->away($url);
+        return $this->send(Response::HTTP_OK, 'Успешно подтвержден email', ['alreadyVerified' => false]);
     }
 }

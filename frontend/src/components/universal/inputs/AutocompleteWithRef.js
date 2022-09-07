@@ -44,15 +44,15 @@ const OptionRenderer = ({ record, filterValue, ...rest }) => {
                 </span>
             ))}
             <div style={styles.flex}>
-                <div style={styles.email}>
-                    {emailParts.map((part, index) => (
+                <div style={styles.phone}>
+                    {phoneParts.map((part, index) => (
                         <span key={index} style={part.highlight ? styles.hightlight : styles.withoutHightlight}>
                             {part.text}
                         </span>
                     ))}
                 </div>
-                <div style={styles.phone}>
-                    {phoneParts.map((part, index) => (
+                <div style={styles.email}>
+                    {emailParts.map((part, index) => (
                         <span key={index} style={part.highlight ? styles.hightlight : styles.withoutHightlight}>
                             {part.text}
                         </span>
@@ -80,7 +80,14 @@ const AutocompleteWithRef = ({
     ...rest
 }) => {
     return (
-        <ReferenceInput disabled={disabled} label={label} source={source} reference={reference} filter={filter} className={className}>
+        <ReferenceInput
+            disabled={disabled}
+            label={label}
+            source={source}
+            reference={reference}
+            filter={filter}
+            className={className}
+        >
             <AutocompleteInput
                 optionText={<OptionRenderer />}
                 inputText={inputText}
