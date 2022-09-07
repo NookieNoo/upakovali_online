@@ -8,8 +8,8 @@ import AuthContainer from 'components/pages/Auth/AuthContainer';
 const customRoutes = [
     <Route exact path="/analytics" component={Analytics} />,
     <RouteWithoutLayout exact path="/auth/*" component={AuthContainer} />,
-    <RouteWithoutLayout exact path="/email/verify" component={PasswordRestore} />,
-    <RouteWithoutLayout exact path="/verify-email/:user_id/:hash" component={VerifyEmail} />,
+    // <RouteWithoutLayout exact path="/email/verify" component={PasswordRestore} />,
+    <RouteWithoutLayout exact path="/verify-email" component={VerifyEmail} />,
     <RouteWithoutLayout
         exact
         path="/new-password"

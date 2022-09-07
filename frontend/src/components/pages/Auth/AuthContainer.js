@@ -13,9 +13,9 @@ const AuthContainer = () => {
             <Route exact path='/auth/password-restore'>
                 <PasswordRestore />
             </Route>
-            <Route exact path='/auth/forgot-password'>
+            {/* <Route exact path='/auth/forgot-password'>
                 <ForgotPassword />
-            </Route>
+            </Route> */}
         </Switch>
     );
 };

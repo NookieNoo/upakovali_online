@@ -7,5 +7,6 @@ return [
     //'phone_format_regex' => '/^\+7\([0-9]{3}\)[0-9]{3}-[0-9]{4}$/mi',
     'phone_format_regex' => $phoneRegex,
     'phone_format_mask' => $phoneRegex,
-    'login_front_page' => 'https://' . env('FRONTEND_DOMAIN') . '/login'
+    'login_front_page' => 'https://' . env('FRONTEND_DOMAIN') . '/login',
+    'new_password_front_page' => 'https://' . env('FRONTEND_DOMAIN') . '/verify-email',
 ];

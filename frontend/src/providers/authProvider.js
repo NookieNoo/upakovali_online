@@ -43,9 +43,9 @@ export const authProvider = {
             body: JSON.stringify(values),
         });
     },
-    verifyEmail: (id, hash, body) => {
-        return fetchUtils.fetchJson(`${baseApiUrl}/verify-email/${id}/${hash}`, {
-            method: 'post',
+    verifyEmail: (verify_url, body) => {
+        return fetchUtils.fetchJson(`${verify_url}`, {
+            method: 'get',
             body: JSON.stringify(body),
         });
     },

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useLogin, useNotify, Notification, defaultTheme } from 'react-admin';
 import Paper from '@material-ui/core/Paper';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -11,7 +11,7 @@ import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
 import { Admin, Login } from 'react-admin';
-import { Link } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import LinkUI from '@material-ui/core/Link';
 
 const useStyles = makeStyles((theme) => ({
@@ -50,12 +50,21 @@ const LoginPage = () => {
     const classes = useStyles();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const { state: locationState } = useLocation();
     const login = useLogin();
     const notify = useNotify();
     const submit = (e) => {
         e.preventDefault();
         login({ username: email, password }).catch((e) => notify(e.message));
     };
+
+    useEffect(() => {
+        if (locationState && locationState?.showHint) {
+            const msg = locationState.alreadyVerified ? 'Email уже подтвержден' : 'Успешно подтвержден email';
+            const type = locationState.alreadyVerified ? 'info' : 'success';
+            notify(msg, { type, autoHideDuration: 2000 });
+        }
+    }, []);
 
     return (
         <Login>

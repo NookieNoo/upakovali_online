@@ -1,13 +1,7 @@
 import { useEffect } from 'react';
 import {
     Avatar,
-    Button,
     CssBaseline,
-    TextField,
-    FormControlLabel,
-    Checkbox,
-    Link,
-    Grid,
     Card,
     Box,
     // LockOutlinedIcon,
@@ -19,7 +13,7 @@ import {
 import AcUnitIcon from '@material-ui/icons/AcUnit';
 import { makeStyles } from '@material-ui/core/styles';
 import { Notification, TextInput, required } from 'react-admin';
-import { useParams } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 import { authProvider } from '@app-providers';
 
 const theme = createTheme();
@@ -54,14 +48,16 @@ const useStyles = makeStyles((theme) => ({
 
 const VerifyEmail = (props) => {
     const classes = useStyles();
-    const { hash, user_id } = useParams();
+    const { search } = useLocation();
+    const history = useHistory();
+    const query = new URLSearchParams(search);
+    const verify_url = query.get('verify_url');
 
     useEffect(() => {
-        let url = new URL(window.location.href);
-        console.log(url.searchParams);
-        // const id = url.searchParams.get('id');
-        // const hash = url.searchParams.get('hash');
-        authProvider.verifyEmail(user_id, hash, { signature: url.searchParams.get('signature') });
+        authProvider.verifyEmail(verify_url).then((res) => {
+            const { alreadyVerified } = res.json.data;
+            history.push('/login', { alreadyVerified, showHint: true });
+        }).catch();
     }, []);
 
     return (
