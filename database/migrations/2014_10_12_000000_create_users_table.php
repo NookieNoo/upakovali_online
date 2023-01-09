@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->unsignedInteger('role_id')->nullable();
             $table->rememberToken();
             $table->timestampsTz();
+            $table->softDeletes();
         });
     }
 
