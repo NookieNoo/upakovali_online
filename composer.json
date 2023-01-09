@@ -12,7 +12,7 @@
         "barryvdh/laravel-ide-helper": "^2.10",
         "bensampo/laravel-enum": "^3.4",
         "darkaonline/l5-swagger": "^8.0",
-        "fakerphp/faker": "^1.9.1",
+        "fakerphp/faker": "^1.21",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "infureal/artisan-gui": "^2.0",
